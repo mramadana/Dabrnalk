@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: 'main_font';
-  src: url('@/assets/webfonts/alfont_com_AlFont_com_URW-DIN-Arabic.ttf');
+  src: url('@/assets/webfonts/Almarai-Regular.ttf');
 }
 
 ::-webkit-scrollbar {
@@ -330,15 +330,14 @@ margin: 0;
 }
 
 .with-shape {
-  width: 80px;
+  width: 70px;
   height: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   transform: translateX(-15px);
   &::after {
     @include dir-right(0);
-    width: 16px;
-    height: 16px;
-    top: 0;
+    width: 12px;
+    height: 12px;
     background: #000;
     content: " ";
     transition: 0.5s;
@@ -348,9 +347,9 @@ margin: 0;
   }
   
   &::before {
-    width: 80px;
+    width: 100%;
     height: 1.5px;
-    top: 45%;
+    top: 35%;
     background: #000;
     content: " ";
     transition: 0.5s;
@@ -359,9 +358,36 @@ margin: 0;
     transform: translateY(-50%);
   }
 
+  &.lg {
+    width: 50%;
+  }
 }
 
+.btn-app {
+  width: 130px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
 
+.footer-shape {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  .with-shape {
+    transform: translateX(0);
+    &:last-child {
+      &::after {
+        @include dir-left(0);
+      }
+    }
+  }
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon:focus-visible {
+  box-shadow: none !important;
+}
 
 
 
@@ -419,17 +445,13 @@ margin: 0;
 
 .footer {
   display: block;
-  padding-top: 30px;
   position: relative;
   overflow: hidden;
-  @media (max-width: 550px) {
-    padding-top: 20px;
-  }
   .footer-logo {
     object-fit: cover;
     @media (max-width: 550px) {
       margin: 0 auto;
-      width: 110px;
+      text-align: center;
     }
   }
   .top-footer {
@@ -462,10 +484,10 @@ margin: 0;
     }
     .foot-title,
     .main-foot-title {
-      font-size: 20px;
+      font-size: 18px;
       color: #fff;
       position: relative;
-      font-weight: 500;
+      font-weight: bold;
       //   margin-bottom: 22px;
       &.active {
         &::after {
@@ -486,7 +508,7 @@ margin: 0;
         margin-bottom: 10px;
       }
       &::after {
-        @media (max-width: $screen-xs) {
+        @media (max-width: $screen-md) {
           content: "\f078";
           display: inline-block;
           font-weight: 900;
@@ -514,12 +536,12 @@ margin: 0;
       display: flex;
       flex-direction: column;
       
-      @media (max-width: $screen-xs) {
+      @media (max-width: $screen-md) {
         max-height: 0;
         overflow: hidden;
       }
 
-      @media (max-width: $screen-xs) {
+      @media (max-width: $screen-md) {
         
         &.active {
           animation: expand 0.5s ease forwards;
@@ -661,6 +683,9 @@ margin: 0;
       }
       .links {
         display: block !important;
+        max-height: fit-content !important;
+        overflow: visible !important;
+        animation: none !important;
       }
     }
   }

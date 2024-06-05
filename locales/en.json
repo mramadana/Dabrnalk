@@ -68,7 +68,9 @@
         "agree_to" : "Agree to",
         "terms_and_conditions" : "Terms and Conditions",
         "already_have_account" : "You already have an account ?",
-        "activation_code" : "activation code"
+        "activation_code" : "activation code",
+        "for_members" : "Sorry, this page is for members. Please log in .",
+        "problem_logging" : "Are you having problem logging in?"
     },
 
     "Home": {
@@ -91,7 +93,7 @@
         "riyadh_saudi_arabia" : "Riyadh, Saudi Arabia",
         "Design_programming" : "Design and programming",
         "awamer_alshabaka" : "Awamer Alshabaka",
-        "copy_right" : "All rights reserved to Amyal website",
+        "copy_right" : "All rights reserved to Dabrnalk",
         "profile_personly" : "Profile personly",
         "settings" : "Settings",
         "portfolio" : "Portfolio",
@@ -104,7 +106,10 @@
 
     "Global": {
         "notification" : "Notifications",
-        "help_center" : "Help center"
+        "help_center" : "Help center",
+        "privacy_policy" : "Privacy policy",
+        "download_application" : "Download application",
+        "sure_logout": "Are you sure you want to log out"
     }
 
 }

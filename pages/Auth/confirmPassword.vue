@@ -118,33 +118,3 @@
     };
 </script>
 
-<!-- <script>
-definePageMeta({
-    name: "Auth.new_password",
-});
-export default {
-    
-    data() {
-        return {
-            passwordVisible: {
-                definitelyNewPassword: false,
-                definitelyNewPassword_2: false
-            }
-        }
-    },
-
-    methods: {
-        togglePasswordVisibility(input) {
-            this.passwordVisible[input] = !this.passwordVisible[input];
-        },
-
-        inputType(input) {
-            return this.passwordVisible[input] ? 'text' : 'password';
-        },
-
-        submitData() {
-            this.$router.push('/Auth/login')
-        }
-    }
-}
-</script> -->

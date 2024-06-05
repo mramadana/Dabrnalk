@@ -19,6 +19,7 @@ export const useAuthStore = defineStore("auth", {
     test: 'test key',
     currentemail: null,
     currentPasword: null,
+    Globaldialog: false
   }),
   actions: {
     // Sign In

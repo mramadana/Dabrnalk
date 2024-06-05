@@ -68,7 +68,9 @@
         "agree_to" : "الموافقة على",
         "terms_and_conditions" : "الشروط والإحكام",
         "already_have_account" : "لديك حساب بالفعل ؟",
-        "activation_code" : "كود التفعيل"
+        "activation_code" : "كود التفعيل",
+        "for_members" : "عذراً ,هذه الصفحة خاصة بالأعضاء الرجاء تسجيل دخولك .",
+        "problem_logging" : "هل تواجة مشكلة بالدخول؟"
     },
 
     "Home": {
@@ -91,7 +93,7 @@
         "riyadh_saudi_arabia" : "الرياض - المملكة العربية السعودية",
         "Design_programming" : "تصميم وبرمجة",
         "awamer_alshabaka" : "أوامر الشبكة",
-        "copy_right" : "جميع الحقوق محفوظة لموقع أميال",
+        "copy_right" : "جميع الحقوق محفوظة لدبرناك",
         "profile_personly" : "الملف الشخصي",
         "settings" : "الاعدادات",
         "portfolio" : "المحفظة",
@@ -104,7 +106,10 @@
 
     "Global": {
         "notification" : "الإشعارات",
-        "help_center" : "مركز المساعدة"
+        "help_center" : "مركز المساعدة",
+        "privacy_policy" : "سياسة الخصوصية",
+        "download_application" : "حمل التطبيق",
+        "sure_logout": "هل انت متأكد من تسجيل الخروج"
     }
 
 }
