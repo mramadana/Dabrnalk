@@ -85,11 +85,7 @@
       }
     }
     .dropdown-toggle, .profile-hint {
-      &.show {
-        &::after {
-          transform: translateY(-50%) rotate(180deg);
-        }
-      }
+
       &::after {
         content: "\f078";
         top: 30%;
@@ -103,6 +99,22 @@
         font-weight: bold;
         border: 0;
         transition: all 0.2s ease-in;
+      }
+
+    }
+    .dropdown-toggle {
+      &.show {
+        &::after {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    .profile-hint {
+      &.show {
+        &::after {
+          transform: translateY(-50%) rotate(180deg);
+        }
       }
     }
 
@@ -560,11 +572,12 @@
   }
 
   .dropdown_card {
-      width: 130px;
+      width: 110px;
       flex-shrink: 0;
+      @include dir-border-left(1px solid #707070);
       .p-dropdown-label {
           font-size: 12px;
-          padding: 5px;
+          // padding: 5px;
           > .d-flex {
           gap: 10px;
           }
@@ -582,16 +595,21 @@
     box-shadow: none;
     .p-dropdown-trigger {
         width: 17px;
-        .p-icon {
-        height: 13px;
-        }
     }
   }
 }
 
+.p-dropdown-trigger {
+  width: 1rem;
+}
+
+.p-icon {
+  height: 12px;
+  }
+
 .dropdown_card {
   box-shadow: 0px 0px 2px #D9D9D9;
-  border: 1px solid #dddddd;
+  border: 1px solid #707070;
   border-radius: 5px;
   overflow: hidden;
   .p-dropdown-label, .p-multiselect-label {
@@ -602,6 +620,7 @@
     outline: 0 !important;
     box-shadow: none !important;
     width: 100%;
+    height: 40px;
   }
   &::placeholder {
     font-size: 12px;
@@ -628,7 +647,7 @@
 .main_input {
   position: relative;
   width: 100%;
-  height: 45px;
+  height: 40px;
   border: 1px solid #707070;
   border-radius: 5px;
   display: flex;
@@ -699,6 +718,7 @@
 .custum-input-icon, .custum-input {
   &::placeholder {
     font-size: 12px;
+    color: #989898;
   }
 }
 
@@ -764,7 +784,7 @@ input.p-inputtext.p-component {
     }
   }
   &.md {
-    min-width: 300px;
+    width: 300px;
     padding: 10px 9px;
     min-height: 45px;
     @media (max-width: $screen-xs) {
@@ -879,14 +899,14 @@ input.p-inputtext.p-component {
 .custom-width {
   width: 550px;
   max-width: 100%;
-  margin: 0 auto;
+  margin: 20px auto;
   text-align: center;
   position: relative;
   background-color: #fff;
   padding: 30px 0;
   border-radius: 5px;
   &.lg {
-    width: 1000px;
+    width: 700px;
   }
   @media (max-width: $screen-xs) {
     padding: 30px 20px;
@@ -964,7 +984,7 @@ input.p-inputtext.p-component {
   top: 50%;
   transform: translateY(-50%);
   color: #bfbfbf;
-  font-size: 17px;
+  font-size: 14px;
   &.with_eye {
     &::after {
         content: "";
@@ -1321,9 +1341,9 @@ input.p-inputtext.p-component {
   &.without-edit {
     width: 100px;
     height: 100px;
-    border: 2px dashed #E89641;
+    border: 2px dashed #707070;
     border-radius: 10px;
-    background-color: #E8964126;
+    // background-color: #E8964126;
     flex-direction: column;
     font-size: 12px;
     gap: 8px;
@@ -1352,8 +1372,13 @@ input.p-inputtext.p-component {
 .main-cl {
     color: var(--main) !important;
 }
+
 .custom-pd {
   padding: 12px;
+}
+
+.custum-padding {
+  padding: 15px 30px;
 }
 
 .location_input {
@@ -1425,6 +1450,53 @@ input.p-inputtext.p-component {
 }
 
 
+.auth-btns {
+  display: flex;
+  margin-bottom: 40px;
+  @media (max-width: $screen-xs) {
+     margin-bottom: 25px;
+  }
+  .custom-btn {
+    flex-grow: 1;
+    border-radius: 0;
+    background: #fff;
+    color: #000;
+    border: 0;
+    box-shadow: none;
+    transition: all 0.3s ease-in-out;
+    border-bottom: 1px solid #707070;
+    &::before {
+      display: none;
+    }
+    &:not(:last-child) {
+      // border-left: 1px solid #707070;
+      @include dir-border-right(1px solid #707070);
+    }
+    &.active {
+      background: var(--main);
+      color: #fff !important;
+    }
+  }
+}
+
+.special-custom {
+  .p-dropdown-label, .p-multiselect-label {
+    padding: 10px 0;
+  }
+}
+
+.custom-date {
+  padding: 0 !important;
+    width: 100%;
+    height: 38px;
+    border-color: transparent;
+    box-shadow: none !important;
+    font-size: 13px;
+    color: #989898;
+    &:focus {
+      border: transparent;
+    }
+}
 
 
 

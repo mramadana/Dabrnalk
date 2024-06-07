@@ -1,76 +1,46 @@
 <template>
-    <div class="container">
-        <div class="layout-form custom-width">
-            <h1 class="main-title bold lg mb-5">{{ $t("Auth.activation_code") }}</h1>
-            <form @submit.prevent="verificationCode">
-                <div class="row">
-                    <div class="col-12 col-md-8 mr-auto">
-                        <div class="text-center mb-5">
-                            <img src="@/assets/images/restore-image.svg" loading="lazy" alt="restore-image" class="restore-image mb-4">
-                            <p class="main-title">{{ $t("Auth.please_enter_activation_code") }}</p>
+    <div>
+        <GlobalAuthBanner>
+            <div class="container">
+                <div class="layout-form custom-width">
+                    <h1 class="main-title bold lg mb-4">{{ $t("Auth.activation_code") }}</h1>
+                    <form @submit.prevent="verificationCode">
+                        <div class="row">
+                            <div class="col-12 col-md-8 mr-auto">
+                                <div class="text-center mb-5">
+                                    <p class="main-title">{{ $t("Auth.please_enter_activation_code") }}</p>
+                                </div>
+        
+                                <div class="layout-activate d-flex" dir="ltr">
+                                    <v-otp-input
+                                    ref="otpInput"
+                                    v-model:value="bindModal"
+                                    input-classes="otp-input"
+                                    separator=" "
+                                    :num-inputs="4"
+                                    :should-auto-focus="true"
+                                    :is-input-num="true"
+                                    />
+                                </div>
+        
+                                <button type="submit" class="custom-btn w-100 mr-auto"> {{ $t('Auth.verification') }} </button>
+        
+                                <div class="new-sign mt-4">
+                                    {{ $t('Auth.havent_received_code') }}
+                                    <button type="button" @click="resendCode" :disabled="countStatus" :class="{'disabledClass' : countStatus}">{{ $t('Auth.resend_code') }}</button>
+                                </div>
+        
+                                <div class="text-center mt-3 main-cl" v-if="countStatus">
+                                   <span>{{ countDown }} </span> : <span>00</span> 
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="layout-activate d-flex" dir="ltr">
-                            <v-otp-input
-                            ref="otpInput"
-                            v-model:value="bindModal"
-                            input-classes="otp-input"
-                            separator=" "
-                            :num-inputs="6"
-                            :should-auto-focus="true"
-                            :is-input-num="true"
-                            />
-                        </div>
-
-                        <button type="submit" class="custom-btn w-100 mr-auto"> {{ $t('Auth.confirmation') }} </button>
-
-                        <div class="new-sign mt-4">
-                            {{ $t('Auth.havent_received_code') }}
-                            <button type="button" @click="resendCode" :disabled="countStatus" :class="{'disabledClass' : countStatus}">{{ $t('Auth.resend_code') }}</button>
-                        </div>
-
-                        <div class="text-center mt-3 main-cl" v-if="countStatus">
-                           <span>{{ countDown }} </span> : <span>00</span> 
-                        </div>
-                    </div>
+                    </form>
                 </div>
-            </form>
-        </div>
+            </div>
+        </GlobalAuthBanner>
     </div>
 </template>
-
-
-<!-- <script>
-
-definePageMeta({
-        name: "Home.activation_code",
-    });
-import VOtpInput from "vue3-otp-input";
-
-export default {
-    components: {
-        VOtpInput,
-    },
-  data() {
-    return {
-      otpInput: null,
-      bindModal: "",
-    };
-  },
-  methods: {
-
-    submitData() {   
-        this.$router.push('/')
-    }
-
-  },
-  
-  mounted() {
-    this.otpInput = this.$refs.otpInput;
-  },
-};
-</script> -->
-
 
 <script setup>
 

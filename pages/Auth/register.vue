@@ -1,148 +1,267 @@
 <template>
-    <div class="container">
-        <div class="layout-form custom-width">
-            <h1 class="main-title bold lg mb-5">{{ $t("Auth.create_account") }}</h1>
-            <form @submit.prevent="signUp" ref="signUpForm">
-                <div class="row">
-                    <div class="col-12 col-md-8 mr-auto">
-
-                        <div class="form-group text-center">
-                            <div class="input_auth">
-                                <div class="edit-label">
-                                    <i class="fas fa-edit"></i>
-                                </div>
-                                <img src="@/assets/images/upload_layout.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
-                                <GlobalImgUploader acceptedFiles="image/*" :newImages="logo" name="image" @uploaded-images-updated="updateUploadedImages_1" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="label">
-                                {{ $t('Auth.username') }}
-                                <span class="hint-red">*</span>
-                            </label>
-                            <div class="main_input">
-                                <i class="fas fa-user sm-icon"></i>
-                                <input type="text" class="custum-input-icon validInputs" valid="name" name="name" v-model="name" :placeholder="$t('Auth.enter_username')">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="label">
-                                {{ $t('Auth.mobile_number') }}
-                                <span class="hint-red">*</span>
-                            </label>
-                            <div class="with_cun_select">
-                                <div class="main_input">
-                                    <i class="fas fa-mobile-alt sm-icon"></i>
-                                    <input type="number" class="custum-input-icon validInputs" valid="phone" name="phone" v-model="phone" :placeholder="$t('Auth.please_mobile_number')">
-                                </div>
-                                <div class="card d-flex justify-content-center dropdown_card">
-                                <Dropdown
-                                v-model="selectedCountry"
-                                :options="countries"
-                                optionLabel="name"
-                                >
-                                <template #value="slotProps">
-                                    <div v-if="slotProps.value" class="flex-group-me">
-                                    <img
-                                        :alt="slotProps.value.label"
-                                        :src="slotProps.value.image"
-                                        :class="`mr-2 flag flag-${slotProps.value.key}`"
-                                        style="width: 24px"
-                                    />
-                                    <div>{{ slotProps.value.key }}</div>
-                                    </div>
-                                    <span v-else>
-                                    {{ slotProps.placeholder }}
-                                    </span>
-                                </template>
-                                <template #option="slotProps">
-                                    <div class="flex-group-me">
-                                    <img
-                                        :alt="slotProps.option.label"
-                                        :src="slotProps.option.image"
-                                        :class="`mr-2 flag flag-${slotProps.option.key}`"
-                                        style="width: 24px"
-                                    />
-                                    <div>{{ slotProps.option.key }}</div>
-                                    </div>
-                                </template>
-                                </Dropdown>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="label">
-                                {{ $t('Auth.email') }}
-                                <span class="hint-red">*</span>
-                            </label>
-                            <div class="main_input">
-                                <i class="fas fa-envelope sm-icon"></i>
-                                <input type="email" class="custum-input-icon validInputs" valid="email" name="email" v-model="email" :placeholder="$t('Auth.please_enter_email')">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                                <label class="label">
-                                    {{ $t('Auth.password') }}
-                                    <span class="hint-red">*</span>
-                                </label>
-                                <div class="main_input with_icon">
-                                    <i class="fas fa-lock sm-icon"></i>
-                                    <input :type="inputType('definitelyNewPassword')" name="password" v-model="password" class="custum-input-icon validInputs" valid="password" :placeholder=" $t('Auth.please_enter_password') ">
-                                    <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword')" :class="{ 'active_class': passwordVisible.definitelyNewPassword }">
-                                    <i class="far fa-eye icon"></i>
-                                    </button>
-                                </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="label">
-                                {{ $t('Auth.confirm_password_sm') }}
-                                <span class="hint-red">*</span>
-                            </label>
-                            <div class="main_input with_icon">
-                                <i class="fas fa-lock sm-icon"></i>
-                                <input :type="inputType('definitelyNewPassword_2')" name="password_confirmation" v-model="confirmPassword" class="custum-input-icon validInputs"  :placeholder=" $t('Auth.please_confirm_password') ">
-                                <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword_2')" :class="{ 'active_class': passwordVisible.definitelyNewPassword_2 }">
-                                <i class="far fa-eye icon"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="radios form-group check-inner mb-4">
-                            <div class="d-flex gap-3">
-                                <label class="custom-radio custom-check">
-                                    <input type="checkbox" name="terms" v-model="terms" class="d-none">
-                                    <span class="mark">
-                                        <i class="fas fa-check icon"></i>
-                                    </span>
-                                    <p class="check-text hint">
-                                    {{ $t("Auth.agree_to") }}
-                                    <NuxtLink to="/terms" target="_blank" class="anchor">
-                                        {{ $t("Auth.terms_and_conditions") }}
-                                    </NuxtLink >
-                                    </p>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <button type="submit" class="custom-btn w-100 mr-auto" :disabled="loading">
-                            {{ $t('Auth.confirmation') }}
-                            <span class="spinner-border spinner-border-sm" v-if="loading" role="status"
-                                    aria-hidden="true"></span>
-                        </button>
-
-                        <div class="new-sign mt-4">
-                            {{ $t('Auth.already_have_account') }}
-                            <nuxt-link to="/Auth/login" >{{ $t('Auth.login') }}</nuxt-link>
-                        </div>
+    <div>
+        <GlobalAuthBanner>
+            <div class="container">
+                <div class="layout-form custom-width pt-0 lg">
+                    <div class="auth-btns">
+                        <button type="button" class="custom-btn" :class="{ active: activeIndex === 0 }" 
+                        @click="setActive(0)">{{ $t("Auth.An_individual") }}</button>
+                        <button type="button" class="custom-btn" :class="{ active: activeIndex === 1 }" 
+                        @click="setActive(1)">{{ $t("Auth.governmental_organization") }}</button>
+                        <button type="button" class="custom-btn" :class="{ active: activeIndex === 2 }" 
+                        @click="setActive(2)">{{ $t("Auth.private_company") }}</button>
                     </div>
+                    <!-- <div class="static-content d-flex align-items-center justify-content-between mb-5">
+                        <div v-if="activeIndex === 0">content 1</div>
+                        <div v-if="activeIndex === 1">content 2</div>
+                        <div v-if="activeIndex === 1">content 2</div>
+                        <div v-if="activeIndex === 1">content 2</div>
+                        <div v-if="activeIndex === 2">content 3</div>
+                    </div> -->
+                    
+                    <h1 class="main-title bold lg mb-3">{{ $t("Auth.create_account") }}</h1>
+                    <h4 class="main-disc mb-4">{{ $t("Auth.fill_data") }}</h4>
+                    <form @submit.prevent="signUp" ref="signUpForm">
+                        <div class="custum-padding">
+                            <div class="row">
+
+                                <!-- if member -->
+
+                                <div class="form-group text-center" v-if="activeIndex === 0">
+                                        <div class="input_auth">
+                                            <div class="edit-label">
+                                                <i class="fas fa-edit"></i>
+                                            </div>
+                                            <img src="@/assets/images/Ellipse.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
+                                            <GlobalImgUploader acceptedFiles="image/*" :newImages="logo" name="image" @uploaded-images-updated="updateUploadedImages_1" />
+                                        </div>
+                                </div>
+
+                                <!-- if private -->
+                                <div class="col-12 col-md-6" v-if="activeIndex === 2">
+                                    <div class="form-group">
+                                        <label class="label">
+                                            {{ $t('Auth.sector_name') }}
+                                        </label>
+                                        <div class="main_input">
+                                            <i class="fas fa-user sm-icon"></i>
+                                            <input type="text" class="custum-input-icon validInputs" valid="name" name="name" v-model="name" :placeholder="$t('Auth.special_sector')">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="label">
+                                            {{ $t('Auth.the_name') }}
+                                        </label>
+                                        <div class="main_input">
+                                            <i class="fas fa-user sm-icon"></i>
+                                            <input type="text" class="custum-input-icon validInputs" valid="name" name="name" v-model="name" :placeholder="$t('Auth.enter_username')">
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="label">
+                                            {{ $t('Auth.mobile_number') }}
+                                        </label>
+                                        <div class="with_cun_select">
+                                            <div class="main_input">
+                                                <i class="fas fa-mobile-alt sm-icon"></i>
+                                                <input type="number" class="custum-input-icon validInputs" valid="phone" name="phone" v-model="phone" :placeholder="$t('Auth.please_mobile_number')">
+                                            </div>
+                                            <div class="card d-flex justify-content-center dropdown_card">
+                                            <Dropdown
+                                            v-model="selectedCountry"
+                                            :options="countries"
+                                            filter
+                                            optionLabel="name"
+                                            :emptyMessage="$t('Home.no_available_options')"
+                                            :emptyFilterMessage="$t('Home.emptyFilterMessage')"
+                                            >
+                                            <template #value="slotProps">
+                                                <div v-if="slotProps.value" class="flex-group-me">
+                                                <img
+                                                    :alt="slotProps.value.label"
+                                                    :src="slotProps.value.image"
+                                                    :class="`mr-2 flag flag-${slotProps.value.key}`"
+                                                    style="width: 24px"
+                                                />
+                                                <div>{{ slotProps.value.key }}</div>
+                                                </div>
+                                                <span v-else>
+                                                {{ slotProps.placeholder }}
+                                                </span>
+                                            </template>
+                                            <template #option="slotProps">
+                                                <div class="flex-group-me">
+                                                <img
+                                                    :alt="slotProps.option.label"
+                                                    :src="slotProps.option.image"
+                                                    :class="`mr-2 flag flag-${slotProps.option.key}`"
+                                                    style="width: 24px"
+                                                />
+                                                <div>{{ slotProps.option.name }}</div>
+                                                <div>{{ slotProps.option.key }}</div>
+                                                </div>
+                                            </template>
+                                            </Dropdown>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- if member (gender) -->
+                                <div class="col-12 col-md-6 mb-4" v-if="activeIndex === 0">
+                                        <label class="label">
+                                            {{$t('Home.genders')}}
+                                        </label>
+                                        <div class="flex justify-content-center dropdown_card main_input special-custom">
+                                            <i class="fas fa-venus-mars sm-icon"></i>
+                                            <Dropdown v-model="gender" :options="genders" optionLabel="name" :placeholder="$t('Home.genders')" class="w-full md:w-14rem custum-dropdown" />
+                                        </div>
+                                </div>
+
+                                <!-- if member (birth date)  -->
+                                <div class="col-12 col-md-6" v-if="activeIndex === 0">
+                                    <div class="position-relative">
+                                        <label class="label">{{ $t('Auth.birth_date') }}</label>
+                                        <div class=" main_input with_icon">
+                                            <i class="fas fa-calendar sm-icon"></i>
+                                            <flat-pickr v-model="calender_date" :config="config_a" class="select_date main_input custom-date"
+                                            :placeholder="$t('Auth.birth_date')"
+                                            name="date"
+                                            @on-change="change"
+                                            />
+                                            
+                                            <i class="fas fa-calendar static-btn"></i>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- if member (nationality) -->
+                                <div class="col-12 col-md-6 mb-4" v-if="activeIndex === 0">
+                                    <label class="label">
+                                        {{$t('Auth.nationality')}}
+                                    </label>
+                                    <div class="flex justify-content-center dropdown_card main_input special-custom">
+                                        <i class="fas fa-venus-double sm-icon"></i>
+                                        <Dropdown v-model="gender" :options="genders" optionLabel="name" :placeholder="$t('Auth.nationality')" class="w-full md:w-14rem custum-dropdown" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                            <label class="label">
+                                                {{ $t('Auth.password') }}
+
+                                            </label>
+                                            <div class="main_input with_icon">
+                                                <i class="fas fa-lock sm-icon"></i>
+                                                <input :type="inputType('definitelyNewPassword')" name="password" v-model="password" class="custum-input-icon validInputs" valid="password" :placeholder=" $t('Auth.please_enter_password') ">
+                                                <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword')" :class="{ 'active_class': passwordVisible.definitelyNewPassword }">
+                                                <i class="far fa-eye icon"></i>
+                                                </button>
+                                            </div>
+                                    </div>
+                                </div>
+        
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="label">
+                                            {{ $t('Auth.confirm_password_sm') }}
+                                        </label>
+                                        <div class="main_input with_icon">
+                                            <i class="fas fa-lock sm-icon"></i>
+                                            <input :type="inputType('definitelyNewPassword_2')" name="password_confirmation" v-model="confirmPassword" class="custum-input-icon validInputs"  :placeholder=" $t('Auth.please_confirm_password') ">
+                                            <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword_2')" :class="{ 'active_class': passwordVisible.definitelyNewPassword_2 }">
+                                            <i class="far fa-eye icon"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- permission if private or government -->
+
+                                <div class="col-12 col-md-6" v-if="activeIndex === 1 || activeIndex === 2">
+                                    <div class="form-group">
+                                        <label class="label">
+                                            {{ $t('Auth.permission') }}
+                                        </label>
+                                        <div class="main_input">
+                                            <i class="far fa-hand-rock sm-icon"></i>
+                                            <input type="text" class="custum-input-icon validInputs" valid="name" name="name" v-model="name" :placeholder="$t('Auth.enter_permissions')">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- if government and private -->
+
+                                <div class="col-12 col-md-6" v-if="activeIndex === 1 || activeIndex === 2">
+                                    <div class="form-group">
+                                        <label class="label">
+                                            {{ $t('Auth.email') }}
+                                        </label>
+                                        <div class="main_input">
+                                            <i class="fas fa-envelope sm-icon"></i>
+                                            <input type="email" class="custum-input-icon validInputs" valid="email" name="email" v-model="email" :placeholder="$t('Auth.please_enter_email')">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- if government and private -->
+                                <div class="form-group gap-4 d-flex" v-if="activeIndex === 1 || activeIndex === 2">
+                                    <!-- if government and private -->
+                                    <div class="input_auth without-edit" v-if="activeIndex === 1 || activeIndex === 2">
+                                        <img src="@/assets/images/download-img.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
+                                        <span>{{ $t('Auth.organization_logo') }}</span>
+                                        <GlobalImgUploader acceptedFiles="image/*" name="image" @uploaded-images-updated="updateUploadedImages_1" />
+                                    </div>
+
+                                    <!-- if private -->
+                                    <div class="input_auth without-edit" v-if="activeIndex === 2">
+                                        <img src="@/assets/images/download-img.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
+                                        <span>{{ $t('Auth.commercial_register') }}</span>
+                                        <GlobalImgUploader acceptedFiles="image/*" name="logo" @uploaded-images-updated="updateUploadedImages_2" />
+                                    </div>
+                                </div>
+        
+                                <div class="radios form-group check-inner mb-4">
+                                    <div class="d-flex gap-3">
+                                        <label class="custom-radio custom-check">
+                                            <input type="checkbox" name="terms" v-model="terms" class="d-none">
+                                            <span class="mark">
+                                                <i class="fas fa-check icon"></i>
+                                            </span>
+                                            <p class="check-text hint">
+                                            {{ $t("Auth.agree_to") }}
+                                            <NuxtLink to="/terms" target="_blank" class="anchor">
+                                                {{ $t("Auth.terms_and_conditions") }}
+                                            </NuxtLink >
+                                            </p>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="custom-btn md mr-auto" :disabled="loading">
+                                    {{ $t('Auth.log_in') }}
+                                    <span class="spinner-border spinner-border-sm" v-if="loading" role="status"
+                                            aria-hidden="true"></span>
+                                </button>
+        
+                                <div class="new-sign mt-4">
+                                    {{ $t('Auth.already_have_account') }}
+                                    <nuxt-link to="/Auth/login" >{{ $t('Auth.login') }}</nuxt-link>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </div>
+            </div>
+        </GlobalAuthBanner>
     </div>
 </template>
 
@@ -152,8 +271,15 @@
         name: "Auth.create_account",
     });
 
+    // import flatpicker
+
+    import flatPickr from 'vue-flatpickr-component';
+    import 'flatpickr/dist/flatpickr.css';
+
+    // import i18n
     import { useI18n } from 'vue-i18n';
 
+    // import useI18n
     const { t } = useI18n({ useScope: 'global' });
 
     // success response
@@ -169,6 +295,18 @@
     // Store
     const store = useAuthStore();
     const { signUpHandler } = store;
+
+    // flatpicker date
+    const calender_date = ref(null);
+    const config_a = ref({
+    wrap: true, // set wrap to true only when using 'input-group'
+    altFormat: "Y-m-d",
+    altInput: true,
+    dateFormat: "Y-m-d",
+    minDate: 'today',
+    });
+
+    // variables
     const signUpForm = ref(null);
     const selectedCountry = ref({})
     const countries = ref([]);
@@ -183,6 +321,29 @@
         definitelyNewPassword: false,
         definitelyNewPassword_2: false
     });
+
+    const genders = ref([
+        {
+            id: 1,
+            name: t(`Auth.male`),
+
+        },
+
+        {
+            id: 2,
+            name: t(`Auth.female`),
+        }
+    ])
+    
+    const gender = ref(null);
+
+    // active index
+    const activeIndex = ref(0)
+
+    // chage active class by click 
+    const setActive = (index) => {
+        activeIndex.value = index;
+    } 
 
     const updateUploadedImages_1 = (images) => {
         uploadedImage.value = images;
@@ -259,3 +420,6 @@
     });
 
 </script>
+
+
+

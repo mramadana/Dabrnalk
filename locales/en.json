@@ -48,11 +48,11 @@
         "email" : "Email",
         "forget_password" : "Did you forget your password ?",
         "dont_have_account" : "Don't have an account?",
-        "create_account" : "Create an account",
+        "create_account" : "Create a new account",
         "restore_password" : "Restore password",
         "confirmation" : "confirmation",
         "Please_enter_mobile_number" : "Please enter your mobile number to recover your password",
-        "please_enter_activation_code" : "Please enter the activation code sent to you via WhatsApp",
+        "please_enter_activation_code" : "Please enter the activation code",
         "havent_received_code" : "Haven't received the code yet?",
         "resend_code" : "Resend the code",
         "new_password" : "New Password",
@@ -70,7 +70,24 @@
         "already_have_account" : "You already have an account ?",
         "activation_code" : "activation code",
         "for_members" : "Sorry, this page is for members. Please log in .",
-        "problem_logging" : "Are you having problem logging in?"
+        "problem_logging" : "Are you having problem logging in?",
+        "fill_data" : "Please fill out the data",
+        "male" : "Male",
+        "female" : "Female",
+        "the_name" : "The name",
+        "birth_date" : "Birth date",
+        "nationality" : "Nationality",
+        "sector_name" : "Sector name",
+        "special_sector" : "Name of the private sector",
+        "permission" : "Permission",
+        "enter_permissions" : "Enter your sector permissions",
+        "organization_logo" : "Organization logo",
+        "commercial_register" : "commercial register",
+        "log_in" : "Login",
+        "An_individual" : "An individual",
+        "governmental_organization" : "Governmental organization",
+        "private_company" : "Private company",
+        "verification" : "verification"
     },
 
     "Home": {
@@ -101,7 +118,10 @@
         "logout" : "Log out",
         "retreat" : "Retreat",
         "activation_code" : "Activation code",
-        "edit_profile" : "Edit profile"
+        "edit_profile" : "Edit profile",
+        "genders" : "Genders",
+        "no_available_options" : "No available options",
+        "emptyFilterMessage" : "No results found"
     },
 
     "Global": {

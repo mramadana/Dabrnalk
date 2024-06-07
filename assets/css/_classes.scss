@@ -389,10 +389,48 @@ margin: 0;
   box-shadow: none !important;
 }
 
+// custom flatpicker 
+
+.flatpickr-day.selected,
+.flatpickr-day.selected {
+background: var(--main) !important;
+border-color: var(--main) !important;
+}
+.main_input.select_date:focus {
+box-shadow: none;
+border-color: #dddddd;
+}
+.flatpickr-weekdays {
+    height: 40px !important;
+    background-color: var(--main) !important;
+    .flatpickr-weekday {
+    color: #ffffff;
+    font-weight: 400;
+    border-right: 1px solid #ffffff;
+    padding: 15px 0;
+    }
+}
+.flatpickr-months {
+padding-bottom: 15px;
+}
+.flatpickr-days {
+margin: 2px;
+}
 
 
+.p-dropdown-panel .p-dropdown-header .p-dropdown-filter {
+  height: 30px;
+  font-size: 13px;
+}
 
+.p-dropdown-empty-message {
+  font-size: 13px;
+}
 
+.without-edit {
+  text-align: center;
+  padding: 0 5px;
+}
 
 
 

@@ -8,78 +8,58 @@
                     <form @submit.prevent="login" ref="loginForm">
                         <div class="row">
                             <div class="col-12 col-md-10 mr-auto">
-        
-                                <ul class="nav nav-pills mb-5 tab-btns-login" id="pills-tab" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link active login-shape" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true"><span class="login-text">{{ $t('Auth.mobile_number') }}</span></button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link login-shape" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false"><span class="login-text">{{ $t('Auth.email') }}</span></button>
-                                    </li>
-                                </ul>
-                                <div class="tab-content" id="pills-tabContent">
-                                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                                        <div class="form-group">
-                                            <label class="label">
-                                                {{ $t('Auth.mobile_number') }}
-                                                <span class="hint-red">*</span>
-                                            </label>
-                                            <div class="with_cun_select">
-                                                <div class="main_input">
-                                                    <i class="fas fa-mobile-alt sm-icon"></i>
-                                                    <input type="number" class="custum-input-icon" v-model="phone" @input="checkPhone" :placeholder="$t('Auth.please_mobile_number')">
-                                                </div>
-                                                <div class="card d-flex justify-content-center dropdown_card">
-                                                <Dropdown
-                                                v-model="selectedCountry"
-                                                :options="countries"
-                                                optionLabel="name"
-                                                >
-                                                <template #value="slotProps">
-                                                    <div v-if="slotProps.value" class="flex-group-me">
-                                                    <img
-                                                        loading="lazy"
-                                                        :alt="slotProps.value.label"
-                                                        :src="slotProps.value.image"
-                                                        :class="`mr-2 flag flag-${slotProps.value.key}`"
-                                                        style="width: 24px"
-                                                    />
-                                                    <div>{{ slotProps.value.key }}</div>
-                                                    </div>
-                                                    <span v-else>
-                                                    {{ slotProps.placeholder }}
-                                                    </span>
-                                                </template>
-                                                <template #option="slotProps">
-                                                    <div class="flex-group-me">
-                                                    <img
-                                                        loading="lazy"
-                                                        :alt="slotProps.option.label"
-                                                        :src="slotProps.option.image"
-                                                        :class="`mr-2 flag flag-${slotProps.option.key}`"
-                                                        style="width: 24px"
-                                                    />
-                                                    <div>{{ slotProps.option.key }}</div>
-                                                    </div>
-                                                </template>
-                                                </Dropdown>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                        <div class="form-group">
-                                            <label class="label">
-                                                {{ $t('Auth.email') }}
-                                                <span class="hint-red">*</span>
-                                            </label>
+
+                                <div class="form-group">
+                                        <label class="label">
+                                            {{ $t('Auth.mobile_number') }}
+                                            <span class="hint-red">*</span>
+                                        </label>
+                                        <div class="with_cun_select">
                                             <div class="main_input">
-                                                <i class="fas fa-envelope sm-icon"></i>
-                                                <input type="email" class="custum-input-icon" v-model="email" @input="checkEmail" :placeholder="$t('Auth.email')">
+                                                <i class="fas fa-mobile-alt sm-icon"></i>
+                                                <input type="number" class="custum-input-icon" v-model="phone" @input="checkPhone" :placeholder="$t('Auth.please_mobile_number')">
+                                            </div>
+                                            <div class="card d-flex justify-content-center dropdown_card">
+                                            <Dropdown
+                                            v-model="selectedCountry"
+                                            :options="countries"
+                                            filter
+                                            optionLabel="name"
+                                            :emptyMessage="$t('Home.no_available_options')"
+                                            :emptyFilterMessage="$t('Home.emptyFilterMessage')"
+                                            >
+                                            <template #value="slotProps">
+                                                <div v-if="slotProps.value" class="flex-group-me">
+                                                <img
+                                                    loading="lazy"
+                                                    :alt="slotProps.value.label"
+                                                    :src="slotProps.value.image"
+                                                    :class="`mr-2 flag flag-${slotProps.value.key}`"
+                                                    style="width: 24px"
+                                                />
+                                                <div>{{ slotProps.value.key }}</div>
+                                                </div>
+                                                <span v-else>
+                                                {{ slotProps.placeholder }}
+                                                </span>
+                                            </template>
+                                            <template #option="slotProps">
+                                                <div class="flex-group-me">
+                                                <img
+                                                    loading="lazy"
+                                                    :alt="slotProps.option.label"
+                                                    :src="slotProps.option.image"
+                                                    :class="`mr-2 flag flag-${slotProps.option.key}`"
+                                                    style="width: 24px"
+                                                />
+                                                <div>{{ slotProps.option.name }}</div>
+                                                <div>{{ slotProps.option.key }}</div>
+                                                </div>
+                                            </template>
+                                            </Dropdown>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 <div class="form-group">
                                     <label class="label">
                                         {{ $t('Auth.password') }} 

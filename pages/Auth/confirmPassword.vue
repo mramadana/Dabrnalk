@@ -1,50 +1,55 @@
 <template>
-    <div class="container">
-        <div class="layout-form custom-width">
-            <h1 class="main-title bold lg mb-5">{{ $t("Auth.restore_password") }}</h1>
-            <form @submit.prevent="submitData" ref="confirmPasswordForm">
-                <div class="row">
-                    <div class="col-12 col-md-8 mr-auto">
-                        <div class="text-center mb-5">
-                            <img src="@/assets/images/restore-image.svg" loading="lazy" alt="restore-image" class="restore-image mb-4">
-                            <p class="main-title">{{ $t("Auth.confirm_password") }}</p>
-                        </div>
-                        <div class="form-group">
-                            <label class="label">
-                                {{ $t('Auth.new_password') }}
-                                <span class="hint-red">*</span>
-                            </label>
-                            <div class="main_input with_icon">
-                                <input :type="inputType('definitelyNewPassword')" name="password" v-model="password" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
-                                <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword')" :class="{ 'active_class': passwordVisible.definitelyNewPassword }">
-                                <i class="far fa-eye icon"></i>
-                                </button>
+    <div>
+        <GlobalAuthBanner>
+        <div class="container">
+            <div class="layout-form custom-width">
+                <h1 class="main-title bold lg mb-5">{{ $t("Auth.restore_password") }}</h1>
+                <form @submit.prevent="submitData" ref="confirmPasswordForm">
+                    <div class="row">
+                        <div class="col-12 col-md-8 mr-auto">
+                            <div class="text-center mb-5">
+                                <img src="@/assets/images/restore-image.svg" loading="lazy" alt="restore-image" class="restore-image mb-4">
+                                <p class="main-title">{{ $t("Auth.confirm_password") }}</p>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="label">
-                                {{ $t('Auth.definitely_new_password') }}
-                                <span class="hint-red">*</span>
-                            </label>
-                            <div class="main_input with_icon">
-                                <input :type="inputType('definitelyNewPassword_2')" name="password_confirmation" v-model="confirmPassword" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_confirm_password') ">
-                                <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword_2')" :class="{ 'active_class': passwordVisible.definitelyNewPassword_2 }">
-                                <i class="far fa-eye icon"></i>
-                                </button>
+                            <div class="form-group">
+                                <label class="label">
+                                    {{ $t('Auth.new_password') }}
+                                    <span class="hint-red">*</span>
+                                </label>
+                                <div class="main_input with_icon">
+                                    <input :type="inputType('definitelyNewPassword')" name="password" v-model="password" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
+                                    <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword')" :class="{ 'active_class': passwordVisible.definitelyNewPassword }">
+                                    <i class="far fa-eye icon"></i>
+                                    </button>
+                                </div>
                             </div>
+
+                            <div class="form-group">
+                                <label class="label">
+                                    {{ $t('Auth.definitely_new_password') }}
+                                    <span class="hint-red">*</span>
+                                </label>
+                                <div class="main_input with_icon">
+                                    <input :type="inputType('definitelyNewPassword_2')" name="password_confirmation" v-model="confirmPassword" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_confirm_password') ">
+                                    <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword_2')" :class="{ 'active_class': passwordVisible.definitelyNewPassword_2 }">
+                                    <i class="far fa-eye icon"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button class="custom-btn w-100 mr-auto">
+                                {{ $t('Auth.confirmation') }}
+                                <span class="spinner-border spinner-border-sm" v-if="loading" role="status" aria-hidden="true"></span>
+                            </button>
+
                         </div>
-
-                        <button class="custom-btn w-100 mr-auto">
-                            {{ $t('Auth.confirmation') }}
-                            <span class="spinner-border spinner-border-sm" v-if="loading" role="status" aria-hidden="true"></span>
-                        </button>
-
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
+        </GlobalAuthBanner>
     </div>
+
 </template>
 
 <script setup>

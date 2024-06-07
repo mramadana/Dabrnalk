@@ -48,11 +48,11 @@
         "email" : "البريد الالكتروني",
         "forget_password" : "هل نسيت كلمة المرور ؟",
         "dont_have_account" : "ليس لديك حساب ؟",
-        "create_account" : "إنشاء حساب",
+        "create_account" : "إنشاء حساب جديد",
         "restore_password" : "استعادة كلمة المرور",
         "confirmation" : "تأكيد",
         "Please_enter_mobile_number" : "برجاء ادخال رقم الجوال لاستعادة كلمة المرور",
-        "please_enter_activation_code" : "برجاء ادخال كود التفعيل المرسل إليك عبر الواتس آب",
+        "please_enter_activation_code" : "الرجاء إدخال كود التحقق",
         "havent_received_code" : "لم تستلم الكود بعد ؟",
         "resend_code" : "أعد إرسال الكود",
         "new_password" : "كلمة المرور الجديدة",
@@ -68,9 +68,26 @@
         "agree_to" : "الموافقة على",
         "terms_and_conditions" : "الشروط والإحكام",
         "already_have_account" : "لديك حساب بالفعل ؟",
-        "activation_code" : "كود التفعيل",
+        "activation_code" : "كود التحقق",
         "for_members" : "عذراً ,هذه الصفحة خاصة بالأعضاء الرجاء تسجيل دخولك .",
-        "problem_logging" : "هل تواجة مشكلة بالدخول؟"
+        "problem_logging" : "هل تواجة مشكلة بالدخول؟",
+        "fill_data" : "من فضلك قم بملئ البيانات",
+        "male" : "ذكر",
+        "female" : "انثى",
+        "the_name" : "الأسم",
+        "birth_date" : "تاريخ الميلاد",
+        "nationality" : "الجنسية",
+        "sector_name" : "اسم القطاع",
+        "special_sector" : "اسم القطاع الخاص",
+        "permission" : "الصلاحيات",
+        "enter_permissions" : "ادخل صلاحياتك التابعة للقطاع",
+        "organization_logo" : "شعار المنظمة",
+        "commercial_register" : "السجل التجاري",
+        "log_in" : "تسجيل",
+        "An_individual" : "فرد",
+        "governmental_organization" : "منظمة حكومية",
+        "private_company" : "شركة خاصة",
+        "verification" : "تحقق"
     },
 
     "Home": {
@@ -101,7 +118,10 @@
         "logout" : "تسجيل خروج",
         "retreat" : "تراجع",
         "activation_code" : "كود التفعيل",
-        "edit_profile" : "تعديل الملف الشخصي"
+        "edit_profile" : "تعديل الملف الشخصي",
+        "genders" : "الجنس",
+        "no_available_options" : "لا توجد خيارات متاحة",
+        "emptyFilterMessage" : "لا توجد نتائج متاحة"
     },
 
     "Global": {
