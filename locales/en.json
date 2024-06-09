@@ -121,7 +121,8 @@
         "edit_profile" : "Edit profile",
         "genders" : "Genders",
         "no_available_options" : "No available options",
-        "emptyFilterMessage" : "No results found"
+        "emptyFilterMessage" : "No results found",
+        "read_more" : "Read more"
     },
 
     "Global": {
@@ -129,7 +130,25 @@
         "help_center" : "Help center",
         "privacy_policy" : "Privacy policy",
         "download_application" : "Download application",
-        "sure_logout": "Are you sure you want to log out"
+        "sure_logout": "Are you sure you want to log out",
+        "change_password": "Change password",
+        "save_changes" : "Save changes",
+        "delete_account" : "Delete account",
+        "Saving_changes_success" : "Changes have been saved successfully",
+        "sure_delete_account": "Are you sure you want to delete your account",
+        "delete_account_info": "If the section is deleted, all data related to the branch will be deleted in addition to the products",
+        "delete" : "Delete",
+        "current_password" : "Current password",
+        "change_email": "Change email",
+        "new_email" : "New email",
+        "please_enter_new_email" : "Please enter a new email",
+        "new_phone" : "New phone",
+        "change_phone" : "Change phone",
+        "saved_addresses" : "Saved addresses",
+        "since": "since",
+        "imgs": "No images currently",
+        "no_products": "No products currently",
+        "branches" : "branches"
     }
 
 }

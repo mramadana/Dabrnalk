@@ -121,7 +121,8 @@
         "edit_profile" : "تعديل الملف الشخصي",
         "genders" : "الجنس",
         "no_available_options" : "لا توجد خيارات متاحة",
-        "emptyFilterMessage" : "لا توجد نتائج متاحة"
+        "emptyFilterMessage" : "لا توجد نتائج متاحة",
+        "read_more" : "اقرأ المزيد"
     },
 
     "Global": {
@@ -129,7 +130,25 @@
         "help_center" : "مركز المساعدة",
         "privacy_policy" : "سياسة الخصوصية",
         "download_application" : "حمل التطبيق",
-        "sure_logout": "هل انت متأكد من تسجيل الخروج"
+        "sure_logout": "هل انت متأكد من تسجيل الخروج",
+        "change_password": "تغيير كلمة المرور",
+        "save_changes" : "حفظ التغييرات",
+        "delete_account" : "حذف الحساب",
+        "Saving_changes_success" : "تم حفظ التعديلات بنجاح",
+        "sure_delete_account": "هل انت متاكد من حذف الحساب",
+        "delete_account_info": "في حالة حذف القسم سيتم حذف كافة البيانات الخاصه بالفرع بالإضافة الى حذف المنتجات",
+        "delete" : "حذف",
+        "current_password" : "كلمة المرور الحالية",
+        "change_email": "تغيير البريد الالكتروني",
+        "new_email" : "البريد الالكتروني الجديد",
+        "please_enter_new_email" : "الرجاء ادخال البريد الالكتروني الجديد",
+        "new_phone" : "رقم الجوال الجديد",
+        "change_phone" : "تغيير رقم الجوال",
+        "saved_addresses" : "العناوين المحفوظة",
+        "since": "منذ",
+        "imgs": "لا يوجد صور حاليا",
+        "no_products": "لا يوجد منتجات حاليا",
+        "branches" : "فروع"
     }
 
 }

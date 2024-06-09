@@ -1,21 +1,26 @@
 <template>
 
     <div>
-
         <div class="container">
-            <div class="layout-form custom-width">
-                <h1 class="main-title bold lg mb-5">{{ $t("Global.change_email") }}</h1>
+            <div class="layout-form">
+                <h1 class="main-title bold lg text-center mb-5">{{ $t("Global.change_email") }}</h1>
                 <form @submit.prevent="submitData" ref="changeEmailForm">
-                    <div class="row">
-                        <div class="col-12 col-md-8 mr-auto">
-                            <div class="text-center mb-5">
-                                <img src="@/assets/images/restore-image.svg" loading="lazy" alt="restore-image" class="restore-image mb-4">
-                                <p class="main-title">{{ $t("Global.enter_current_password_new_email") }}</p>
+                    <div class="row justify-content-between flex-wrap-reverse">
+                        <div class="col-12 col-xl-5 col-md-12 mb-5">
+
+                            <div class="form-group">
+                                <label class="label">
+                                    {{ $t('Global.new_email') }}
+                                </label>
+                                <div class="main_input">
+                                    <i class="fas fa-envelope sm-icon"></i>
+                                    <input type="email" class="custum-input-icon validInputs" name="email" v-model="email" :placeholder="$t('Global.please_enter_new_email')">
+                                </div>
                             </div>
+
                             <div class="form-group">
                                 <label class="label">
                                     {{ $t('Auth.password') }}
-                                    <span class="hint-red">*</span>
                                 </label>
                                 <div class="main_input with_icon">
                                     <input :type="inputType('definitelyNewPassword')" name="password" v-model="password" class="custum-input-icon validInputs" valid="password" :placeholder=" $t('Auth.please_enter_password') ">
@@ -24,23 +29,16 @@
                                     </button>
                                 </div>
                             </div>
-
-                            <div class="form-group">
-                                <label class="label">
-                                    {{ $t('Global.new_email') }}
-                                    <span class="hint-red">*</span>
-                                </label>
-                                <div class="main_input">
-                                    <i class="fas fa-envelope sm-icon"></i>
-                                    <input type="email" class="custum-input-icon validInputs" name="email" v-model="email" :placeholder="$t('Global.please_enter_new_email')">
-                                </div>
-                            </div>
     
                             <button class="custom-btn w-100 mr-auto mt-5">
-                                {{ $t('Home.continuation') }}
+                                {{ $t('Auth.confirmation') }}
                                 <span class="spinner-border spinner-border-sm" v-if="loading" role="status" aria-hidden="true"></span>
                             </button>
     
+                        </div>
+
+                        <div class="col-12 col-xl-5 col-md-12 mb-5 text-center">
+                            <img src="@/assets/images/change-email.png" loading="lazy" alt="profile-image" class="profile-image w-100">
                         </div>
                     </div>
                 </form>

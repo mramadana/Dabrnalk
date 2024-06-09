@@ -1,67 +1,76 @@
 <template>
-    <div class="container">
-        <div class="layout-form custom-width">
-            <h1 class="main-title bold lg mb-5">{{ $t("Auth.restore_password") }}</h1>
-            <form @submit.prevent="forgetPassword" ref="forgetForm">
-                <div class="row">
-                    <div class="col-12 col-md-8 mr-auto">
-                        <div class="text-center mb-5">
-                            <img src="@/assets/images/restore-image.svg" loading="lazy" alt="restore-image" class="restore-image mb-4">
-                            <p class="main-title">{{ $t("Auth.Please_enter_mobile_number") }}</p>
-                        </div>
-
-                        <div class="form-group mb-5">
-                            <label class="label">
-                                {{ $t('Auth.mobile_number') }}
-                                <span class="hint-red">*</span>
-                            </label>
-                            <div class="with_cun_select">
-                                <input type="number" class="main_input" name="phone" v-model="phone" :placeholder="$t('Auth.mobile_number')">
-                                <div class="card d-flex justify-content-center dropdown_card">
-                                <Dropdown
-                                v-model="selectedCountry"
-                                :options="countries"
-                                optionLabel="name"
-                                >
-                                <template #value="slotProps">
-                                    <div v-if="slotProps.value" class="flex-group-me">
-                                    <img
-                                        loading="lazy"
-                                        :alt="slotProps.value.label"
-                                        :src="slotProps.value.image"
-                                        :class="`mr-2 flag flag-${slotProps.value.key}`"
-                                        style="width: 24px"
-                                    />
-                                    <div>{{ slotProps.value.key }}</div>
-                                    </div>
-                                    <span v-else>
-                                    {{ slotProps.placeholder }}
-                                    </span>
-                                </template>
-                                <template #option="slotProps">
-                                    <div class="flex-group-me">
-                                    <img
-                                        loading="lazy"
-                                        :alt="slotProps.option.label"
-                                        :src="slotProps.option.image"
-                                        :class="`mr-2 flag flag-${slotProps.option.key}`"
-                                        style="width: 24px"
-                                    />
-                                    <div>{{ slotProps.option.key }}</div>
-                                    </div>
-                                </template>
-                                </Dropdown>
+    <div>
+        <GlobalAuthBanner>
+            <div class="container">
+                <div class="layout-form custom-width">
+                    <h1 class="main-title bold lg mb-5">{{ $t("Auth.restore_password") }}</h1>
+                    <form @submit.prevent="forgetPassword" ref="forgetForm">
+                        <div class="row">
+                            <div class="col-12 col-md-8 mr-auto">
+                                <div class="text-center mb-5">
+                                    <img src="@/assets/images/f-password.png" loading="lazy" alt="restore-image" class="restore-image">
                                 </div>
+        
+                                <div class="form-group mb-5">
+                                    <label class="label">
+                                        {{ $t('Auth.mobile_number') }}
+                                        <span class="hint-red">*</span>
+                                    </label>
+                                    <div class="with_cun_select">
+                                        <div class="main_input">
+                                            <i class="fas fa-mobile-alt sm-icon"></i>
+                                            <input type="number" class="custum-input-icon" name="phone" v-model="phone" :placeholder="$t('Auth.mobile_number')">
+                                        </div>
+                                        <div class="card d-flex justify-content-center dropdown_card">
+                                        <Dropdown
+                                        v-model="selectedCountry"
+                                        :options="countries"
+                                        optionLabel="name"
+                                        :emptyMessage="$t('Home.no_available_options')"
+                                        :emptyFilterMessage="$t('Home.emptyFilterMessage')"
+                                        >
+                                        <template #value="slotProps">
+                                            <div v-if="slotProps.value" class="flex-group-me">
+                                            <img
+                                                loading="lazy"
+                                                :alt="slotProps.value.label"
+                                                :src="slotProps.value.image"
+                                                :class="`mr-2 flag flag-${slotProps.value.key}`"
+                                                style="width: 24px"
+                                            />
+                                            <div>{{ slotProps.value.key }}</div>
+                                            </div>
+                                            <span v-else>
+                                            {{ slotProps.placeholder }}
+                                            </span>
+                                        </template>
+                                        <template #option="slotProps">
+                                            <div class="flex-group-me">
+                                            <img
+                                                loading="lazy"
+                                                :alt="slotProps.option.label"
+                                                :src="slotProps.option.image"
+                                                :class="`mr-2 flag flag-${slotProps.option.key}`"
+                                                style="width: 24px"
+                                            />
+                                            <div>{{ slotProps.option.name }}</div>
+                                            <div>{{ slotProps.option.key }}</div>
+                                            </div>
+                                        </template>
+                                        </Dropdown>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="custom-btn w-100 mr-auto"> 
+                                    {{ $t('Auth.confirmation') }} 
+                                    <span class="spinner-border spinner-border-sm" v-if="loading" role="status" aria-hidden="true"></span>
+                                </button>
                             </div>
                         </div>
-                        <button type="submit" class="custom-btn w-100 mr-auto"> 
-                            {{ $t('Auth.confirmation') }} 
-                            <span class="spinner-border spinner-border-sm" v-if="loading" role="status" aria-hidden="true"></span>
-                        </button>
-                    </div>
+                    </form>
                 </div>
-            </form>
-        </div>
+            </div>
+        </GlobalAuthBanner>
     </div>
 </template>
 

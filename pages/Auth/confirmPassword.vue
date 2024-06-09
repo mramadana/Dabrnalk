@@ -8,8 +8,7 @@
                     <div class="row">
                         <div class="col-12 col-md-8 mr-auto">
                             <div class="text-center mb-5">
-                                <img src="@/assets/images/restore-image.svg" loading="lazy" alt="restore-image" class="restore-image mb-4">
-                                <p class="main-title">{{ $t("Auth.confirm_password") }}</p>
+                                <img src="@/assets/images/Reset password-pana.png" loading="lazy" alt="restore-image" class="restore-image">
                             </div>
                             <div class="form-group">
                                 <label class="label">

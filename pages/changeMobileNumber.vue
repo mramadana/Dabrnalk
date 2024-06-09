@@ -1,33 +1,16 @@
 <template>
 
     <div>
-
         <div class="container">
-            <div class="layout-form custom-width">
-                <h1 class="main-title bold lg mb-5">{{ $t("Global.change_mobile_number") }}</h1>
+            <div class="layout-form">
+                <h1 class="main-title bold lg text-center mb-5">{{ $t("Global.new_phone") }}</h1>
                 <form @submit.prevent="changePhone" ref="changePhoneForm">
-                    <div class="row">
-                        <div class="col-12 col-md-8 mr-auto">
-                            <div class="text-center mb-5">
-                                <img src="@/assets/images/restore-image.svg" loading="lazy" alt="restore-image" class="restore-image mb-4">
-                                <p class="main-title">{{ $t("Global.enter_current_password_new_mobile") }}</p>
-                            </div>
+                    <div class="row justify-content-between">
+                        <div class="col-12 col-xl-5 col-md-12 mb-5">
+
                             <div class="form-group">
                                 <label class="label">
-                                    {{ $t('Auth.password') }}
-                                    <span class="hint-red">*</span>
-                                </label>
-                                <div class="main_input with_icon">
-                                    <input :type="inputType" name="password" class="custum-input-icon validInputs" valid="password" :placeholder=" $t('Auth.please_enter_password') ">
-                                    <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility" :class="{ 'active_class': passwordVisible }">
-                                    <i class="far fa-eye icon"></i>
-                                    </button>
-                                </div>
-                            </div>
-    
-                            <div class="form-group">
-                                <label class="label">
-                                    {{ $t('Global.new_mobile') }}
+                                    {{ $t('Auth.mobile_number') }}
                                     <span class="hint-red">*</span>
                                 </label>
                                 <div class="with_cun_select">
@@ -38,8 +21,11 @@
                                     <div class="card d-flex justify-content-center dropdown_card">
                                     <Dropdown
                                     v-model="selectedCountry"
+                                    filter
                                     :options="countries"
                                     optionLabel="name"
+                                    :emptyMessage="$t('Home.no_available_options')"
+                                    :emptyFilterMessage="$t('Home.emptyFilterMessage')"
                                     >
                                     <template #value="slotProps">
                                         <div v-if="slotProps.value" class="flex-group-me">
@@ -63,11 +49,25 @@
                                             :class="`mr-2 flag flag-${slotProps.option.key}`"
                                             style="width: 24px"
                                         />
+                                        <div>{{ slotProps.option.name }}</div>
                                         <div>{{ slotProps.option.key }}</div>
                                         </div>
                                     </template>
                                     </Dropdown>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="label">
+                                    {{ $t('Auth.password') }}
+                                    <span class="hint-red">*</span>
+                                </label>
+                                <div class="main_input with_icon">
+                                    <input :type="inputType" name="password" class="custum-input-icon validInputs" valid="password" :placeholder=" $t('Auth.please_enter_password') ">
+                                    <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility" :class="{ 'active_class': passwordVisible }">
+                                    <i class="far fa-eye icon"></i>
+                                    </button>
                                 </div>
                             </div>
     
@@ -79,6 +79,9 @@
                             </button>
     
                         </div>
+                        <div class="col-12 col-xl-5 col-md-12 mb-5 text-center">
+                            <img src="@/assets/images/f-password.png" loading="lazy" alt="profile-image" class="profile-image w-100">
+                        </div>
                     </div>
                 </form>
             </div>
@@ -89,7 +92,7 @@
 
 <script setup>
     definePageMeta({
-        name: "Global.change_mobile_number",
+        name: "Global.new_phone",
         middleware: 'auth'
     });
 

@@ -32,7 +32,7 @@
                                             <div class="edit-label">
                                                 <i class="fas fa-edit"></i>
                                             </div>
-                                            <img src="@/assets/images/Ellipse.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
+                                            <img src="@/assets/images/upload_layout.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
                                             <GlobalImgUploader acceptedFiles="image/*" :newImages="logo" name="image" @uploaded-images-updated="updateUploadedImages_1" />
                                         </div>
                                 </div>
@@ -395,10 +395,13 @@
 
     // signUp Function
     const signUp = async () => {
+
         const fd = new FormData(signUpForm.value);
         fd.append('country_code', selectedCountry.value.key);
 
         validate();
+
+        
         
         if (errors.value.length) {
             errorToast(errors.value[0]);

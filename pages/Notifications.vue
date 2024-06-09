@@ -1,17 +1,12 @@
 <template>
     <div class="custom-height">
       <div class="container">
-          <div class="layout-form custom-width lg">
-              <h1 class="main-title bold lg mb-5 position-relative">
-                {{ $t("Global.notifications") }}
-                
-                <button type="button" class="deleteAll-btn" @click="deleteAll" v-if="notifications.length">
-                    <i class="far fa-trash-alt trash-icon" v-if="!deleteLoading"></i>
-                    <span class="spinner-border spinner-border-sm m-0" v-if="deleteLoading" role="status" aria-hidden="true"></span>
-                    <div class="resp-text">
-                        {{ $t("Global.delete_all") }}
-                    </div>
-                </button>
+          <div class="custom-width lg">
+              <h1 class="main-title bold lg mb-5 position-relative d-flex justify-content-center gap-2">
+                <i class="fas fa-bell mr-2"></i>
+                <span>
+                    {{ $t("Global.notification") }}
+                </span>
             </h1>
 
             <transition-group name="fade" v-if="!loading">
@@ -20,13 +15,16 @@
                     <div class="layout-form sm" v-if="notifications.length">
                     <div class="notificatin-card">
                         <div class="d-flex">
-                            <img src="@/assets/images/black_logo.png" loading="lazy" alt="notificatin-img" class="notificatin-img">
+                            <div class="not-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <!-- <img src="@/assets/images/black_logo.png" loading="lazy" alt="notificatin-img" class="notificatin-img"> -->
                             <div class="text text-start">
                                 <h1 class="main-title normal wrap_text"> {{ result.body }}</h1>
                                 <div class="d-flex align-items-center gap-2">
                                     <i class="far fa-clock main-disc"></i>
                                     <div>
-                                        <span class="main-disc sm">{{ $t("order.since") }} : {{ result.created_at }}</span>
+                                        <span class="main-disc sm">{{ $t("Global.since") }} : {{ result.created_at }}</span>
                                         &nbsp;
                                         <span class="main-disc sm">{{ result.time }}</span>
                                     </div>
@@ -193,7 +191,7 @@ definePageMeta({
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
     .wrap_text {
         word-break: break-word;
     }
@@ -268,5 +266,53 @@ definePageMeta({
         margin-bottom: 0;
     }
     }
+
+.layout-form {
+  background-color: var(--wh);
+  box-shadow: 0px 3px 30px #0000001A;
+  border-radius: 20px;
+  margin-bottom: 50px;
+  padding: 45px 15px;
+  &.sm-radius {
+    border-radius: 10px;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #eee;
+    text-align: start;
+    margin-bottom: 0;
+  }
+
+  &.sm {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    padding: 15px;
+    font-size: 13px;
+    color: #000;
+    font-weight: bold;
+    border-radius: 15px;
+    border: 1px solid #DBDBDB;
+  }
+
+//   .card-setting {
+//     i {
+//       #{$ltr} & {
+//         transform: scale(-1);
+//       }
+//       #{$rtl} & {
+//         transform: scale(1);
+//       }
+//     }
+//   }
+}
+
+.not-icon {
+    margin-inline-end: 15px;
+    i {
+        font-size: 18px;
+
+    }
+}
 </style>
   

@@ -1,20 +1,15 @@
 <template>
     <div class="container">
-        <div class="layout-form custom-width">
-            <h1 class="main-title bold lg mb-5">{{ $t("Global.change_password") }}</h1>
+        <div class="layout-form">
+            <h1 class="main-title bold lg text-center mb-5">{{ $t("Global.change_password") }}</h1>
 
             <form @submit.prevent="changePassword" ref="changePasswordForm">
-                <div class="row">
-                    <div class="col-12 col-md-8 mr-auto">
-                        <div class="text-center mb-5">
-                            <img src="@/assets/images/restore-image.svg" loading="lazy" alt="restore-image" class="restore-image mb-4">
-                            <p class="main-title">{{ $t("Global.enter_old_password_new_password") }}</p>
-                        </div>
+                <div class="row justify-content-between flex-wrap-reverse">
+                    <div class="col-12 col-xl-5 col-md-12 mb-5">
 
                         <div class="form-group">
                             <label class="label">
-                                {{ $t('Global.old_password') }}
-                                <span class="hint-red">*</span>
+                                {{ $t('Global.current_password') }}
                             </label>
                             <div class="main_input with_icon">
                                 <input :type="inputType('oldPassword')" name="password" v-model="oldpassword" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
@@ -27,7 +22,6 @@
                         <div class="form-group">
                             <label class="label">
                                 {{ $t('Auth.new_password') }}
-                                <span class="hint-red">*</span>
                             </label>
                             <div class="main_input with_icon">
                                 <input :type="inputType('definitelyNewPassword')" name="password" v-model="password" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
@@ -40,7 +34,6 @@
                         <div class="form-group">
                             <label class="label">
                                 {{ $t('Auth.definitely_new_password') }}
-                                <span class="hint-red">*</span>
                             </label>
                             <div class="main_input with_icon">
                                 <input :type="inputType('definitelyNewPassword_2')" name="confirmPassword" valid="confirmPassword" v-model="confirmPassword" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_confirm_password') ">
@@ -51,10 +44,13 @@
                         </div>
 
                         <button class="custom-btn w-100 mr-auto">
-                            {{ $t('Global.save') }}
+                            {{ $t('Global.save_changes') }}
                             <span class="spinner-border spinner-border-sm" v-if="loading" role="status" aria-hidden="true"></span>
                         </button>
 
+                    </div>
+                    <div class="col-12 col-xl-5 col-md-12 mb-5 text-center">
+                        <img src="@/assets/images/Reset-password-pana.png" loading="lazy" alt="profile-image" class="profile-image w-auto">
                     </div>
                 </div>
             </form>

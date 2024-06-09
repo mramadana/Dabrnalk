@@ -39,10 +39,47 @@
                                     </div>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                         <nuxt-link class="dropdown-item" to="/profile">
+                                            <div class="profile-icon"><i class="fa-solid fa-user-pen"></i></div>
                                             {{$t("Home.profile_personly")}}
                                         </nuxt-link>
 
-                                        <nuxt-link class="dropdown-item" to="/settings">
+                                        <nuxt-link class="dropdown-item" to="/changeEmail">
+                                            <div class="profile-icon"><i class="fa-regular fa-envelope"></i></div>
+                                            {{$t("Global.change_email")}}
+                                        </nuxt-link>
+
+                                        <nuxt-link class="dropdown-item" to="/changeMobileNumber">
+                                            <div class="profile-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                                            {{$t("Global.change_phone")}}
+                                        </nuxt-link>
+
+                                        <nuxt-link class="dropdown-item" to="/terms">
+                                            <div class="profile-icon"><i class="fa-regular fa-file-lines"></i></div>
+                                            {{$t("Auth.terms_and_conditions")}}
+                                        </nuxt-link>
+
+                                        <nuxt-link class="dropdown-item" to="/terms">
+                                            <div class="profile-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                                            {{$t("Global.privacy_policy")}}
+                                        </nuxt-link>
+
+                                        <nuxt-link class="dropdown-item" to="">
+                                            <div class="profile-icon"><i class="fa-solid fa-location-dot"></i></div>
+                                            {{$t("Global.saved_addresses")}}
+                                        </nuxt-link>
+
+                                        <nuxt-link class="dropdown-item" to="/notifications">
+                                            <div class="profile-icon"><i class="fas fa-bell"></i></div>
+                                            {{$t("Global.notification")}}
+                                        </nuxt-link>
+
+                                        <div class="dropdown-item" @click="logoutDialog = true">
+                                            <div class="profile-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
+                                            {{$t("Home.logout")}}
+                                        </div>
+
+
+                                        <!-- <nuxt-link class="dropdown-item" to="/settings">
                                             {{ $t("Home.settings") }}
                                         </nuxt-link>
                                         <nuxt-link class="dropdown-item" to="/Wallet">
@@ -53,7 +90,7 @@
                                         </nuxt-link>
                                         <div type="button" @click="logoutDialog = true" class="dropdown-item">
                                             {{ $t("Home.logout") }}
-                                        </div>
+                                        </div> -->
                                     </ul>
                                 </button>
 
@@ -185,34 +222,17 @@
             </header>
 
             <!-- logout Dialog -->
-            <Dialog
-                v-model:visible="logoutDialog"
-                modal
-                class="custum_dialog_width"
-                :draggable="false"
-            >
+            <Dialog v-model:visible="logoutDialog" modal class="custum_dialog_width" :draggable="false">
                 <div class="text-center">
-                    <img
-                        src="@/assets/images/noun_warning.png"
-                        alt="check-img"
-                        class="check-img"
-                    />
+                    <img src="@/assets/images/noun_warning.png" alt="check-img" class="check-img"/>
                     <h1 class="main-title bold mb-4">
                         {{ $t("Global.sure_logout") }}
                     </h1>
                     <div class="section-btns mt-5">
-                        <button
-                            type="button"
-                            class="custom-btn sm d-inline-flex"
-                            @click="logoutDialog = false"
-                        >
+                        <button type="button" class="custom-btn sm d-inline-flex transparent" @click="logoutDialog = false" >
                             {{ $t("Home.retreat") }}
                         </button>
-                        <button
-                            type="button"
-                            class="custom-btn logout sm d-inline-flex"
-                            @click="logout"
-                        >
+                        <button type="button" class="custom-btn sm d-inline-flex" @click="logout" >
                             {{ $t("Home.logout") }}
                         </button>
                     </div>
@@ -340,12 +360,6 @@ export default {
     },
 
     methods: {
-        // logout() {
-        //     localStorage.clear();
-        //     this.logoutDialog = false;
-        //     this.$router.push("/Auth/login");
-        // },
-
 
         chageDir(dir) {
             let element = document.querySelector(".html_direction");
@@ -359,6 +373,7 @@ export default {
                 this.htmlLang = dir;
             }
         },
+        
         switchLang(newLang) {
             const lang = useCookie('lang')
             if (newLang !== localStorage.getItem("locale")) {
@@ -409,7 +424,7 @@ export default {
         shouldAddMarginBottom() {
             // Check if the current route is not the home page
             console.log("updated is Done");
-            return this.$route.path.includes("Auth") === true;
+            return this.$route.path.includes("Auth") === true || this.$route.path == "/";
         },
     },
 };
