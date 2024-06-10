@@ -68,13 +68,21 @@
                                             {{$t("Global.saved_addresses")}}
                                         </nuxt-link>
 
-                                        <nuxt-link class="dropdown-item" to="/notifications">
-                                            <div class="profile-icon"><i class="fas fa-bell"></i></div>
-                                            {{$t("Global.notification")}}
-                                        </nuxt-link>
+                                        <div class="dropdown-item with-label-notfy">
+                                            <nuxt-link to="/notifications" class="d-flex align-items-center">
+                                                <div class="profile-icon"><i class="fas fa-bell"></i></div>
+                                                {{$t("Global.notification")}}
 
-                                        <div class="dropdown-item" @click="logoutDialog = true">
-                                            <div class="profile-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
+                                            </nuxt-link>
+                                            
+                                            <label class="switch">
+                                                <input type="checkbox" @click="toggleNotifications" v-model="isSelected">
+                                                <div class="slider round"></div>
+                                            </label>
+                                        </div>
+
+                                        <div class="dropdown-item bg-red-20" @click="logoutDialog = true">
+                                            <div class="profile-icon bg-red"><i class="fa-solid fa-right-from-bracket"></i></div>
                                             {{$t("Home.logout")}}
                                         </div>
 
@@ -249,6 +257,7 @@
 <script setup>
 
     import { useAuthStore } from '~/stores/auth';
+
     import { useGlobalStore } from '~/stores/global';
 
     // Toast
@@ -272,21 +281,22 @@
     // notifications
     const notifCount = ref(null);
     const logoutDialog = ref(false);
+    const isSelected = ref(true);
 
     // config
     let config = {
     headers: {
         Authorization: `Bearer ${token.value}`
     }
-};
+    };
 
-// start to method 
+    // start to method 
 
-const isActive = ref(false)
+    const isActive = ref(false)
 
-const addActiveClass = () => {
-  isActive.value = !isActive.value
-}
+    const addActiveClass = () => {
+    isActive.value = !isActive.value
+    }
 
     const logout = async () => {
         
@@ -310,6 +320,23 @@ const addActiveClass = () => {
             console.error(err);
         });
     };
+
+    // toggle notifications
+
+    const toggleNotifications = async (event) => {
+        event.stopPropagation();
+
+        axios.patch('switch-notify', {}, config).then(res => {
+        if (response(res) == "success") {
+                    successToast(res.data.msg);
+                    isSelected.value = res.data.data.notify
+                    localStorage.setItem('notify', isSelected.value)
+                    
+                } else {
+                    errorToast(res.data.msg)
+                }
+      })
+    }; 
 
     // watch token To Get The New User Data
     watch(token, async (newVal) => {
@@ -342,6 +369,7 @@ const addActiveClass = () => {
 
     onMounted( async () => {
        await getNotificationsCount();
+        isSelected.value = localStorage.getItem('notify')
     });
     
 </script>
@@ -439,5 +467,78 @@ export default {
     top: 0;
     z-index: 1000;
     margin-bottom: 40px;
+}
+</style>
+
+
+<!-- style switch -->
+
+
+<style lang="scss" scoped>
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 35px;
+    height: 15px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border: 1px solid var(--main);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 8px;
+    width: 8px;
+    left: 4px;
+    top: 50%;
+    background-color: var(--main);
+    transition: 0.4s;
+    transform: translateY(-50%);
+}
+
+input:checked + .slider {
+  background-color: var(--main);
+  border-color: var(--main);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #101010;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translate(17px, -50%);
+  -ms-transform: translate(17px, -50%);
+  transform: translate(17px, -50%);
+  background-color: #fff;
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.custom-height {
+    min-height: 310px;
+    @media (max-width: 1024px) {
+        min-height: 100%;
+    }
 }
 </style>

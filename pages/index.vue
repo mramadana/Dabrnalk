@@ -10,7 +10,7 @@
                 <!-- start to who are we -->
                 <HomeWhoAreWe :WeAreWe="WeAreWe" />
 
-                <!-- start to Branches -->
+                <!-- start to Branches shape  -->
                 <div class="footer-shape position-relative">
                     <div class="with-shape lg black"></div>
                     <h1 class="main-title shape-title">

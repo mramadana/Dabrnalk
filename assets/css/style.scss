@@ -1474,6 +1474,14 @@ input.p-inputtext.p-component {
   color: #F10021 !important;
 }
 
+.bg-red {
+  background: #F10021 !important;
+}
+
+.bg-red-20 {
+  background-color: rgba(241, 0, 33, 20%) !important;
+}
+
 .id_photo {
   width: 25px;
   height: 25px;
@@ -1636,6 +1644,13 @@ input.p-inputtext.p-component {
       width: 100%;
       height: 100%;
   }
+}
+
+.with-label-notfy {
+  justify-content: space-between;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .app-logo {

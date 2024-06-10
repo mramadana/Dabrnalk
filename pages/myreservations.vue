@@ -14,6 +14,8 @@ definePageMeta({
             <nuxt-link class="custom-btn order-btn sm" to="/myreservations/finished">{{ $t("Titles.finished") }}</nuxt-link>
 
         </div>
+
+        <!-- Layout of orders -->
         
         <div class="layout-form custom-width w-100">
             <NuxtPage />
