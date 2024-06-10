@@ -11,18 +11,22 @@
                 <HomeWhoAreWe :WeAreWe="WeAreWe" />
 
                 <!-- start to Branches -->
-
                 <div class="footer-shape position-relative">
                     <div class="with-shape lg black"></div>
                     <h1 class="main-title shape-title">
-                        {{ $t("Global.branches") }}
                         <img src="@/assets/images/branches-img.png" loading="lazy" alt="branches-img" class="branches-img">
+                        {{ $t("Global.branches") }}
                     </h1>
                     <div class="with-shape lg black"></div>
                 </div>
+
+                <!-- start to Branches -->
                 <HomeBranch :branches="branches" :loading="loading"/>
 
             </div>
+
+            <!-- start to appStore -->
+            <HomeAppStore />
     
         </main>
     </div>

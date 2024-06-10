@@ -902,7 +902,7 @@ input.p-inputtext.p-component {
 .app-btns {
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 45px;
   flex-wrap: wrap;
   @media (max-width: $screen-xs) {
      justify-content: center;
@@ -914,6 +914,10 @@ input.p-inputtext.p-component {
       @media (max-width: $screen-xs) {
          width: 130px; 
       }
+  }
+
+  @media (max-width: $screen-xs) {
+    gap: 15px;
   }
 }
 
@@ -1567,6 +1571,77 @@ input.p-inputtext.p-component {
 
 .main-shape {
   position: absolute;
+}
+
+.inner-app {
+  overflow: hidden;
+  background: transparent linear-gradient(258deg, #000000 0%, #000000 34%, #000000 40%, #484848 100%) 0% 0% no-repeat padding-box;
+  padding: 50px 0;
+}
+
+.main-app-imgs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .frame-child {
+      position: absolute !important;
+      top: 5%;
+      width: calc(100% - 13%) !important;
+      height: 92% !important;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 15px !important;
+  }
+
+  .frame-parent {
+      position: relative;
+      overflow: hidden;
+      height: 350px;
+      @media (max-width: $screen-xs) {
+         height: 300px;
+         @media (max-width: $screen-xs) {
+          height: 200px;
+         }
+         @media (max-width: $screen-xxs) {
+          height: 175px;
+         }
+      }
+      &.right {
+        position: absolute;
+        #{$ltr} & {
+          transform: translate(-100%, 15px) rotate(-15deg);
+      
+        }
+        #{$rtl} & {
+          transform: translate(100%, 15px) rotate(15deg);
+          
+        }
+      }
+      &.left {
+        position: absolute;
+        #{$ltr} & {
+            transform: translate(100%, 15px) rotate(15deg);
+          }
+          #{$rtl} & {
+            transform: translate(-100%, 15px) rotate(-15deg);
+        }
+      }
+      &.center {
+        z-index: 4;
+      }
+    }
+  .frame-shape {
+      width: 100%;
+      height: 100%;
+  }
+}
+
+.app-logo {
+  width: 180px;
+  object-fit: cover;
+  margin-bottom: 20px;
 }
 
 

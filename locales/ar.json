@@ -148,7 +148,10 @@
         "since": "منذ",
         "imgs": "لا يوجد صور حاليا",
         "no_products": "لا يوجد منتجات حاليا",
-        "branches" : "فروع"
+        "branches" : "فروع",
+        "order_number" : "رقم الطلب",
+        "status" : "الحالة",
+        "show_more" : "عرض المزيد"
     }
 
 }

@@ -1,22 +1,22 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-12 col-md-6 mb-5" v-for="order in orders" :key="order.id">
+            <div class="col-12 col-xl-3 col-md-6 mb-5" v-for="order in orders" :key="order.id">
                 <div class="order-box">
                     <img :src="order.car_image" loading="lazy" alt="order-img" class="order-img">
                     <div class="info">
                         <div class="head-title">
-                            <h3 class="main-title mb-0"><span>{{ $t('Global.order_number') }}</span> : <span>{{ order.id }}</span></h3>
+                            <h3 class="main-title normal mb-0"><span>{{ $t('Global.order_number') }}</span> : <span>{{ order.id }}</span></h3>
                             <span class="hint">{{ order.created_at }}</span>
                         </div>
-                        <h4 class="order-info main-disc">{{ order.car_name }}</h4>
+                        <h4 class="order-info">{{ order.car_name }}</h4>
                         <div class="order-status">
                             <div class="status">
                                 <i class="fas fa-x-ray"></i>
                                 <span>{{ $t('Global.status') }}</span> : <span class="hint-status">{{ order.status_text }}</span>
                             </div>
-                            <nuxt-link class="order-link" :to="'/orders/orderDetails/' + order.id">
-                                {{ $t('Global.view_more') }}
+                            <nuxt-link class="order-link custom-btn smm" :to="'/orders/orderDetails/' + order.id">
+                                {{ $t('Global.show_more') }}
                                 <i class="fas fa-chevron-left"></i>
                             </nuxt-link>
                         </div>
@@ -42,7 +42,6 @@ export default {
         padding: 10px 15px;
         box-shadow: 0px 0px 4px 0px rgba(128, 128, 128, 20%);
         border-radius: 10px;
-        display: flex;
         transition: transform .3s ease-out;
         &:hover {
             transform: translatey(-10px) scale(1.02);
@@ -51,11 +50,11 @@ export default {
             flex-direction: column;
         }
         .order-img {
-            width: 125px;
+            width: 100%;
             height: 128px;
             object-fit: cover;
             border-radius: 10px;
-            margin-inline-end: 20px;
+            margin-bottom: 12px;
             @media (max-width: 768px) {
                 margin-inline-end: 0;
                 width: 100%;
@@ -100,17 +99,22 @@ export default {
                     }
                 }
                 .order-link {
-                    color: #000;
-                    font-size: 14px;
+                    font-size: 13px;
                     display: flex;
                     align-items: center;
                     gap: 8px;
+                    height: 35px;
                     @media (max-width: 1024px) {
                        font-size: 12px;
                     }
                     i {
-                        font-size: 13px;
-                        color: var(--main);
+                        font-size: 11px;
+                        color: var(--wh);
+                    }
+                    &:hover {
+                        i {
+                            color: var(--main);
+                        }
                     }
                 }
             }
@@ -120,6 +124,11 @@ export default {
             @media (max-width: 768px) {
                 font-size: 14px;
             }
+        }
+
+        .order-info {
+            font-size: 11px;
+            color: #878787;
         }
     }
 </style>

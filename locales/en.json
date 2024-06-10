@@ -148,7 +148,10 @@
         "since": "since",
         "imgs": "No images currently",
         "no_products": "No products currently",
-        "branches" : "branches"
+        "branches" : "branches",
+        "order_number" : "Order number",
+        "status" : "Status",
+        "show_more" : "Show more"
     }
 
 }

@@ -55,7 +55,7 @@
                 <div class="links">
                   
                   <NuxtLink to="" class="link btn-app">
-                    <img src="@/assets/images/020.png" loading="lazy" alt="google-img" />
+                    <img src="@/assets/images/google-paly.png" loading="lazy" alt="google-img" />
                   </NuxtLink>
                   <NuxtLink to="" class="link btn-app">
                     <img src="@/assets/images/app-store.png" loading="lazy" alt="app-store"/>

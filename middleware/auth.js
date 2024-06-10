@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
   
 
   if (to.path === '/myreservations') {
-    return '/myreservations/pending';
+    return '/myreservations/current';
   };
 
 
