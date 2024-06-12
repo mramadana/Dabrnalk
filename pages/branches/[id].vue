@@ -27,7 +27,7 @@
 
             <div class="row">
                 <div class="col-12 col-xl-3 col-md-6 mb-5" v-for="branch in branchs" :key="branch.id">
-                    <nuxt-link to="/cars" class="branch-box">
+                    <nuxt-link to="/cars" class="branch-box" @click="saveFormData(branch.id)">
                         <img src="@/assets/images/branche-img.png" loading="lazy" alt="branch-image" class="branch-image">
                         <h3 class="branch-name">{{ branch.name }}</h3>
                     </nuxt-link>
@@ -38,7 +38,16 @@
 </template>
 
 <script setup>
+
     const { id } = useRoute().params;
+
+    definePageMeta({
+        name : "Titles.categories_branch",
+    });
+
+    const saveFormData = (id) => {
+        localStorage.setItem('category_id', id)
+    }
 
     const branchs = ref([
         {

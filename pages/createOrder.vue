@@ -13,7 +13,7 @@
                                 </label>
                                 <div class="main_input">
                                     <i class="fa-solid fa-key sm-icon"></i>
-                                    <input @keypress="validDot" type="number" class="validInputs" valid="rental_period" name="rental_period" v-model="rentalPeriod" :placeholder="$t('Global.rental_period')">
+                                    <input @keypress="validDot" type="number" class="validInputs custum-input-icon" valid="rental_period" name="rental_period" v-model="rentalPeriod" :placeholder="$t('Global.rental_period')">
                                 </div>
                             </div>
                         </div>
@@ -29,21 +29,39 @@
                             </div>
                         </div>
 
-                        <col-12 class="col-md-6">
-                        <div class="position-relative">
-                            <label class="label">{{ $t('Global.received_date') }}</label>
-                            <div class=" main_input with_icon">
-                                <i class="fas fa-calendar sm-icon"></i>
-                                <flat-pickr v-model="calender_date" :config="config_a" class="select_date main_input custom-date"
-                                :placeholder="$t('Global.select_received_date')"
-                                name="date"
-                                @on-change="change"
-                                />
-                                
-                                <i class="fas fa-calendar static-btn"></i>
+                        <div class=" col-12 col-md-6">
+                            <div class="position-relative">
+                                <label class="label">{{ $t('Global.received_date') }}</label>
+                                <div class=" main_input with_icon">
+                                    <i class="fas fa-calendar sm-icon"></i>
+                                    <flat-pickr v-model="calender_date" :config="config_a" class="select_date main_input custom-date"
+                                    :placeholder="$t('Global.select_received_date')"
+                                    name="date"
+                                    @on-change="change"
+                                    />
+                                    
+                                    <i class="fas fa-calendar static-btn"></i>
+                                </div>
                             </div>
                         </div>
-                        </col-12>
+
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label class="label">
+                                    {{ $t('Global.return_date') }}
+                                </label>
+                                <div class="with_icon position-relative pointer">
+                                    <Calendar
+                                        class="main_input p-0 overflow-hidden"
+                                        v-model="return_date"
+                                        :placeholder="$t('Global.enter_return_date')"
+                                        dateFormat="yy-mm-dd"
+                                        readonly
+                                    />
+                                    <button class="static-btn" type="button"><i class="far fa-calendar-alt icon"></i></button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -52,6 +70,10 @@
 </template>
 
 <script setup>
+
+    definePageMeta({
+        name : "Titles.create_order",
+    });
 
     import { useI18n } from 'vue-i18n';
     const { successToast, errorToast } = toastMsg();
@@ -68,10 +90,12 @@
     const rent_type = ref(null);
 
     const rent_types = ref([
-        { name: 'Daily', code: 'daily' },
-        { name: 'Weekly', code: 'weekly' },
-        { name: 'Monthly', code: 'monthly' },
+        { name: t(`Global.daily`), id: "daily" },
+        { name: t(`Global.monthly`), id: "monthly" },
+        { name: t(`Global.yearly`), id: "yearly" },
     ])
+
+    const return_date = ref(null);
 
     // flatpicker date
     const calender_date = ref(null);
@@ -90,4 +114,25 @@
             errorToast(t(`validation.rentalPeriod`));
         }
     }
+
+    const change = (e) => {
+    console.log(...e);
+    console.log(rent_type.value, "rent_type")
+    return_date.value = new Date(...e);
+    if (rent_type.value.id == 'daily') {
+    return_date.value.setDate(
+    return_date.value.getDate() + +rentalPeriod.value
+    );
+    } else if (rent_type.value.id == 'monthly') {
+    return_date.value.setMonth(
+    return_date.value.getMonth() + +rentalPeriod.value
+    );
+    } else if (rent_type.value.id == 'yearly') {
+    return_date.value.setFullYear(
+    return_date.value.getFullYear() + +rentalPeriod.value
+    );
+    }
+
+    console.log(rent_type.value.id, "rent_type")
+};
 </script>

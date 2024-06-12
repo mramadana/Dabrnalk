@@ -8,7 +8,9 @@
         "current" : "حالي",
         "finished" : "منتهي",
         "activation_code" : "كود التفعيل",
-        "create_account" : "إنشاء حساب جديد"
+        "create_account" : "إنشاء حساب جديد",
+        "categories_branch" : "فئات السيارات للفرع",
+        "create_order" : "إنشاء طلب"
     },
 
     "validation": {
@@ -164,7 +166,12 @@
         "car_details" : "تفاصيل السيارة",
         "rental_period" : "مدة الإيجار",
         "received_date" : "تاريخ الإستلام",
-        "select_received_date" : "تحديد تاريخ استلام السيارة"
+        "select_received_date" : "تحديد تاريخ استلام السيارة",
+        "daily" : "يومى",
+        "monthly" : "شهرى",
+        "yearly" : "سنوى",
+        "return_date" : "تاريخ التسليم",
+        "enter_return_date" : "تحديد تاريخ تسليم السيارة"
     }
 
 }

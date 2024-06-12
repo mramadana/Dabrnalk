@@ -8,7 +8,9 @@
         "current" : "Current",
         "finished" : "Finished",
         "activation_code" : "Activation code",
-        "create_account" : "Create account"
+        "create_account" : "Create account",
+        "categories_branch" : "Car categories for branch",
+        "create_order" : "Create order"
     },
 
     "validation": {
@@ -164,7 +166,11 @@
         "car_details" : "Car details",
         "rental_period" : "Rental period",
         "received_date" : "Received date",
-        "select_received_date" : "Determine the date of receipt of the car"
+        "select_received_date" : "Determine the date of receipt of the car",
+        "daily" : "Daily",
+        "monthly" : "Monthly",
+        "yearly" : "Yearly",
+        "enter_return_date" : "Determine the car delivery date"
     }
 
 }
