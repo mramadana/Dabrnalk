@@ -7,7 +7,8 @@
         "payment_pending" : "Payment pending",
         "current" : "Current",
         "finished" : "Finished",
-        "activation_code" : "Activation code"
+        "activation_code" : "Activation code",
+        "create_account" : "Create account"
     },
 
     "validation": {
@@ -151,7 +152,19 @@
         "branches" : "branches",
         "order_number" : "Order number",
         "status" : "Status",
-        "show_more" : "Show more"
+        "show_more" : "Show more",
+        "categories_branch" : "Categories of vehicles in the branch",
+        "manufacturing_year": "Manufacturing year",
+        "model" : "Model",
+        "type" : "Type",
+        "rental_type" : "Rental type",
+        "search_filter" : "Search filter",
+        "desc_car" : "Car description",
+        "reservation_car" : "Reservation car",
+        "car_details" : "Car details",
+        "rental_period" : "Rental period",
+        "received_date" : "Received date",
+        "select_received_date" : "Determine the date of receipt of the car"
     }
 
 }

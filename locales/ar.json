@@ -7,7 +7,8 @@
         "payment_pending" : "قيد الدفع",
         "current" : "حالي",
         "finished" : "منتهي",
-        "activation_code" : "كود التفعيل"
+        "activation_code" : "كود التفعيل",
+        "create_account" : "إنشاء حساب جديد"
     },
 
     "validation": {
@@ -151,7 +152,19 @@
         "branches" : "فروع",
         "order_number" : "رقم الطلب",
         "status" : "الحالة",
-        "show_more" : "عرض المزيد"
+        "show_more" : "عرض المزيد",
+        "categories_branch" : "فئات السيارات التابعة للفرع",
+        "manufacturing_year": "سنة الصنع",
+        "model" : "موديل",
+        "type" : "النوع",
+        "rental_type" : "نوع الإيجار",
+        "search_filter" : "فلتر البحث",
+        "desc_car" : "وصف السيارة",
+        "reservation_car" : "حجز السيارة",
+        "car_details" : "تفاصيل السيارة",
+        "rental_period" : "مدة الإيجار",
+        "received_date" : "تاريخ الإستلام",
+        "select_received_date" : "تحديد تاريخ استلام السيارة"
     }
 
 }

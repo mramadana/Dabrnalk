@@ -836,9 +836,10 @@ input.p-inputtext.p-component {
     min-height: 40px;
   }
   &.smm {
-    min-width: 100px;
-    padding: 8px;
-    min-height: 40px;
+    min-width: 90px;
+    padding: 5px;
+    min-height: 35px;
+    font-size: 13px;
   }
   &.lg {
     min-width: 550px;
@@ -948,7 +949,7 @@ input.p-inputtext.p-component {
   padding: 30px 0;
   border-radius: 5px;
   &.lg {
-    width: 700px;
+    width: 800px;
   }
   @media (max-width: $screen-xs) {
     padding: 30px 20px;
@@ -1476,6 +1477,10 @@ input.p-inputtext.p-component {
 
 .bg-red {
   background: #F10021 !important;
+}
+
+.gray {
+  color: #707070;
 }
 
 .bg-red-20 {

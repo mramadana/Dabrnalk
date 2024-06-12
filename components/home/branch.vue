@@ -5,13 +5,13 @@
             <div class="col-12 col-md-6 col-xl-3 mb-4" v-for="branche in branches" :key="branche.id">
                 <div class="Branche" v-if="!loading">
                     <img src="@/assets/images/branche-img.png" alt="branch-image" class="branch-image" loading="lazy">
-                    <h4 class="main-title normal">{{ branche.name }}</h4>
+                    <h4 class="main-title normal mb-2">{{ branche.name }}</h4>
                     <div class="info">
-                        <h3 class="main-title normal gap-2 d-flex flex-wrap">
+                        <h3 class="main-title normal gap-2 d-flex flex-wrap mb-0">
                             <i class="fa-solid fa-location-dot"></i>
                             <span>{{ branche.address }}</span>
                         </h3>
-                        <nuxt-link :to="'/branche/' + branche.id" class="custom-btn smm">show more</nuxt-link>
+                        <nuxt-link :to="'/branches/' + branche.id"  @click="saveFormData(branche.id)" class="custom-btn smm">{{ $t('Global.show_more') }}</nuxt-link>
                     </div>
                 </div>
             </div>
@@ -39,6 +39,11 @@
 
     const defineProps = defineProps(['branches', 'loading'])
 
+    // save id to local storage
+
+    const saveFormData = (id) => {
+        localStorage.setItem('branch_id', id)
+    }
 </script>
 
 <style lang="scss" scoped> 

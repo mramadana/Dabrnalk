@@ -8,7 +8,7 @@
                         <div class="inner-header">
                             <div class="filter-input">
                                 <form>
-                                    <div :class="['search-box', { show: isActive }]">
+                                    <div :class="['search-box with_responsive', { show: isActive }]">
                                         <div class="main_input with_icon">
                                             <input type="search" class="input" :placeholder=" $t('Home.search') " />
                                             <button type="button" class="static-btn search-btn">

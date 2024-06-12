@@ -58,8 +58,25 @@ export const useAuthStore = defineStore("auth", {
       const resData = await axios.post("activate?_method=patch", formData);
       if (response(resData) == "success") {
         this.token = resData.data.data.token;
+        // this.isLoggedIn = true;
+        navigateTo("/Auth/register");
+        return { status: "success", msg: resData.data.msg };
+      } else {
+        return { status: "error", msg: resData.data.msg };
+      }
+    },
+
+    // user-complete-account
+
+    async completeAccountHandler(formData) {
+      const resData = await axios.post("user-complete-account", formData);
+      if (response(resData) == "success") {
+        this.user = resData.data.data;
         this.isLoggedIn = true;
-        navigateTo("/");
+        // navigateTo("/");
+
+        // open pop up google map 
+
         return { status: "success", msg: resData.data.msg };
       } else {
         return { status: "error", msg: resData.data.msg };

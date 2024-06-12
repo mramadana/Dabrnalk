@@ -294,7 +294,7 @@
 
     // Store
     const store = useAuthStore();
-    const { signUpHandler } = store;
+    const { completeAccountHandler } = store;
 
     // flatpicker date
     const calender_date = ref(null);
@@ -411,7 +411,7 @@
             loading.value = true;
 
             // Get Returned Data From Store
-            const res = await signUpHandler(fd);
+            const res = await completeAccountHandler(fd);
             res.status == "success" ? successToast(res.msg) : errorToast(res.msg);
 
             loading.value = false;

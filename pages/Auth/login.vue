@@ -12,7 +12,6 @@
                                 <div class="form-group">
                                         <label class="label">
                                             {{ $t('Auth.mobile_number') }}
-                                            <span class="hint-red">*</span>
                                         </label>
                                         <div class="with_cun_select">
                                             <div class="main_input">
@@ -63,7 +62,6 @@
                                 <div class="form-group">
                                     <label class="label">
                                         {{ $t('Auth.password') }} 
-                                        <span class="hint-red">*</span>
                                     </label>
                                     <div class="main_input with_icon">
                                         <input :type="inputType" class="custum-input-icon validInputs" valid="password" name="password" v-model="password"
@@ -87,7 +85,7 @@
         
                                 <div class="new-sign mt-4">
                                     {{ $t('Auth.dont_have_account') }}
-                                    <nuxt-link to="/Auth/register" >{{ $t('Auth.create_account') }}</nuxt-link>
+                                    <nuxt-link to="/Auth/newAccount" >{{ $t('Auth.create_account') }}</nuxt-link>
                                 </div>
 
                                 <div class="new-sign">
@@ -155,12 +153,6 @@
     const checkPhone = () => {
         if(phone.value !== '') {
            email.value = null
-        }
-    };
-
-    const checkEmail = () => {
-        if(email.value !== '') {
-           phone.value = null
         }
     };
 
