@@ -11,9 +11,10 @@
             <div class="branch-info mb-5">
                 <h4 class="main-title bold mb-0">اسم الفرع</h4>
                 <div class="branch-details">
-                    <div class="work-time">
+
+                    <div class="work-time pointer" @click="TimeWork = true">
                         <i class="far fa-clock"></i>
-                        مواعيد العمل
+                        {{ $t("Global.times_work") }}
                     </div>
 
                     <div class="location">
@@ -34,6 +35,40 @@
                 </div>
             </div>
         </div>
+
+        <!-- start to make dialog time work -->
+
+        <Dialog v-model:visible="TimeWork" modal class="custum_dialog_width" :draggable="false">
+                <div class="text-center">
+                    <h1 class="main-title bold mb-4">
+                        {{ $t("Global.times_work") }}
+                    </h1>
+                </div>
+
+                <div class="time-header">
+                    <h6>اليوم</h6>
+                    <h6>من </h6>
+                    <h6>الى</h6>
+                </div>
+                
+                <div v-if="!loading">
+                    <div class="time-body" v-for="time in timings" :key="time.id">
+                        <h6>{{ time.day }}</h6>
+                        <h6> {{ time.from }} </h6>
+                        <h6> {{ time.to }}</h6>
+                        <!-- <h6 v-if="time.is_closed == 1"> {{ time.is_closed }}</h6> -->
+                    </div>
+
+                </div>
+
+                <div class="d-flex align-items-center justify-content-center gap-3" v-if="loading">
+                    <div v-for="i in 3" :key="i" class="time-body">
+                        <Skeleton height="20px" width="80px" class="slider-img rounded-2"></Skeleton>
+                    </div>
+                </div>
+    
+
+        </Dialog>
     </div>
 </template>
 
@@ -47,7 +82,9 @@
 
     const saveFormData = (id) => {
         localStorage.setItem('category_id', id)
-    }
+    };
+
+    const TimeWork = ref(false);
 
     const branchs = ref([
         {
@@ -71,57 +108,88 @@
             name: "الفرع الاول",
         }
     ]);
+
+    const timings = ref([
+        {
+            "id": 2,
+            "day": "sunday",
+            "from": "10:00:00",
+            "to": "06:00:00",
+            "is_closed": 0
+        },
+
+        {
+            "id": 3,
+            "day": "monday",
+            "from": "10:00:00",
+            "to": "06:00:00",
+            "is_closed": 1
+        },
+
+    ])
 </script>
 
 <style lang="scss" scoped>
-.branch-info {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    flex-wrap: wrap;
-    .branch-details {
+
+    .branch-info {
         display: flex;
-        gap: 40px;
+        justify-content: space-between;
+        gap: 10px;
         flex-wrap: wrap;
-        .work-time, .location {
+        .branch-details {
             display: flex;
-            align-items: center;
-            gap: 5px;
-            i {
-                color: var(--main);
+            gap: 40px;
+            flex-wrap: wrap;
+            .work-time, .location {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                i {
+                    color: var(--main);
+                }
             }
         }
     }
-}
-.car-img {
-    height: auto;
-    max-height: 300px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    border: 1px solid #262626;
-}
 
-.branch-box {
-    display: block;
-    overflow: hidden;
-    border-radius: 4px;
-    border: 1px solid #dddddd;
-    .branch-image {
-        width: 100%;
-        height: 180px;
+    .car-img {
+        height: auto;
+        max-height: 300px;
         object-fit: cover;
-        margin-bottom: 15px;
-        @media (max-width: 550px) {
-            height: 150px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        border: 1px solid #262626;
+    }
+
+    .branch-box {
+        display: block;
+        overflow: hidden;
+        border-radius: 4px;
+        border: 1px solid #dddddd;
+        .branch-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            @media (max-width: 550px) {
+                height: 150px;
+            }
+        }
+
+        .branch-name {
+            font-size: 17px;
+            color: var(--main);
+            padding: 0 10px 5px;
         }
     }
 
-    .branch-name {
-        font-size: 17px;
-        color: var(--main);
-        padding: 0 10px 5px;
+    .time-header, .time-body {
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+        margin-bottom: 10px;
+        h6 {
+            font-size: 14px;
+        }
     }
-}
 
 </style>

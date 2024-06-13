@@ -5,7 +5,13 @@
 
             <form>
                 <div class="custom-width lg text-start">
+
                     <div class="row">
+
+                        <div class="col-12 col-md-8 mb-4 mr-auto">
+                            <div class="custom-btn">{{ $t('Global.hours_left_until_branch_closes') }}</div>
+                        </div>
+
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label class="label">
@@ -17,6 +23,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label class="label">
@@ -61,6 +68,31 @@
                                     <button class="static-btn" type="button"><i class="far fa-calendar-alt icon"></i></button>
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label class="label">
+                                    {{ $t('Global.discount_coupon') }}
+                                </label>
+                                <div class="main_input with_icon">
+                                    <i class="fa-solid fa-percent"></i>
+                                    <input type="text" class="validInputs custum-input-icon" valid="copon" name="copon" v-model="copon" :placeholder="$t('Global.discount_coupon')">
+                                    <button type="button" class="static-btn custom">{{ $t('Global.activation') }}</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-8 mb-4 mr-auto">
+                            <div class="custom-btn">{{ $t('Global.car_reservation_not_amount') }}</div>
+                        </div>
+
+                        <div class="col-12 col-md-8 mb-4 mr-auto">
+                            <div class="custom-btn">{{ $t('Global.book_hours_inspection') }}</div>
+                        </div>
+
+                        <div class="col-12 col-md-8 mr-auto">
+                            <button class="custom-btn w-100" type="submit">{{ $t('Global.complete_order') }}</button>
                         </div>
                     </div>
                 </div>
@@ -136,3 +168,18 @@
     console.log(rent_type.value.id, "rent_type")
 };
 </script>
+
+<style lang="scss" scoped>
+    .static-btn {
+        &.custom {
+            padding: 3px 8px;
+            border-radius: 5px;
+            background-color: var(--main);
+            color: var(--wh);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+    }
+</style>

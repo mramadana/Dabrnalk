@@ -1,6 +1,7 @@
 <template>
     <div>
         <div class="container">
+            
             <div class="filter-input mb-5">
                 <div class="search-box">
                     <div class="main_input with_icon m-0">
@@ -10,7 +11,6 @@
                         </button>
                     </div>
                 </div>
-
             </div>
 
             <!-- start to cars section -->

@@ -170,7 +170,13 @@
         "daily" : "Daily",
         "monthly" : "Monthly",
         "yearly" : "Yearly",
-        "enter_return_date" : "Determine the car delivery date"
+        "enter_return_date" : "Determine the car delivery date",
+        "discount_coupon" : "Discount coupon",
+        "activation" : "Activation",
+        "complete_order" : "Complete order",
+        "hours_left_until_branch_closes" : "03:00 hours left until the branch closes",
+        "car_reservation_not_amount" : "Please note that the amount currently paid for the car reservation is not the full amount",
+        "book_hours_inspection" : "It is preferable to book 3 hours before the end of work for inspection",
+        "times_work" : "times of work"
     }
-
 }
