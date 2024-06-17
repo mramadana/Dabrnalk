@@ -10,7 +10,9 @@
         "activation_code" : "كود التفعيل",
         "create_account" : "إنشاء حساب جديد",
         "categories_branch" : "فئات السيارات للفرع",
-        "create_order" : "إنشاء طلب"
+        "create_order" : "إنشاء طلب",
+        "my_addresses" : "عناويني"
+
     },
 
     "validation": {
@@ -77,7 +79,7 @@
         "fill_data" : "من فضلك قم بملئ البيانات",
         "male" : "ذكر",
         "female" : "انثى",
-        "the_name" : "الأسم",
+        "the_name" : "الاسم",
         "birth_date" : "تاريخ الميلاد",
         "nationality" : "الجنسية",
         "sector_name" : "اسم القطاع",
@@ -178,7 +180,22 @@
         "hours_left_until_branch_closes" : "متبقى 03:00 ساعات على إغلاق الفرع",
         "car_reservation_not_amount" : "يرجى العلم ان المبلغ المدفوع حاليا لحجز السيارة وليس المبلغ كامل",
         "book_hours_inspection" : "يفضل الحجز قبل موعد انتهاء العمل بـ 3 ساعات للمعاينة",
-        "times_work" : "مواعيد العمل"
+        "times_work" : "مواعيد العمل",
+        "current_location" : "موقعك الحالي",
+        "my_location" : "موقعي",
+        "address_name" : "اسم العنوان",
+        "search_here" : "ابحث هنا",
+        "branch_name": "اسم الفرع",
+        "research_results" : "نتائج البحث",
+        "rs" : "ر.س",
+        "current_balance" : "رصيدك الحالي",
+        "charge_balance" : "شحن رصيدك",
+        "shipping_value" : "قيمة الشحن",
+        "enter_shipping_value" : "ادخل قيمة الشحن",
+        "send" : "إرسال",
+        "terms_and_conditions" : "الشروط والاحكام",
+        "message" : "الرسالة",
+        "please_enter_message" : "برجاء كتابة الرساله"
     }
 
 }

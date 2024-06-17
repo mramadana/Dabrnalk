@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <div class="defaultLayout" :class="headerClass">
             <header class="header">
                 <div class="top-header">
@@ -58,12 +57,12 @@
                                             {{$t("Auth.terms_and_conditions")}}
                                         </nuxt-link>
 
-                                        <nuxt-link class="dropdown-item" to="/terms">
+                                        <nuxt-link class="dropdown-item" to="/privacyPolicy">
                                             <div class="profile-icon"><i class="fa-solid fa-shield-halved"></i></div>
                                             {{$t("Global.privacy_policy")}}
                                         </nuxt-link>
 
-                                        <nuxt-link class="dropdown-item" to="">
+                                        <nuxt-link class="dropdown-item" to="/savedAddresses">
                                             <div class="profile-icon"><i class="fa-solid fa-location-dot"></i></div>
                                             {{$t("Global.saved_addresses")}}
                                         </nuxt-link>
@@ -86,19 +85,6 @@
                                             {{$t("Home.logout")}}
                                         </div>
 
-
-                                        <!-- <nuxt-link class="dropdown-item" to="/settings">
-                                            {{ $t("Home.settings") }}
-                                        </nuxt-link>
-                                        <nuxt-link class="dropdown-item" to="/Wallet">
-                                            {{ $t("Home.portfolio") }}
-                                        </nuxt-link>
-                                        <nuxt-link class="dropdown-item" to="/myreservations">
-                                            {{ $t("Home.myreservations") }}
-                                        </nuxt-link>
-                                        <div type="button" @click="logoutDialog = true" class="dropdown-item">
-                                            {{ $t("Home.logout") }}
-                                        </div> -->
                                     </ul>
                                 </button>
 
@@ -271,12 +257,12 @@
 
     const globalStore = useGlobalStore();
 
-    const { user, isLoggedIn, token, Globaldialog } = storeToRefs(store);
+    const { user, isLoggedIn, token, Globaldialog, lat, lng } = storeToRefs(store);
 
 
     const { response } = responseApi();
 
-    const { logoutHandler } = store;
+    const { logoutHandler, sendLatLng } = store;
 
     // notifications
     const notifCount = ref(null);
@@ -369,7 +355,9 @@
 
     onMounted( async () => {
        await getNotificationsCount();
-        isSelected.value = localStorage.getItem('notify')
+        isSelected.value = localStorage.getItem('notify');
+        sendLatLng(lat.value, lng.value);
+
     });
     
 </script>

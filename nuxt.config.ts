@@ -74,6 +74,10 @@ export default defineNuxtConfig({
 
   router: {
     middleware: 'auth'
+  },
+
+  build: {
+    transpile: ["@fawmi/vue-google-maps"],
   }
 
 })

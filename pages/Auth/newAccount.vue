@@ -142,7 +142,7 @@ onMounted(async () => {
     // login Function
 const singUp = async () => {
     loading.value = true;
-    const fd = new FormData(loginForm.value);
+    const fd = new FormData(singUpForm.value);
     fd.append('country_code', selectedCountry.value.key);
     fd.append('device_id', 111);
     fd.append('device_type', 'web');

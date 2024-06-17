@@ -18,7 +18,6 @@
                             <div class="not-icon">
                                 <i class="fas fa-bell"></i>
                             </div>
-                            <!-- <img src="@/assets/images/black_logo.png" loading="lazy" alt="notificatin-img" class="notificatin-img"> -->
                             <div class="text text-start">
                                 <h1 class="main-title normal wrap_text"> {{ result.body }}</h1>
                                 <div class="d-flex align-items-center gap-2">
@@ -72,6 +71,13 @@
   </template>
 
 <script setup>
+
+/******************* Required Auth *******************/
+definePageMeta({
+    name: "Global.notification",
+    middleware: 'auth'
+});
+
 
 // success response
 const { response } = responseApi();
@@ -152,23 +158,6 @@ const removenotifation = async (index) => {
     });
 }
 
-// // Delete All Notifications
-
-const deleteAll = async () => {
-    loading.value = true;
-    await axios.delete(`delete-notifications`, config).then(res => {
-        if (response(res) == "success") {
-            notifications.value = [];
-            successToast(res.data.msg);
-        } else {
-            errorToast(res.data.msg);
-        }
-        loading.value = false;
-    }).catch(err => {
-        console.error(err);
-    });
-}
-
 /******************* Computed *******************/
 let showPaginate = computed(() => {
     return totalPage.value > pageLimit.value
@@ -181,13 +170,6 @@ let showPaginate = computed(() => {
 onMounted(async () => {
     await getNotifications();
 });
-
-/******************* Required Auth *******************/
-definePageMeta({
-    name: "Global.notifications",
-    middleware: 'auth'
-});
-
 </script>
 
 

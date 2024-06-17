@@ -23,6 +23,10 @@
                 <!-- start to Branches -->
                 <HomeBranch :branches="branches" :loading="loading"/>
 
+                <nuxt-link v-if="!loading" to="/branches" class="custom-btn md m-auto mb-4 gap-2 align-items-center">
+                    {{ $t('Global.show_more') }}
+                </nuxt-link>
+
             </div>
 
             <!-- start to appStore -->

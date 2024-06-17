@@ -817,6 +817,20 @@ margin: 2px;
   }
 }
 
+// google map style
+
+.map_style {
+  border: 1px solid #eee;
+  width: 800px;
+  height: 500px;
+}
+
+.pac-container {
+    z-index: 9999999;
+  }
+  .pac-item {
+    text-align: start;
+  }
 
 
 

@@ -9,7 +9,7 @@
             </div> -->
 
             <div class="branch-info mb-5">
-                <h4 class="main-title bold mb-0">اسم الفرع</h4>
+                <h4 class="main-title bold mb-0">{{ $t("Global.branch_name") }}</h4>
                 <div class="branch-details">
 
                     <div class="work-time pointer" @click="TimeWork = true">
@@ -17,7 +17,7 @@
                         {{ $t("Global.times_work") }}
                     </div>
 
-                    <div class="location">
+                    <div class="location pointer"  @click="openMapModal">
                         <i class="fas fa-map-marker-alt"></i>
                         موقع الفرع
                     </div>
@@ -50,7 +50,7 @@
                     <h6>من </h6>
                     <h6>الى</h6>
                 </div>
-                
+
                 <div v-if="!loading">
                     <div class="time-body" v-for="time in timings" :key="time.id">
                         <h6>{{ time.day }}</h6>
@@ -69,16 +69,37 @@
     
 
         </Dialog>
+
+        <!-- google map component -->
+
+        <GlobalGoogleMap
+            v-model:visible="visible"
+            @closeModal="closeModal"
+            :show_inputs="show_inputs"
+            :lat="lat"
+            :lng="lng"
+            :title= "$t('Global.current_location')"
+            
+            />
+
     </div>
 </template>
 
 <script setup>
+
+    import { useAuthStore } from '~/stores/auth';
+
+    const store = useAuthStore();
+
+    const { lat , lng } = storeToRefs(store);
 
     const { id } = useRoute().params;
 
     definePageMeta({
         name : "Titles.categories_branch",
     });
+
+    const GoogleMap = ref(false);
 
     const saveFormData = (id) => {
         localStorage.setItem('category_id', id)
@@ -127,6 +148,30 @@
         },
 
     ])
+
+    // google map customize
+
+    const visible = ref(false);
+    // const lat = ref(30.0444);
+    // const lng = ref(31.2357);
+    const show_inputs = ref(true);
+    const openMapModal = () => {
+        visible.value = true;
+        
+        // setTimeout(() => {
+        //     document.querySelector(".getCurent").click();
+        // }, 200);
+    };
+    const closeModal = (titleName) => {
+        visible.value = false;
+        console.log(titleName, "get title name");
+    };
+
+    onMounted(() => {
+        console.log(localStorage.getItem('lat'), "lat", localStorage.getItem('lng'), "lng");
+    })
+
+
 </script>
 
 <style lang="scss" scoped>

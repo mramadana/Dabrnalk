@@ -10,7 +10,9 @@
         "activation_code" : "Activation code",
         "create_account" : "Create account",
         "categories_branch" : "Car categories for branch",
-        "create_order" : "Create order"
+        "create_order" : "Create order",
+        "my_addresses" : "My addresses"
+
     },
 
     "validation": {
@@ -177,6 +179,21 @@
         "hours_left_until_branch_closes" : "03:00 hours left until the branch closes",
         "car_reservation_not_amount" : "Please note that the amount currently paid for the car reservation is not the full amount",
         "book_hours_inspection" : "It is preferable to book 3 hours before the end of work for inspection",
-        "times_work" : "times of work"
+        "times_work" : "times of work",
+        "current_location" : "Your current location",
+        "my_location" : "My location",
+        "address_name" : "Address name",
+        "search_here" : "Search here",
+        "branch_name": "Branch name",
+        "research_results" : "Research results",
+        "rs" : "RS",
+        "current_balance" : "Current balance",
+        "charge_balance" : "Charge balance",
+        "shipping_value" : "Shipping value",
+        "enter_shipping_value" : "Enter shipping value",
+        "send" : "Send",
+        "terms_and_conditions" : "Terms and conditions",
+        "message" : "Message",
+        "please_enter_message" : "Please enter the message"
     }
 }

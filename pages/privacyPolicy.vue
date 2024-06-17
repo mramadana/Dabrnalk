@@ -3,10 +3,11 @@
         
         <div class="container">
             <div class="layout-form custom-width lg">
-                <h1 class="main-title bold">{{ $t("Global.terms_and_conditions") }}</h1>
+                <h1 class="main-title bold mb-4">{{ $t("Global.privacy_policy") }}</h1>
 
-                <div class="main-title normal mt-3 about_disc" v-if="!loading" v-html="terms" >
+                <img src="@/assets/images/black_logo.png" alt="logo" class="login_logo mb-4" loading="lazy">
 
+                <div v-if="!loading" class="main-title normal mt-3 about_disc" v-html="aboutDisc">
                 </div>
 
                 <div v-if="loading">
@@ -24,9 +25,8 @@
 <script setup>
 
 definePageMeta({
-    name: "Global.terms_and_conditions",
+    name: "Global.privacy_policy",
 });
-
 
 const loading = ref(true);
 
@@ -34,13 +34,17 @@ const { response } = responseApi();
 
 const axios = useApi();
 
-const terms = ref('');
 
-const getTerms = async () => {
+const aboutDisc = ref('');
+
+// methods 
+
+// getAbout
+const getAbout = async () => {
     loading.value = true;
-    await axios.get(`terms`).then(res => {
+    await axios.get(`about`).then(res => {
     if (response(res) == "success") {
-        terms.value = res.data.data;
+        aboutDisc.value = res.data.data;
     }
     loading.value = false;
     }).catch(err => {
@@ -49,17 +53,15 @@ const getTerms = async () => {
 };
 
 onMounted(() => {
-    getTerms();
+    getAbout();
 })
-
 </script>
 
-<style lang="scss">
-    .about_disc {
-        * {
-            &:first-child {
-                font-size: 16px;
-            }
+<style lang="scss" scoped>
+    .login_logo {
+        @media (max-width: 768px) {
+            max-width: 150px;
         }
     }
 </style>
+

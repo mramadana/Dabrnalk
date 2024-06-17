@@ -37,10 +37,10 @@
                   <NuxtLink class="link" to="/terms">
                      - {{ $t("Auth.terms_and_conditions") }}
                   </NuxtLink>
-                  <NuxtLink to="" class="link">
+                  <NuxtLink to="/privacyPolicy" class="link">
                     - {{ $t("Global.privacy_policy") }}
                   </NuxtLink>
-                  <NuxtLink to="" class="link"> - 
+                  <NuxtLink to="/connectUs" class="link"> - 
                     {{ $t("Home.connect_us") }}
                   </NuxtLink>
                 </div>

@@ -19,7 +19,9 @@ export const useAuthStore = defineStore("auth", {
     test: 'test key',
     currentemail: null,
     currentPasword: null,
-    Globaldialog: false
+    Globaldialog: false,
+    lat: null,
+    lng: null
   }),
   actions: {
     // Sign In
@@ -141,6 +143,9 @@ export const useAuthStore = defineStore("auth", {
           country_code: "",
         };
         this.isLoggedIn = false;
+
+        this.lat = null;
+        this.lng = null;
         navigateTo("/Auth/login");
         return { status: "success", msg: resData.data.msg };
       } else {
@@ -194,6 +199,30 @@ export const useAuthStore = defineStore("auth", {
         return { status: "success", msg: resData.data.msg };
       } else {
         return { status: "error", msg: resData.data.msg };
+      }
+    },
+
+    // get lat lng from google map
+    
+    // get lat lng from google map
+    sendLatLng(lat, lng) {
+      if (this.lat === null || this.lng === null) {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((position) => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+            this.lat = latitude;
+            this.lng = longitude;
+            console.log("lat and lng is null");
+          });
+        } else {
+          console.log("Geolocation is not supported by this browser.");
+        }
+      } else {
+        this.lat = lat;
+        this.lng = lng;
+        console.log(this.lat, "lat and lng not null");
       }
     }
   },

@@ -2,6 +2,7 @@
     <div>
      
         <div class="row mb-5 mt-5">
+
             <div class="col-12 col-md-6 col-xl-3 mb-4" v-for="branche in branches" :key="branche.id">
                 <div class="Branche" v-if="!loading">
                     <img src="@/assets/images/branche-img.png" alt="branch-image" class="branch-image" loading="lazy">
