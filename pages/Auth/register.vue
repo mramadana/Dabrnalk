@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <GlobalAuthBanner>
             <div class="container">
                 <div class="layout-form custom-width pt-0 lg">
@@ -11,13 +12,6 @@
                         <button type="button" class="custom-btn" :class="{ active: activeIndex === 2 }" 
                         @click="setActive(2)">{{ $t("Auth.private_company") }}</button>
                     </div>
-                    <!-- <div class="static-content d-flex align-items-center justify-content-between mb-5">
-                        <div v-if="activeIndex === 0">content 1</div>
-                        <div v-if="activeIndex === 1">content 2</div>
-                        <div v-if="activeIndex === 1">content 2</div>
-                        <div v-if="activeIndex === 1">content 2</div>
-                        <div v-if="activeIndex === 2">content 3</div>
-                    </div> -->
                     
                     <h1 class="main-title bold lg mb-3">{{ $t("Auth.create_account") }}</h1>
                     <h4 class="main-disc mb-4">{{ $t("Auth.fill_data") }}</h4>
@@ -28,13 +22,13 @@
                                 <!-- if member -->
 
                                 <div class="form-group text-center" v-if="activeIndex === 0">
-                                        <div class="input_auth">
-                                            <div class="edit-label">
-                                                <i class="fas fa-edit"></i>
-                                            </div>
-                                            <img src="@/assets/images/upload_layout.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
-                                            <GlobalImgUploader acceptedFiles="image/*" :newImages="logo" name="image" @uploaded-images-updated="updateUploadedImages_1" />
+                                    <div class="input_auth">
+                                        <div class="edit-label">
+                                            <i class="fas fa-edit"></i>
                                         </div>
+                                        <img src="@/assets/images/upload_layout.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
+                                        <GlobalImgUploader acceptedFiles="image/*" name="image" @uploaded-images-updated="updateUploadedImages_1" />
+                                    </div>
                                 </div>
 
                                 <!-- if private -->
@@ -45,7 +39,7 @@
                                         </label>
                                         <div class="main_input">
                                             <i class="fas fa-user sm-icon"></i>
-                                            <input type="text" class="custum-input-icon validInputs" valid="name" name="name" v-model="name" :placeholder="$t('Auth.special_sector')">
+                                            <input type="text" class="custum-input-icon validInputs" valid="organization_name" name="organization_name" v-model="name" :placeholder="$t('Auth.special_sector')">
                                         </div>
                                     </div>
                                 </div>
@@ -58,57 +52,6 @@
                                         <div class="main_input">
                                             <i class="fas fa-user sm-icon"></i>
                                             <input type="text" class="custum-input-icon validInputs" valid="name" name="name" v-model="name" :placeholder="$t('Auth.enter_username')">
-                                        </div>
-                                    </div>
-                                </div>
-    
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <label class="label">
-                                            {{ $t('Auth.mobile_number') }}
-                                        </label>
-                                        <div class="with_cun_select">
-                                            <div class="main_input">
-                                                <i class="fas fa-mobile-alt sm-icon"></i>
-                                                <input type="number" class="custum-input-icon validInputs" valid="phone" name="phone" v-model="phone" :placeholder="$t('Auth.please_mobile_number')">
-                                            </div>
-                                            <div class="card d-flex justify-content-center dropdown_card">
-                                            <Dropdown
-                                            v-model="selectedCountry"
-                                            :options="countries"
-                                            filter
-                                            optionLabel="name"
-                                            :emptyMessage="$t('Home.no_available_options')"
-                                            :emptyFilterMessage="$t('Home.emptyFilterMessage')"
-                                            >
-                                            <template #value="slotProps">
-                                                <div v-if="slotProps.value" class="flex-group-me">
-                                                <img
-                                                    :alt="slotProps.value.label"
-                                                    :src="slotProps.value.image"
-                                                    :class="`mr-2 flag flag-${slotProps.value.key}`"
-                                                    style="width: 24px"
-                                                />
-                                                <div>{{ slotProps.value.key }}</div>
-                                                </div>
-                                                <span v-else>
-                                                {{ slotProps.placeholder }}
-                                                </span>
-                                            </template>
-                                            <template #option="slotProps">
-                                                <div class="flex-group-me">
-                                                <img
-                                                    :alt="slotProps.option.label"
-                                                    :src="slotProps.option.image"
-                                                    :class="`mr-2 flag flag-${slotProps.option.key}`"
-                                                    style="width: 24px"
-                                                />
-                                                <div>{{ slotProps.option.name }}</div>
-                                                <div>{{ slotProps.option.key }}</div>
-                                                </div>
-                                            </template>
-                                            </Dropdown>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -130,9 +73,9 @@
                                         <label class="label">{{ $t('Auth.birth_date') }}</label>
                                         <div class=" main_input with_icon">
                                             <i class="fas fa-calendar sm-icon"></i>
-                                            <flat-pickr v-model="calender_date" :config="config_a" class="select_date main_input custom-date"
+                                            <flat-pickr v-model="birthdate" :config="config_a" class="select_date main_input custom-date validInputs" valid="birthdate"
                                             :placeholder="$t('Auth.birth_date')"
-                                            name="date"
+                                            name="birthdate"
                                             @on-change="change"
                                             />
                                             
@@ -149,7 +92,7 @@
                                     </label>
                                     <div class="flex justify-content-center dropdown_card main_input special-custom">
                                         <i class="fas fa-venus-double sm-icon"></i>
-                                        <Dropdown v-model="gender" :options="genders" optionLabel="name" :placeholder="$t('Auth.nationality')" class="w-full md:w-14rem custum-dropdown" />
+                                        <Dropdown v-model="nationality" :options="nationalities" optionLabel="name" :placeholder="$t('Auth.nationality')" class="w-full md:w-14rem custum-dropdown" />
                                     </div>
                                 </div>
 
@@ -193,7 +136,7 @@
                                         </label>
                                         <div class="main_input">
                                             <i class="far fa-hand-rock sm-icon"></i>
-                                            <input type="text" class="custum-input-icon validInputs" valid="name" name="name" v-model="name" :placeholder="$t('Auth.enter_permissions')">
+                                            <input type="text" class="custum-input-icon validInputs" valid="bio" name="bio" :placeholder="$t('Auth.enter_permissions')">
                                         </div>
                                     </div>
                                 </div>
@@ -218,14 +161,14 @@
                                     <div class="input_auth without-edit" v-if="activeIndex === 1 || activeIndex === 2">
                                         <img src="@/assets/images/download-img.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
                                         <span>{{ $t('Auth.organization_logo') }}</span>
-                                        <GlobalImgUploader acceptedFiles="image/*" name="image" @uploaded-images-updated="updateUploadedImages_1" />
+                                        <GlobalImgUploader acceptedFiles="image/*" name="logo" @uploaded-images-updated="updateUploadedImages_1" />
                                     </div>
 
                                     <!-- if private -->
                                     <div class="input_auth without-edit" v-if="activeIndex === 2">
                                         <img src="@/assets/images/download-img.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
                                         <span>{{ $t('Auth.commercial_register') }}</span>
-                                        <GlobalImgUploader acceptedFiles="image/*" name="logo" @uploaded-images-updated="updateUploadedImages_2" />
+                                        <GlobalImgUploader acceptedFiles="image/*" name="commercial_image" @uploaded-images-updated="updateUploadedImages_2" />
                                     </div>
                                 </div>
         
@@ -261,7 +204,21 @@
                     </form>
                 </div>
             </div>
+
         </GlobalAuthBanner>
+
+        <!-- global google map component -->
+        <GlobalGoogleMap
+            v-model:visible="visible"
+            @closeModal="closeModal"
+            @updateAddress="handleUpdateAddress"
+            :show_inputs="show_inputs"
+            :lat="location.lat"
+            :lng="location.lng"
+            :current_location="currentLocation"
+            :closeModal_btn="closeModal_btn"
+            :title= "$t('Global.current_location')"
+        />
     </div>
 </template>
 
@@ -270,6 +227,24 @@
     definePageMeta({
         name: "Auth.create_account",
     });
+
+   const closeModal_btn = ref(false);
+
+   const address = ref("");
+
+   const handleUpdateAddress = (newAddress) => {
+        address.value = newAddress;
+        console.log('Updated address:', newAddress);
+    };
+
+    const currentLocation = ref(false);
+
+    const openmodal = () => {
+        visible.value = true;
+        setTimeout(() => {
+            currentLocation.value = true;
+        }, 100);
+    }
 
     // import flatpicker
 
@@ -290,20 +265,60 @@
 
     // Axios
     const axios = useApi();
-    const phone = ref(null);
 
     // Store
     const store = useAuthStore();
+
+    const { lat, lng, token } = storeToRefs(store);
+
+    // config
+    const config = {
+        headers: { Authorization: `Bearer ${token.value}` }
+    };
+
+    // sent lat lng 
+    
+    const closeModal = () => {
+        loading.value = false;
+        const fd = new FormData();
+        fd.append('lat', lat.value);
+        fd.append('lng', lng.value);
+        fd.append('map_desc', address.value);
+        axios.post('update-location', fd, config).then((res) => {
+            if (response(res) == "success") {
+                visible.value = false
+                setTimeout(() => {
+                    navigateTo('/')
+                }, 100);
+            } else {
+                errorToast(res.data.msg)
+            }
+        })
+
+        .catch((error) => {
+            console.error('Error updating location:', error);
+        });
+        // visible.value = false
+        // currentLocation.value = false;
+    }
+
+    const location = ref({
+        lat: lat.value,
+        lng: lng.value
+    });
+    const show_inputs = ref(false);
+    const visible = ref(false);
+
     const { completeAccountHandler } = store;
 
     // flatpicker date
-    const calender_date = ref(null);
+    const birthdate = ref(null);
     const config_a = ref({
     wrap: true, // set wrap to true only when using 'input-group'
     altFormat: "Y-m-d",
     altInput: true,
     dateFormat: "Y-m-d",
-    minDate: 'today',
+    // minDate: 'today',
     });
 
     // variables
@@ -314,7 +329,6 @@
     const errors = ref([]);
     const loading = ref(false);
     const terms = ref(false);
-    const email = ref('');
     const password = ref('');
     const confirmPassword = ref('');
     const passwordVisible = ref({
@@ -326,16 +340,33 @@
         {
             id: 1,
             name: t(`Auth.male`),
-
+            type: 'male'
         },
 
         {
             id: 2,
             name: t(`Auth.female`),
+            type: 'female'
         }
     ])
     
     const gender = ref(null);
+
+    const nationality = ref(null);
+
+    const nationalities = ref([
+        {
+            id: 1,
+            name: t(`Global.egyptian`),
+            type: 'egyptian'
+        },
+
+        {
+            id: 2,
+            name: t(`Global.saudi`),
+            type: 'saudi'
+        }
+    ])
 
     // active index
     const activeIndex = ref(0)
@@ -384,25 +415,49 @@
             errors.value.push(t(`validation.confirmPassword`));
         }
 
-        if (!terms.value) {
-            errors.value.push(t(`validation.conditions`));
+        if(activeIndex.value == 0) {
+            if(!gender.value) {
+                errors.value.push(t(`validation.gender`));
+            }
+    
+            if(!nationality.value) {
+                errors.value.push(t(`validation.nationality`));
+            }
+            
         }
 
-        if(phone.value == 0) {
-            phone.value = null
+
+        if (!terms.value) {
+            errors.value.push(t(`validation.conditions`));
         }
     };
 
     // signUp Function
     const signUp = async () => {
-
+        loading.value = true;
         const fd = new FormData(signUpForm.value);
         fd.append('country_code', selectedCountry.value.key);
+        fd.append('type', activeIndex.value);
+        
+        if (localStorage.getItem('lang') == null) {
+                fd.append('lang', 'ar');
+            } else {
+                fd.append('lang', localStorage.getItem('lang'));
+            }
+
+        if(activeIndex.value == 0) {
+            if(gender.value) {
+                fd.append('gender', gender.value.type);
+            }
+
+            if(nationality.value) {
+                fd.append('nationality', nationality.value.type);
+            }
+            fd.append('birthdate', birthdate.value);
+        }
 
         validate();
 
-        
-        
         if (errors.value.length) {
             errorToast(errors.value[0]);
             loading.value = false;
@@ -412,7 +467,13 @@
 
             // Get Returned Data From Store
             const res = await completeAccountHandler(fd);
-            res.status == "success" ? successToast(res.msg) : errorToast(res.msg);
+            // res.status == "success" ? successToast(res.msg) : errorToast(res.msg);
+            if (res.status == "success") {
+                successToast(res.msg);
+                openmodal();
+            } else {
+                errorToast(res.msg);
+            }
 
             loading.value = false;
         }
@@ -420,9 +481,14 @@
 
     onMounted(async () => {
         await getCountries();
+        // store.sendLatLng(lat, lng, address, selectedAddress);
     });
 
 </script>
 
-
+<style lang="scss" scoped>
+    .p-dialog-header-icons {
+        display: none;
+    }
+</style>
 

@@ -21,9 +21,13 @@ export const useAuthStore = defineStore("auth", {
     currentPasword: null,
     Globaldialog: false,
     lat: null,
-    lng: null
+    lng: null,
+    visible: false,
+    address: null,
+    selectedAddress: null
   }),
   actions: {
+
     // Sign In
     async signInHandler(formData) {
       const resData = await axios.post("sign-in", formData);
@@ -35,7 +39,7 @@ export const useAuthStore = defineStore("auth", {
         this.user = resData.data.data;
         this.token = resData.data.data.token;
         this.isLoggedIn = true;
-        navigateTo("/");
+        // navigateTo("/");
         return { status: "success", msg: resData.data.msg };
       } else {
         return { status: "error", msg: resData.data.msg };
@@ -71,10 +75,14 @@ export const useAuthStore = defineStore("auth", {
     // user-complete-account
 
     async completeAccountHandler(formData) {
-      const resData = await axios.post("user-complete-account", formData);
+      const config = {
+        headers: { Authorization: `Bearer ${this.token}` },
+      };
+      const resData = await axios.post("user-complete-account", formData, config);
       if (response(resData) == "success") {
         this.user = resData.data.data;
         this.isLoggedIn = true;
+        
         // navigateTo("/");
 
         // open pop up google map 
@@ -92,7 +100,7 @@ export const useAuthStore = defineStore("auth", {
       };
 
       const resData = await axios.post(
-        "update-profile",
+        "update-profile?_method=put",
         formData,
         config
       );
@@ -201,27 +209,28 @@ export const useAuthStore = defineStore("auth", {
         return { status: "error", msg: resData.data.msg };
       }
     },
-
-    // get lat lng from google map
     
     // get lat lng from google map
-    sendLatLng(lat, lng) {
+    sendLatLng(lat, lng , address , selectedAddress) {
       if (this.lat === null || this.lng === null) {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition((position) => {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
+            const latitude = Number(position.coords.latitude);
+            const longitude = Number(position.coords.longitude);
             console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-            this.lat = latitude;
-            this.lng = longitude;
+            this.lat = Number(latitude);
+            this.lng = Number(longitude);
             console.log("lat and lng is null");
           });
         } else {
           console.log("Geolocation is not supported by this browser.");
         }
+        this.address = address
       } else {
-        this.lat = lat;
-        this.lng = lng;
+        this.lat = Number(lat);
+        this.lng = Number(lng);
+        this.address = address;
+        this.selectedAddress = selectedAddress
         console.log(this.lat, "lat and lng not null");
       }
     }

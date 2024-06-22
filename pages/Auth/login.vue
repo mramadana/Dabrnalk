@@ -16,7 +16,7 @@
                                         <div class="with_cun_select">
                                             <div class="main_input">
                                                 <i class="fas fa-mobile-alt sm-icon"></i>
-                                                <input type="number" class="custum-input-icon" v-model="phone" @input="checkPhone" :placeholder="$t('Auth.please_mobile_number')">
+                                                <input type="number" class="custum-input-icon" v-model="phone" name="phone" @input="checkPhone" :placeholder="$t('Auth.please_mobile_number')">
                                             </div>
                                             <div class="card d-flex justify-content-center dropdown_card">
                                             <Dropdown
@@ -100,6 +100,18 @@
             </div>
         </GlobalAuthBanner>
         
+        <!-- global google map component -->
+        <GlobalGoogleMap
+            v-model:visible="visible"
+            @closeModal="closeModal"
+            @updateAddress="handleUpdateAddress"
+            :show_inputs="show_inputs"
+            :lat="location.lat"
+            :lng="location.lng"
+            :current_location="currentLocation"
+            :closeModal_btn="closeModal_btn"
+            :title= "$t('Global.current_location')"
+        />
     </div>
 
 </template>
@@ -123,13 +135,45 @@
     // Axios
     const axios = useApi();
 
-
     // Store
     const store = useAuthStore();
     const { signInHandler } = store;
 
+    const { lat, lng, token } = storeToRefs(store);
+
+    // config
+    const config = {
+        headers: { Authorization: `Bearer ${token.value}` }
+    };
+
     const loading = ref(false);
     const errors = ref([]);
+
+    // google map
+    const closeModal_btn = ref(false);
+
+    const address = ref("");
+
+    const handleUpdateAddress = (newAddress) => {
+        address.value = newAddress;
+        console.log('Updated address:', newAddress);
+    };
+
+    const currentLocation = ref(false);
+
+    const openmodal = () => {
+        visible.value = true;
+        setTimeout(() => {
+            currentLocation.value = true;
+        }, 200);
+    };
+
+    const location = ref({
+        lat: lat.value,
+        lng: lng.value
+    });
+    const show_inputs = ref(false);
+    const visible = ref(false);
     
     // countries
     const selectedCountry = ref({})
@@ -161,17 +205,14 @@
     const login = async () => {
         loading.value = true;
         const fd = new FormData(loginForm.value);
+        if (localStorage.getItem('lang') == null) {
+                fd.append('lang', 'ar');
+            } else {
+                fd.append('lang', localStorage.getItem('lang'));
+            }
         fd.append('country_code', selectedCountry.value.key);
         fd.append('device_id', 111);
         fd.append('device_type', 'web');
-
-        if(phone.value) {
-            fd.append('phone_email', phone.value);
-            console.log(phone.value, "phone");
-        } else if(email.value) {
-            fd.append('phone_email', email.value);
-            console.log(email.value, "email");
-        };
 
         // fd.append('device_id', notificationToken.value);
 
@@ -187,10 +228,43 @@
 
             // Get Returned Data From Store
             const res = await signInHandler(fd);
-            res.status == "success" ? successToast(res.msg) : errorToast(res.msg);
+            // res.status == "success" ? successToast(res.msg) : errorToast(res.msg);
+
+            if (res.status == "success") {
+                successToast(res.msg);
+                openmodal();
+            } else {
+                errorToast(res.msg);
+            }
+
 
             loading.value = false;
         }
+    }
+
+    const closeModal = () => {
+        const config = {
+            headers: { Authorization: `Bearer ${token.value}` }
+        }
+        loading.value = false;
+        const fd = new FormData();
+        fd.append('lat', lat.value);
+        fd.append('lng', lng.value);
+        fd.append('map_desc', address.value);
+        axios.post('update-location', fd, config).then((res) => {
+            if (response(res) == "success") {
+                visible.value = false
+                setTimeout(() => {
+                    navigateTo('/')
+                }, 100);
+            } else {
+                errorToast(res.data.msg)
+            }
+        })
+
+        .catch((error) => {
+            console.error('Error updating location:', error);
+        });
     }
 
     // toggle password

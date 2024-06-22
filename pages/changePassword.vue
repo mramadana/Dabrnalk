@@ -12,7 +12,7 @@
                                 {{ $t('Global.current_password') }}
                             </label>
                             <div class="main_input with_icon">
-                                <input :type="inputType('oldPassword')" name="password" v-model="oldpassword" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
+                                <input :type="inputType('oldPassword')" name="old_password" v-model="oldpassword" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
                                 <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('oldPassword')" :class="{ 'active_class': passwordVisible.oldPassword }">
                                 <i class="far fa-eye icon"></i>
                                 </button>
@@ -36,7 +36,7 @@
                                 {{ $t('Auth.definitely_new_password') }}
                             </label>
                             <div class="main_input with_icon">
-                                <input :type="inputType('definitelyNewPassword_2')" name="confirmPassword" valid="confirmPassword" v-model="confirmPassword" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_confirm_password') ">
+                                <input :type="inputType('definitelyNewPassword_2')" valid="confirmPassword" v-model="confirmPassword" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_confirm_password') ">
                                 <button class="static-btn with_eye" type="button" @click="togglePasswordVisibility('definitelyNewPassword_2')" :class="{ 'active_class': passwordVisible.definitelyNewPassword_2 }">
                                 <i class="far fa-eye icon"></i>
                                 </button>
@@ -117,10 +117,9 @@
             loading.value = false;
             errors.value = [];
         } else {
-            await axios.patch(`update-password?old_password=${oldpassword.value}&password=${password.value}`, fd, config).then(res => {
+            await axios.post("update-passward?_method=patch", fd, config).then(res => {
                 if (response(res) == "success") {
                     successToast(res.data.msg);
-                    navigateTo('/settings');
                 } else {
                     errorToast(res.data.msg)
                 }

@@ -39,7 +39,15 @@
         "rate": "Rate is required",
         "message": "Message is required",
         "rentalPeriod": "Rental period must be at least 1 day",
-        "enter_details": "You must enter the order details first"
+        "enter_details": "You must enter the order details first",
+        "birthdate": "Birthdate is required",
+        "gender": "Gender is required",
+        "nationality": "Nationality is required",
+        "bio": "Permission is required",
+        "organization_name": "Organization name is required",
+        "logo" : "Logo is required",
+        "password_confirmation": "Password confirmation is required",
+        "commercial_image": "Commercial image is required"
       },
 
     "Auth": {
@@ -194,6 +202,11 @@
         "send" : "Send",
         "terms_and_conditions" : "Terms and conditions",
         "message" : "Message",
-        "please_enter_message" : "Please enter the message"
+        "please_enter_message" : "Please enter the message",
+        "egyptian" : "egyptian",
+        "saudi" : "saudi",
+        "no_branches" : "No branches currently",
+        "no_results" : "No results found",
+        "the_branche" : "the branches"
     }
 }

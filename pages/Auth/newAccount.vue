@@ -18,7 +18,7 @@
                                         <div class="with_cun_select">
                                             <div class="main_input">
                                                 <i class="fas fa-mobile-alt sm-icon"></i>
-                                                <input type="number" class="custum-input-icon" v-model="phone" @input="checkPhone" :placeholder="$t('Auth.please_mobile_number')">
+                                                <input type="number" class="custum-input-icon validInputs" valid="phone" name="phone" :placeholder="$t('Auth.please_mobile_number')">
                                             </div>
                                             <div class="card d-flex justify-content-center dropdown_card">
                                             <Dropdown
@@ -109,7 +109,6 @@ const errors = ref([]);
 const selectedCountry = ref({})
 const countries = ref([]);
 const singUpForm = ref(null);
-const phone = ref('');
 
 // validation Function
 const validate = () => {
@@ -146,7 +145,12 @@ const singUp = async () => {
     fd.append('country_code', selectedCountry.value.key);
     fd.append('device_id', 111);
     fd.append('device_type', 'web');
-    fd.append('phone_email', phone.value);
+    fd.append('type', 0);
+    if (localStorage.getItem('lang') == null) {
+        fd.append('lang', 'ar');
+    } else {
+        fd.append('lang', localStorage.getItem('lang'));
+    }
 
 
     // fd.append('device_id', notificationToken.value);

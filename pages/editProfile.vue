@@ -8,28 +8,28 @@
 
                         <!-- if member -->
 
-                        <div class="form-group text-center" v-if="activeIndex === 0">
-                                <div class="input_auth">
-                                    <div class="edit-label">
-                                        <i class="fas fa-edit"></i>
-                                    </div>
-                                    <img src="@/assets/images/upload_layout.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
-                                    <GlobalImgUploader acceptedFiles="image/*" :newImages="image" name="image" @uploaded-images-updated="updateUploadedImages_1" />
+                        <div class="form-group text-center" v-if="user.type === 0">
+                            <div class="input_auth">
+                                <div class="edit-label">
+                                    <i class="fas fa-edit"></i>
                                 </div>
+                                <img src="@/assets/images/upload_layout.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
+                                <GlobalImgUploader acceptedFiles="image/*" :newImages="image" name="image" @uploaded-images-updated="updateUploadedImages_1" />
+                            </div>
                         </div>
 
-                        <!-- if government -->
+                        <!-- if government and private -->
 
-                        <img src="@/assets/images/black-logo.png" v-if="activeIndex === 1 || activeIndex === 2" alt="black-logo" class="black-logo" loading="lazy">
+                        <img src="@/assets/images/black-logo.png" v-if="user.type === 1 || user.type === 2" alt="black-logo" class="black-logo" loading="lazy">
 
                         <!-- if private -->
-                        <div class="form-group" v-if="activeIndex === 2">
+                        <div class="form-group" v-if="user.type === 2">
                             <label class="label">
                                 {{ $t('Auth.sector_name') }}
                             </label>
                             <div class="main_input">
                                 <i class="fas fa-user sm-icon"></i>
-                                <input type="text" class="custum-input-icon validInputs" valid="name" name="name" v-model="name" :placeholder="$t('Auth.special_sector')">
+                                <input type="text" class="custum-input-icon validInputs" valid="organization_name" name="organization_name" v-model="organization_name" :placeholder="$t('Auth.special_sector')">
                             </div>
                         </div>
 
@@ -39,27 +39,27 @@
                             </label>
                             <div class="main_input">
                                 <i class="fas fa-user sm-icon"></i>
-                                <input type="text" class="custum-input-icon validInputs" readonly valid="name" name="name" v-model="name" :placeholder="$t('Auth.enter_username')">
+                                <input type="text" class="custum-input-icon validInputs" valid="name" name="name" v-model="name" :placeholder="$t('Auth.enter_username')">
                             </div>
                         </div>
 
                         <!-- if member (gender) -->
-                        <div class="form-group" v-if="activeIndex === 0">
-                                <label class="label">
-                                    {{$t('Home.genders')}}
-                                </label>
-                                <div class="flex justify-content-center dropdown_card main_input special-custom">
-                                    <i class="fas fa-venus-mars sm-icon"></i>
-                                    <Dropdown v-model="gender" :options="genders" optionLabel="name" :placeholder="$t('Home.genders')" class="w-full md:w-14rem custum-dropdown" />
-                                </div>
+                        <div class="form-group" v-if="user.type === 0">
+                            <label class="label">
+                                {{$t('Home.genders')}}
+                            </label>
+                            <div class="flex justify-content-center dropdown_card main_input special-custom">
+                                <i class="fas fa-venus-mars sm-icon"></i>
+                                <Dropdown v-model="gender" :options="genders" optionLabel="name" :placeholder="$t('Home.genders')" class="w-full md:w-14rem custum-dropdown" />
+                            </div>
                         </div>
 
                         <!-- if member (birth date)  -->
-                        <div class="position-relative  form-group" v-if="activeIndex === 0">
+                        <div class="position-relative  form-group" v-if="user.type === 0">
                             <label class="label">{{ $t('Auth.birth_date') }}</label>
                             <div class=" main_input with_icon">
                                 <i class="fas fa-calendar sm-icon"></i>
-                                <flat-pickr v-model="calender_date" :config="config_a" class="select_date main_input custom-date"
+                                <flat-pickr v-model="birthdate" :config="config_a" class="select_date main_input custom-date"
                                 :placeholder="$t('Auth.birth_date')"
                                 name="date"
                                 @on-change="change"
@@ -70,42 +70,42 @@
                         </div>
 
                         <!-- if member (nationality) -->
-                        <div class="form-group" v-if="activeIndex === 0">
+                        <div class="form-group" v-if="user.type === 0">
                             <label class="label">
                                 {{$t('Auth.nationality')}}
                             </label>
                             <div class="flex justify-content-center dropdown_card main_input special-custom">
                                 <i class="fas fa-venus-double sm-icon"></i>
-                                <Dropdown v-model="gender" :options="genders" optionLabel="name" :placeholder="$t('Auth.nationality')" class="w-full md:w-14rem custum-dropdown" />
+                                <Dropdown v-model="nationality" :options="nationalities" optionLabel="name" :placeholder="$t('Auth.nationality')" class="w-full md:w-14rem custum-dropdown" />
                             </div>
                         </div>
 
                         <!-- permission if private or government -->
 
-                        <div class="form-group" v-if="activeIndex === 1 || activeIndex === 2">
+                        <div class="form-group" v-if="user.type === 1 || user.type === 2">
                             <label class="label">
                                 {{ $t('Auth.permission') }}
                             </label>
                             <div class="main_input">
                                 <i class="far fa-hand-rock sm-icon"></i>
-                                <input type="text" class="custum-input-icon validInputs" valid="name" name="name" v-model="name" :placeholder="$t('Auth.enter_permissions')">
+                                <input type="text" class="custum-input-icon validInputs" valid="bio" name="bio" v-model="bio" :placeholder="$t('Auth.enter_permissions')">
                             </div>
                         </div>
 
                         <!-- if government and private -->
-                        <div class="form-group gap-4 d-flex" v-if="activeIndex === 1 || activeIndex === 2">
+                        <div class="form-group gap-4 d-flex" v-if="user.type === 1 || user.type === 2">
                             <!-- if government and private -->
                             <div class="input_auth without-edit" v-if="activeIndex === 1 || activeIndex === 2">
                                 <img src="@/assets/images/download-img.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
                                 <span>{{ $t('Auth.organization_logo') }}</span>
-                                <GlobalImgUploader acceptedFiles="image/*" name="image" @uploaded-images-updated="updateUploadedImages_1" />
+                                <GlobalImgUploader acceptedFiles="image/*" name="logo" :newImages="logo" @uploaded-images-updated="updateUploadedImages_1" />
                             </div>
 
                             <!-- if private -->
-                            <div class="input_auth without-edit" v-if="activeIndex === 2">
+                            <div class="input_auth without-edit" v-if="user.type === 2">
                                 <img src="@/assets/images/download-img.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
                                 <span>{{ $t('Auth.commercial_register') }}</span>
-                                <GlobalImgUploader acceptedFiles="image/*" name="logo" @uploaded-images-updated="updateUploadedImages_1" />
+                                <GlobalImgUploader acceptedFiles="image/*" name="commercial_image" :newImages="commercial_image" @uploaded-images-updated="updateUploadedImages_1" />
                             </div>
                         </div>
 
@@ -120,7 +120,6 @@
                         </div>
 
                         <button type="button" class="custom-btn red-bg w-100" @click="deleteAcount = true">{{ $t('Global.delete_account') }}</button>
-
                         
                     </div>
 
@@ -174,6 +173,7 @@ import 'flatpickr/dist/flatpickr.css';
 
 // Store
 const store = useAuthStore();
+
 const globalStore = useGlobalStore();
 
 // success response
@@ -196,40 +196,60 @@ const { deleteAccountHandler } = store;
 
 // status of input to show
 const activeIndex = ref(2);
-
 // flatpicker date
-const calender_date = ref(null);
+const birthdate = ref(null);
 const config_a = ref({
 wrap: true, // set wrap to true only when using 'input-group'
 altFormat: "Y-m-d",
 altInput: true,
 dateFormat: "Y-m-d",
-minDate: 'today',
 });
 
+
+// variables
+
+const nationality = ref(null);
+
+const nationalities = ref([
+    {
+        id: 1,
+        name: t(`Global.egyptian`),
+        type: 'egyptian'
+    },
+
+    {
+        id: 2,
+        name: t(`Global.saudi`),
+        type: 'saudi'
+    }
+])
+
 const genders = ref([
-        {
-            id: 1,
-            name: t(`Auth.male`),
+    {
+        id: 1,
+        name: t(`Auth.male`),
+        type: 'male'
+    },
 
-        },
-
-        {
-            id: 2,
-            name: t(`Auth.female`),
-        }
-    ])
-    
+    {
+        id: 2,
+        name: t(`Auth.female`),
+        type: 'female'
+    }
+])
 const gender = ref(null);
-
+const bio = ref(null);
 const image = ref('');
 const name = ref('');
+const organization_name = ref('');
+const commercial_image = ref('');
+const logo = ref('');
 const successfullyChange = ref(false);
 const errors = ref([]);
 
 const loading = ref(false);
 
-const { token } = storeToRefs(store);
+const { token, user } = storeToRefs(store);
 
 
 const uploadedImage = ref([]);
@@ -259,13 +279,32 @@ const config = {
         await axios.get('profile', config).then(res => {
             name.value = res.data.data.name;
             image.value = res.data.data.image;
+            bio.value = res.data.data.bio;
+            organization_name.value = res.data.data.organization_name;
+            commercial_image.value = res.data.data.commercial_image;
+            logo.value = res.data.data.logo;
+            gender.value = genders.value.find(gender => gender.type == res.data.data.gender);
+            nationality.value = nationalities.value.find(nationality => nationality.type == res.data.data.nationality);
+            birthdate.value = res.data.data.birthdate;
         }).catch(err => console.log(err));
     }
 
     const editProfile = async () => {
+
         loading.value = true;
         const fd = new FormData(editProfileform.value);
-        loading.value = true;
+
+        if(user.value.type == 0) {
+            if(gender.value) {
+                fd.append('gender', gender.value.type);
+            }
+
+            if(nationality.value) {
+                fd.append('nationality', nationality.value.type);
+            }
+            fd.append('birthdate', birthdate.value);
+        }
+        
 
         validate();
 
@@ -277,7 +316,6 @@ const config = {
             successfullyChange.value = true;
             setTimeout(() => {
                 successfullyChange.value = false
-                navigateTo("/settings");
             }, 1000);
         } else {
             errorToast(res.msg);

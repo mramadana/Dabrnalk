@@ -84,7 +84,6 @@
             :lat="location.lat"
             :lng="location.lng"
             :title= "$t('Global.current_location')"
-            
             />
     </div>
 </template>
@@ -114,7 +113,6 @@ import { useAuthStore } from '~/stores/auth';
 // Store
 const store = useAuthStore();
 const { token, lat, lng } = storeToRefs(store);
-// const { token } = storeToRefs(store);
 
 // loading
 const loading = ref(true);

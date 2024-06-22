@@ -2,14 +2,20 @@
     <div>
         <div class="container">
 
-            <img  src="@/assets/images/change-email.png" loading="lazy" alt="car-img" class="car-img w-100">
+            <img :src="branch_Details.image" v-if="!loading" loading="lazy" alt="car-img" class="car-img w-100">
 
-            <!-- <div v-if="loading">
+            <div v-if="loading">
                 <skeleton width="100%" height="250px" class="mb-4" />
-            </div> -->
+            </div>
 
             <div class="branch-info mb-5">
-                <h4 class="main-title bold mb-0">{{ $t("Global.branch_name") }}</h4>
+
+                <h4 class="main-title bold mb-0" v-if="!loading">{{ branch_Details.name }}</h4>
+
+                <div v-if="loading">
+                    <skeleton width="120px" height="15px" class="mb-4" />
+                </div>
+
                 <div class="branch-details">
 
                     <div class="work-time pointer" @click="TimeWork = true">
@@ -17,9 +23,13 @@
                         {{ $t("Global.times_work") }}
                     </div>
 
-                    <div class="location pointer"  @click="openMapModal">
+                    <div class="location pointer" v-if="!loading" @click="openMapModal">
                         <i class="fas fa-map-marker-alt"></i>
-                        موقع الفرع
+                        {{ branch_Details.map_desc }}
+                    </div>
+
+                    <div v-if="loading">
+                        <skeleton width="120px" height="15px" class="mb-4" />
                     </div>
                 </div>
             </div>
@@ -74,32 +84,44 @@
 
         <GlobalGoogleMap
             v-model:visible="visible"
-            @closeModal="closeModal"
-            :show_inputs="show_inputs"
             :lat="lat"
             :lng="lng"
+            @handleClose="handleClose"
+            :closeModal_btn="closeModal_btn"
+            :AutoComplete="AutoComplete"
             :title= "$t('Global.current_location')"
             
-            />
+        />
 
     </div>
 </template>
 
 <script setup>
 
-    import { useAuthStore } from '~/stores/auth';
-
-    const store = useAuthStore();
-
-    const { lat , lng } = storeToRefs(store);
-
-    const { id } = useRoute().params;
-
     definePageMeta({
         name : "Titles.categories_branch",
     });
 
-    const GoogleMap = ref(false);
+    const closeModal_btn = ref(true);
+    const AutoComplete = ref(true);
+
+    // response
+    const { response } = responseApi();
+
+    // axios
+    const axios = useApi();
+
+    const loading = ref(true);
+
+    import { useAuthStore } from '~/stores/auth';
+
+    const store = useAuthStore();
+
+    // const { lat , lng } = storeToRefs(store);
+
+    const { id } = useRoute().params;
+
+    const branch_Details = ref({});
 
     const saveFormData = (id) => {
         localStorage.setItem('category_id', id)
@@ -152,23 +174,34 @@
     // google map customize
 
     const visible = ref(false);
+
     // const lat = ref(30.0444);
     // const lng = ref(31.2357);
-    const show_inputs = ref(true);
+
+    const lat = ref(null);
+    const lng = ref(null);
+    
     const openMapModal = () => {
         visible.value = true;
-        
-        // setTimeout(() => {
-        //     document.querySelector(".getCurent").click();
-        // }, 200);
     };
-    const closeModal = (titleName) => {
+    const handleClose = () => {
         visible.value = false;
-        console.log(titleName, "get title name");
     };
 
+    const branch_details = async () => {
+        loading.value = true;
+        await axios.get(`branch-details?branch_id=${id}`).then(res => {
+            if (response(res) == "success") {
+                branch_Details.value = res.data.data;
+                lat.value = Number(res.data.data.lat);
+                lng.value = Number(res.data.data.lng);
+            } 
+            loading.value = false;
+        }).catch(err => console.log(err));
+    }
+
     onMounted(() => {
-        console.log(localStorage.getItem('lat'), "lat", localStorage.getItem('lng'), "lng");
+        branch_details()
     })
 
 

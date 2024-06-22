@@ -2,11 +2,16 @@
     <Dialog
         modal
         :show_inputs="show_inputs"
+        :visible="visible"
         :lat="lat"
         :lng="lng"
+        :closeModal_btn="closeModal_btn"
         class="map_style"
     >
         <div class="modal-body-main modal-pad">
+            <button type="button" class="close transparent" v-if="props.closeModal_btn" @click="closeDialog">
+                <i class="far fa-times-circle"></i>
+            </button>
             <div class="text-center fontbold font22 mb-4">
                 {{ props.title }}
             </div>
@@ -20,7 +25,7 @@
                     id=""
                     v-if="props.show_inputs"
                 />
-                <div class="position-relative w-100">
+                <div class="position-relative w-100" v-if="!props.AutoComplete">
                     <img
                         src="@/assets/images/marker.png"
                         alt="input-img"
@@ -58,11 +63,7 @@
                 />
             </GMapMap>
             <div class="flex-group-me mt-4">
-                <button
-                    type="button"
-                    class="custom-btn bold"
-                    @click="closeModal"
-                >
+                <button type="button" class="custom-btn bold" @click="closeModal">
                     تاكيد
                 </button>
             </div>
@@ -70,36 +71,39 @@
     </Dialog>
 </template>
 
-<script setup>
+<!-- <script setup>
 import { useAuthStore } from "~/stores/auth";
 const store = useAuthStore();
 const { sendLatLng } = store;
 import markerImage from "@/assets/images/marker.png";
 //refs
 const titleName = ref();
+const selectedAddress = ref(null);
 const lat = ref(null);
 const lng = ref(null);
 const address = ref("");
 const center = ref({ lat: 24.7135517, lng: 46.6752957 });
-const emit = defineEmits();
+const emit = defineEmits(["updateAddress"]);
+const closeDialog = () => {
+    emit("handleClose");
+}
 const closeModal = () => {
     emit("closeModal", titleName.value);
     lat.value = center.value.lat;
     lng.value = center.value.lng;
-    sendLatLng(center.value.lat, center.value.lng);
+    sendLatLng(center.value.lat, center.value.lng, address.value, selectedAddress.value);
     console.log(lat.value, lng.value);
 };
-const props = defineProps(["show_inputs", "lat", "lng", "title"]);
+const props = defineProps(["show_inputs", "lat", "lng", "title", "current_location", "closeModal_btn"]);
 
 // search places
 if (props.show_inputs == true) {
     setTimeout(() => {
-        getCurrentLocatoin();
+        // getCurrentLocatoin();
     }, 200);
 } else {
     center.value.lat = props.lat;
     center.value.lng = props.lng;
-    console.log(props.lat, ' , ', props.lng)
 }
 
 function getLanguage() {
@@ -112,10 +116,13 @@ function setPlace(e) {
     address.value = e.formatted_address;
     lat.value = e.geometry.location.lat();
     lng.value = e.geometry.location.lng();
+    selectedAddress.value = e.address_components[1].long_name;
 
     // change marker pos
     center.value.lat = e.geometry.location.lat();
     center.value.lng = e.geometry.location.lng();
+
+    emit("updateAddress", address.value);
 }
 // get lat , lng , address from change marker position
 function getPositionmarker(e) {
@@ -134,9 +141,10 @@ function getaddressfromlatlng() {
             if (status === "OK") {
                 if (results[0]) {
                     address.value = results[0].formatted_address;
-
+                    selectedAddress.value = results[0].address_components[1].long_name;
                     document.querySelector(".pac-target-input").value =
                         results[0].formatted_address;
+                        emit("updateAddress", address.value);
                 } else {
                     address.value = "No results found";
                 }
@@ -164,11 +172,182 @@ function getCurrentLocatoin() {
     } else {
         console.error("Geolocation is not supported by this browser.");
     }
+};
+
+
+// Call getCurrentLocatoin if current_location is true
+onMounted(() => {
+  if (props.current_location) {
+    getCurrentLocatoin();
+  }
+});
+
+
+watch(() => props.current_location, (newVal) => {
+  if (newVal) {
+    getCurrentLocatoin();
+  }
+});
+
+</script> -->
+
+
+
+<!-- updated code -->
+<script setup>
+import { useAuthStore } from "~/stores/auth";
+const store = useAuthStore();
+const { sendLatLng } = store;
+import markerImage from "@/assets/images/marker.png";
+//refs
+const titleName = ref();
+const selectedAddress = ref(null);
+const lat = ref(null);
+const lng = ref(null);
+const address = ref("");
+const center = ref({ lat: 24.7135517, lng: 46.6752957 });
+const emit = defineEmits(["updateAddress"]);
+const closeDialog = () => {
+    emit("handleClose");
+}
+const closeModal = () => {
+    emit("closeModal", titleName.value);
+    lat.value = center.value.lat;
+    lng.value = center.value.lng;
+    sendLatLng(center.value.lat, center.value.lng, address.value, selectedAddress.value);
+    console.log(lat.value, lng.value);
+};
+const props = defineProps(["show_inputs", "lat", "lng", "title", "current_location", "closeModal_btn", "AutoComplete"]);
+
+// search places
+if (props.show_inputs == true) {
+    setTimeout(() => {
+        // getCurrentLocatoin();
+    }, 200);
+} else {
+    center.value.lat = props.lat;
+    center.value.lng = props.lng;
 }
 
-</script>
+function getLanguage() {
+    const locale = localStorage.getItem("locale");
+    return (locale === null || locale === "ar") ? "ar" : "en";
+};
 
-<style lang="scss" scoped>
+function setPlace(e) {
+    // sended data to backend
+    address.value = e.formatted_address;
+    lat.value = e.geometry.location.lat();
+    lng.value = e.geometry.location.lng();
+
+    let city = '';
+    let country = '';
+
+    // استخراج المدينة والدولة من address_components
+    if (e.address_components) {
+        e.address_components.forEach(component => {
+            if (component.types.includes('locality') || component.types.includes('administrative_area_level_2')) {
+                city = component.long_name;
+            }
+            if (component.types.includes('country')) {
+                country = component.long_name;
+            }
+        });
+    }
+
+    selectedAddress.value = `${country}, ${city}`;
+
+    // change marker pos
+    center.value.lat = e.geometry.location.lat();
+    center.value.lng = e.geometry.location.lng();
+
+    emit("updateAddress", address.value);
+}
+// get lat , lng , address from change marker position
+function getPositionmarker(e) {
+    center.value.lat = e.latLng.lat();
+    center.value.lng = e.latLng.lng();
+    getaddressfromlatlng();
+}
+
+// getaddress from latlng
+function getaddressfromlatlng() {
+    const geocoder = new google.maps.Geocoder();
+    const language = getLanguage();
+    geocoder.geocode(
+        { location: center.value, language: language },
+        (results, status) => {
+            if (status === "OK") {
+                if (results[0]) {
+                    address.value = results[0].formatted_address;
+
+                    let city = '';
+                    let country = '';
+
+                    // استخراج المدينة والدولة من address_components
+                    if (results[0].address_components) {
+                        results[0].address_components.forEach(component => {
+                            if (component.types.includes('locality') || component.types.includes('administrative_area_level_2')) {
+                                city = component.long_name;
+                            }
+                            if (component.types.includes('country')) {
+                                country = component.long_name;
+                            }
+                        });
+                    }
+
+                    selectedAddress.value = `${country}, ${city}`;
+
+                    document.querySelector(".pac-target-input").value =
+                        results[0].formatted_address;
+                    emit("updateAddress", address.value);
+                } else {
+                    address.value = "No results found";
+                }
+            } else {
+                address.value = "Geocoder failed due to: " + status;
+            }
+        }
+    );
+}
+// get current location
+function getCurrentLocatoin() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                center.value.lat = position.coords.latitude;
+                center.value.lng = position.coords.longitude;
+                lat.value = position.coords.longitude;
+                lng.value = position.coords.longitude;
+                getaddressfromlatlng();
+            },
+            (error) => {
+                console.error("Error getting location:", error);
+            }
+        );
+    } else {
+        console.error("Geolocation is not supported by this browser.");
+    }
+};
+
+
+// Call getCurrentLocatoin if current_location is true
+onMounted(() => {
+  if (props.current_location) {
+    getCurrentLocatoin();
+  }
+});
+
+
+watch(() => props.current_location, (newVal) => {
+  if (newVal) {
+    getCurrentLocatoin();
+  }
+});
+
+</script>
+<style lang="scss">
+
     .dirmain {
         display: flex;
         align-items: center;
@@ -195,5 +374,17 @@ function getCurrentLocatoin() {
         position: absolute;
         top: 50%;
         transform: translate(0%, -50%);
+    }
+</style>
+
+<style lang="scss">
+    // hidden close modal button
+    .map_style {
+        .p-dialog-header {
+            .p-dialog-header-icons {
+                display: none;
+            }
+        }
+
     }
 </style>

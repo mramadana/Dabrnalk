@@ -1,16 +1,17 @@
 <template>
     <div>
+
         <div class="defaultLayout" :class="headerClass">
             <header class="header">
                 <div class="top-header">
                     <div class="container">
                         <div class="inner-header">
                             <div class="filter-input">
-                                <form>
+                                <form ref="searchForm" @submit.prevent="searchFunc">
                                     <div :class="['search-box with_responsive', { show: isActive }]">
                                         <div class="main_input with_icon">
-                                            <input type="search" class="input" :placeholder=" $t('Home.search') " />
-                                            <button type="button" class="static-btn search-btn">
+                                            <input type="search" class="input" v-model="search" :placeholder=" $t('Home.search') " />
+                                            <button type="submit" class="static-btn search-btn">
                                                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
                                             </button>
                                         </div>
@@ -88,12 +89,12 @@
                                     </ul>
                                 </button>
 
-                                <button class="notification transparent" v-if="isLoggedIn">
+                                <button class="notification transparent" v-if="isLoggedIn" @click="visible = true">
                                     <div class="notif-icon">
                                         <i class="fa-solid fa-location-dot resp-icon"></i>
-                                        <span class="notif-hint">
-                                            السعودية - الرياض
-                                        </span>
+                                        <div class="notif-hint address-hint">
+                                            {{ selectedAddress }}
+                                        </div>
                                         <div class="nof-cont" v-if="notifCount" :data-number="notifCount"></div>
                                     </div>
                                 </button>
@@ -234,17 +235,31 @@
             </Dialog>
         </div>
 
+        <!-- if user not logged in -->
         <DialogsAuthLoginPopup v-model:visible="Globaldialog" />
+
+        <!-- google map componemt -->
+
+            <GlobalGoogleMap
+                v-model:visible="visible"
+                @closeModal="closeModal"
+                @updateAddress="handleUpdateAddress"
+                @handleClose="handleClose"
+                :show_inputs="show_inputs"
+                :lat="location.lat"
+                :lng="location.lng"
+                :closeModal_btn="closeModal_btn"
+                :title= "$t('Global.current_location')"
+            />
     </div>
 
 </template>
 
 
 <script setup>
+import Paginator from 'primevue/paginator';
 
     import { useAuthStore } from '~/stores/auth';
-
-    import { useGlobalStore } from '~/stores/global';
 
     // Toast
     const { successToast, errorToast } = toastMsg();
@@ -255,10 +270,35 @@
     // store
     const store = useAuthStore();
 
-    const globalStore = useGlobalStore();
+    const { user, isLoggedIn, token, Globaldialog, lat, lng,  address, selectedAddress } = storeToRefs(store);
 
-    const { user, isLoggedIn, token, Globaldialog, lat, lng } = storeToRefs(store);
+    // Search
+    const search = ref('');
+    const searchForm = ref(null);
 
+    // Search Function
+    const searchFunc = async () => {
+        if (search.value) {
+            router.push({
+                path: '/search',
+                query: { text: search.value },
+            });
+            search.value = '';
+            searchForm.value.reset();
+
+        } else {
+            errorToast(t(`validation.search`))
+        }
+    }
+
+    // const address = ref("");
+
+    const handleUpdateAddress = (newAddress) => {
+        address.value = newAddress;
+        console.log('Updated address:', newAddress);
+    };
+
+    const closeModal_btn = ref(true);
 
     const { response } = responseApi();
 
@@ -271,10 +311,45 @@
 
     // config
     let config = {
-    headers: {
-        Authorization: `Bearer ${token.value}`
-    }
+        headers: {
+            Authorization: `Bearer ${token.value}`
+        }
     };
+
+    const handleClose = () => {
+        visible.value = false
+    }
+
+    const closeModal = () => {
+
+        const fd = new FormData();
+        fd.append('lat', lat.value);
+        fd.append('lng', lng.value);
+        fd.append('map_desc', address.value);
+        axios.post('update-location', fd, config).then((res) => {
+            if (response(res) == "success") {
+                visible.value = false;
+                successToast(res.data.msg)
+            } else {
+                errorToast(res.data.msg)
+            }
+        })
+
+        .catch((error) => {
+            console.error('Error updating location:', error);
+        });
+        // visible.value = false
+        // currentLocation.value = false;
+    }
+
+    // map location
+    const location = ref({
+        lat: lat.value,
+        lng: lng.value
+    });
+
+    const show_inputs = ref(false);
+    const visible = ref(false);
 
     // start to method 
 
@@ -350,13 +425,14 @@
 
     router.afterEach(() => {
       getNotificationsCount();
+      visible.value = false
       
     });
 
     onMounted( async () => {
        await getNotificationsCount();
         isSelected.value = localStorage.getItem('notify');
-        sendLatLng(lat.value, lng.value);
+        // sendLatLng(lat.value, lng.value);
 
     });
     
@@ -447,20 +523,26 @@ export default {
 </script>
 
 <style lang="scss">
-.remove-margin {
-    margin-bottom: 0 !important;
-}
-.defaultLayout {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    margin-bottom: 40px;
-}
+
+    .address-hint {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 170px;
+    }
+
+    .remove-margin {
+        margin-bottom: 0 !important;
+    }
+    .defaultLayout {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        margin-bottom: 40px;
+    }
 </style>
 
-
 <!-- style switch -->
-
 
 <style lang="scss" scoped>
 .switch {
@@ -530,3 +612,4 @@ input:checked + .slider:before {
     }
 }
 </style>
+

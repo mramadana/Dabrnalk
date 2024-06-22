@@ -2,10 +2,11 @@
     <div>
         <div class="container">
 
-            <h1 class="main-title normal lg text-center mb-5">{{ $t("Global.the_branche") }}</h1>
+            <h1 class="main-title normal lg text-center mb-5">{{ $t("Global.research_results") }}</h1>
             
             <!-- start to Branches -->
-            <HomeBranch :branches="branches" :loading="loading"/>
+             
+            <HomeBranch :branches="branches" :loading="loading" :nodataText="$t('Global.no_results')"/>
 
             <!--***** Paginator *****-->
             <div class="paginate-parent" v-if="showPaginate">
@@ -19,7 +20,7 @@
 <script setup>
 
     definePageMeta({
-        name: "Global.the_branche",
+        name: "Global.research_results",
     })
 
     // response
@@ -30,6 +31,9 @@
 
     const loading = ref(true);
 
+    // Route
+    const route = useRoute();
+
     const branches = ref([
     ]);
 
@@ -37,10 +41,13 @@
     const currentPage = ref(1);
     const pageLimit = ref();
     const totalPage = ref();
-
+    
+    
+    // start to make search work
+    
     const getBranches = async () => {
         loading.value = true;
-        await axios.get(`branches?page=${currentPage.value}`).then(res => {
+        await axios.get(`branches?search=${search.value}&page=${currentPage.value}`).then(res => {
             if (response(res) == "success") {
                 branches.value = res.data.data.branches;
                 totalPage.value = res.data.data.pagination.total_items;
@@ -51,8 +58,8 @@
             loading.value = false;
         }).catch(err => console.log(err));
     };
-
-    // Paginate Function
+    
+    // pageination
     const onPaginate = (e) => {
         loading.value = true;
         currentPage.value = e.page + 1;
@@ -65,6 +72,18 @@
         return totalPage.value > pageLimit.value;
     });
 
+    
+    const search = computed(() => {
+        return route.query.text;
+    });
+
+    watch(() => route.query.text, async (newSearchText, oldSearchText) => {
+        if (newSearchText !== oldSearchText) {
+            currentPage.value = 1; // Reset to the first page for a new search
+            await getBranches();
+        }
+    });
+    
     onMounted(() => {
         getBranches();
     });

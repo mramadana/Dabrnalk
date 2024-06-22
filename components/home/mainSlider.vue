@@ -2,7 +2,7 @@
     <section>
         <div v-if="!loading">
 
-            <div class="slider" dir="ltr" v-if="slider.length">
+            <div class="slider" dir="ltr" v-if="slider?.length">
                 <Carousel :value="slider" :responsiveOptions="responsiveOptions" :autoplayInterval="4000" class="dir-slider">
                     <template #item="slotProps">
                         <img :src="slotProps.data.image" loading="lazy" alt="slider-img" class="slider-img">

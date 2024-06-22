@@ -1,11 +1,11 @@
 <template>
     <div>
      
-        <div class="row mb-5 mt-5">
+        <div class="row">
 
-            <div class="col-12 col-md-6 col-xl-3 mb-4" v-for="branche in branches" :key="branche.id">
+            <div class="col-12 col-md-6 col-xl-3 mb-5" v-for="branche in branches" :key="branche.id">
                 <div class="Branche" v-if="!loading">
-                    <img src="@/assets/images/branche-img.png" alt="branch-image" class="branch-image" loading="lazy">
+                    <img :src="branche.image" alt="branch-image" class="branch-image" loading="lazy">
                     <h4 class="main-title normal mb-2">{{ branche.name }}</h4>
                     <div class="info">
                         <h3 class="main-title normal gap-2 d-flex flex-wrap mb-0">
@@ -20,10 +20,10 @@
         </div>
 
         <!-- if no data -->
-        <div class="nodata d-flex justify-content-center" v-if="branche?.length == 0 && !loading">
+        <div class="nodata d-flex justify-content-center mb-5" v-if="branches?.length == 0 && !loading">
             <div class="radio-content">
                 <img  loading="lazy" src="@/assets/images/no_data.avif" alt="image" class="no-data-img car-img">
-                <div class="no-data-text">{{ $t('Global.no_products') }}</div>
+                <div class="no-data-text">{{ nodataText }}</div>
             </div>
         </div>
         
@@ -38,7 +38,7 @@
 
 <script setup>
 
-    const defineProps = defineProps(['branches', 'loading'])
+    const defineProps = defineProps(['branches', 'loading', 'nodataText'])
 
     // save id to local storage
 
