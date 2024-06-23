@@ -86,8 +86,9 @@ const getHome = async () => {
   }).catch(err => console.log(err));
 };
 
-onMounted(() => {
-    getHome();
+onMounted( async () => {
+    // get Home
+    await getHome();
 });
 
 </script>

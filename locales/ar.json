@@ -47,7 +47,10 @@
         "organization_name": "يجب ادخال اسم المؤسسة",
         "logo" : "شعار المنظمة مطلوب",
         "password_confirmation": "يجب ادخال كلمة المرور",
-        "commercial_image": "صورة السجل التجاري مطلوبة"
+        "commercial_image": "صورة السجل التجاري مطلوبة",
+        "car_type" : "قم بتحديد نوع السيارة",
+        "rental_type" : "قم بتحديد نوع التاجير",
+        "price" : "السعر مطلوب"
       },
 
     "Auth": {
@@ -208,7 +211,14 @@
         "saudi" : "سعودي",
         "no_branches" : "لا يوجد فروع حاليا",
         "no_results" : "لا يوجد نتائج للبحث",
-        "the_branche" : "الفروع"
+        "the_branche" : "الفروع",
+        "high_price" : "الاعلى سعرا",
+        "low_price" : "الاقل سعرا",
+        "categories" : "الفئات",
+        "closed" : "مغلق",
+        "today" : "اليوم",
+        "from" : "من",
+        "to" : "الي"
     }
 
 }

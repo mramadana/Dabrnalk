@@ -211,7 +211,7 @@ export const useAuthStore = defineStore("auth", {
     },
     
     // get lat lng from google map
-    sendLatLng(lat, lng , address , selectedAddress) {
+    async sendLatLng(lat, lng , address , selectedAddress) {
       if (this.lat === null || this.lng === null) {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition((position) => {

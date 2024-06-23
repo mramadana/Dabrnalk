@@ -47,7 +47,10 @@
         "organization_name": "Organization name is required",
         "logo" : "Logo is required",
         "password_confirmation": "Password confirmation is required",
-        "commercial_image": "Commercial image is required"
+        "commercial_image": "Commercial image is required",
+        "car_type" : "Select the car type",
+        "rental_type" : "Select rental type",
+        "price" : "Price is required"
       },
 
     "Auth": {
@@ -207,6 +210,13 @@
         "saudi" : "saudi",
         "no_branches" : "No branches currently",
         "no_results" : "No results found",
-        "the_branche" : "the branches"
+        "the_branche" : "the branches",
+        "high_price" : "High price",
+        "low_price" : "Low price",
+        "categories" : "Categories",
+        "closed" : "Closed",
+        "today" : "Today",
+        "from" : "From",
+        "to" : "To"
     }
 }

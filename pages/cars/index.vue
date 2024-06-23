@@ -5,7 +5,7 @@
             <div class="filter-input mb-5">
                 <div class="search-box">
                     <div class="main_input with_icon m-0">
-                        <input type="search" class="input" :placeholder="$t('Home.search')" />
+                        <input type="search" class="input" v-model="search" :placeholder="$t('Home.search')" @input="searchCars"/>
                         <button type="button" class="static-btn search-btn" @click="searchDialog = true">
                             <i class="fas fa-list-ul search-icon"></i>
                         </button>
@@ -17,20 +17,20 @@
             <div class="row">
                 <div class="col-12 col-xl-3 col-md-6" v-for="car in cars" :key="car.id">
                     <div class="Branche">
-                        <img src="@/assets/images/branche-img.png" loading="lazy" alt="branch-image" class="branch-image">
+                        <img :src="car.image" loading="lazy" alt="branch-image" class="branch-image">
                         <div>
-                            <h4 class="main-title normal bold">اسم السيارة</h4>
+                            <h4 class="main-title normal bold">{{ car.name }}</h4>
                             <h6 class="cl-red main-disc">متوفر</h6>
                             <h6 class="cl-red main-disc">{{ car.disc }}</h6>
                             
                             <div class="normal bold d-flex">
-                                <h6 class="gray">{{ $t('Global.manufacturing_year') }} : </h6> <h6>2022</h6>
+                                <h6 class="gray">{{ $t('Global.manufacturing_year') }} : </h6> <h6>{{ car.manufacturing_year }}</h6>
                             </div>
 
                         </div>
                         <div class="normal bold d-flex gap-2 flex-wrap info">
                             <div class="d-flex gap-1">
-                                <h6 class="gray mb-0">{{ $t('Global.model') }} : </h6> <h6 class="mb-0">2022</h6>
+                                <h6 class="gray mb-0">{{ $t('Global.model') }} : </h6> <h6 class="mb-0">{{ car.car_model }}</h6>
                             </div>
                             <nuxt-link :to="'/cars/' + car.id" class="custom-btn smm" @click="saveFormData(car.id)">{{ $t('Global.show_more') }}</nuxt-link>
                         </div>
@@ -52,6 +52,11 @@
                     <Skeleton height="170px" class="slider-img rounded-2"></Skeleton>
                 </div>
             </div>
+
+            <!--***** Paginator *****-->
+            <div class="paginate-parent" v-if="showPaginate">
+                <Paginator :rows="pageLimit" @page="onPaginate" :totalRecords="totalPage" class="mt-4" dir="ltr" />
+            </div>
         </div>
 
         <!-- start to pop up of search -->
@@ -65,14 +70,14 @@
                         <div class="form-group">
                             <div class="flex justify-content-center dropdown_card main_input special-custom">
                                 <i class="fas fa-car-side sm-icon"></i>
-                                <Dropdown v-model="gender" :options="genders" optionLabel="name" :placeholder="$t('Global.type')" class="w-full md:w-14rem custum-dropdown" />
+                                <Dropdown v-model="car_type" :options="car_types" optionLabel="name" valid="kokooo" :placeholder="$t('Global.type')" class="w-full md:w-14rem custum-dropdown" />
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="flex justify-content-center dropdown_card main_input special-custom">
                                 <i class="far fa-calendar-alt sm-icon"></i>
-                                <Dropdown v-model="rental_type" :options="rental_types" optionLabel="name" :placeholder="$t('Global.rental_type')" class="w-full md:w-14rem custum-dropdown" />
+                                <Dropdown v-model="rental_type" :options="rental_types" optionLabel="name" valid="password" :placeholder="$t('Global.rental_type')" class="w-full md:w-14rem custum-dropdown" />
                             </div>
                         </div>
 
@@ -83,7 +88,7 @@
                                 <span class="mark">
                                     <i class="fas fa-check icon"></i>
                                 </span>
-                                <p class="hint">الأعلى سعرا</p>
+                                <p class="hint">{{ $t('Global.high_price') }}</p>
                             </label>
 
                             <label class="custom-radio custom-check">
@@ -91,12 +96,15 @@
                                 <span class="mark">
                                     <i class="fas fa-check icon"></i>
                                 </span>
-                                <p class="hint">الأعلى سعرا</p>
+                                <p class="hint">{{ $t('Global.low_price') }}</p>
                             </label>
 
                         </div>
 
-                        <button type="button" class="custom-btn mb mr-auto" @click="searchDialog = false">{{ $t('Home.search') }}</button>
+                        <button type="button" class="custom-btn mb mr-auto" @click="filterCars">
+                            {{ $t('Home.search') }}
+                            <span class="spinner-border spinner-border-sm" v-if="loading" role="status" aria-hidden="true"></span>
+                        </button>
 
                     </form>
                 </div>
@@ -110,6 +118,19 @@
         name : "Titles.cars",
     });
 
+    // response
+    const { response } = responseApi();
+
+    // Toast
+    const { errorToast } = toastMsg();
+
+    const errors = ref([]);
+
+    // axios
+    const axios = useApi();
+
+    const loading = ref(true);
+
     // import i18n
     import { useI18n } from 'vue-i18n';
 
@@ -118,57 +139,154 @@
 
     const searchDialog = ref(false);
 
-    const cars = ref([
-        {
-            id: 1,
-            title : "item",
-            disc : "itemmmm"
-        },
-        {
-            id: 2,
-            title : "item"
-        },
-        {
-            id: 3,
-            title : "item"
-        },
-        {
-            id: 4,
-            title : "item"
-        },
-        {
-            id: 5,
-            title : "item"
-        }
-    ]);
+    const checkedIds = ref('');
+
+    const search = ref('');
+
+    const cars = ref([]);
     
-    const gender = ref(null);
+    const car_type = ref(null);
 
-    const genders = ref([
-        {
-            id: 1,
-            name: t(`Auth.male`),
-
-        },
-
-        {
-            id: 2,
-            name: t(`Auth.female`),
-        }
-    ])
+    const car_types = ref([])
     
     const rental_type = ref(null);
+
     const rental_types = ref([
         {
             id: 1,
-            name: t(`Auth.male`),
-
+            name: t(`Global.daily`),
+            type: 'daily'
         },
-    ])
+
+        {
+            id: 2,
+            name: t(`Global.monthly`),
+            type: 'monthly'
+        },
+
+        {
+            id: 3,
+            name: t(`Global.yearly`),
+            type: 'yearly'
+        },
+    ]);
+
+    // Paginator
+    const currentPage = ref(1);
+    const pageLimit = ref();
+    const totalPage = ref();
+
+    // validationFun
+
+        // validation Function
+    const validate = () => {
+        
+        if (!car_type.value) {
+            errors.value.push(t('validation.car_type'));
+        }
+        if (!rental_type.value) {
+            errors.value.push(t('validation.rental_type'));
+        }
+
+        if (!checkedIds.value) {
+            errors.value.push(t('validation.price'));
+        }
+    }
     
     const saveFormData = (id) => {
         localStorage.setItem('car_id', id)
     }
+
+    // getcars function
+    const getcars = async () => {
+        const categoryId = JSON.parse(localStorage.getItem('category_id'));
+        loading.value = true
+        await axios.get(`category-cars?category_id=${categoryId}?page=${currentPage.value}`).then((res) => {
+            if(response(res) == 'success') {
+                cars.value = res.data.data.cars
+                totalPage.value = res.data.data.pagination.total_items
+                pageLimit.value = res.data.data.pagination.per_page
+            } else {
+                cars.value = []
+            }
+        })
+        loading.value = false
+    }
+
+    // get car-types
+    const getCarTypes = async () => {
+        await axios.get(`car-types`).then((res) => {
+            if(response(res) == 'success') {
+                car_types.value = res.data.data
+            } else {
+                car_types.value = []
+            }
+        }).catch(err => console.log(err));
+    }
+
+    // filtering cars  
+    const filterCars = () => {
+        const category_id = JSON.parse(localStorage.getItem('category_id'));
+        loading.value = true;
+        validate();
+        if (errors.value.length) {
+            errorToast(errors.value[0]);
+            loading.value = false;
+            errors.value = [];
+        } else {
+
+            cars.value = [];
+            axios.get(`category-cars?category_id=${category_id}&car_type_id=${car_type.value.id}&rental_type=${rental_type.value.type}&price=${checkedIds.value}`).then(res => {
+                if (response(res) == "success") {
+                    cars.value = res.data.data.cars;
+                    totalPage.value = res.data.data.pagination.total_items;
+                    pageLimit.value = res.data.data.pagination.per_page;
+                    searchDialog.value = false;
+                    car_type.value = null;
+                    rental_type.value = null;
+                    checkedIds.value = {};
+                }
+                loading.value = false;
+            })
+        }
+    };
+
+    // searchCars
+    const searchCars = () => {
+        const category_id = JSON.parse(localStorage.getItem('category_id'));
+        loading.value = true;
+        cars.value = [];
+        axios.get(`category-cars?category_id=${category_id}&search=${search.value}`).then(res => {
+            if (response(res) == "success") {
+                cars.value = res.data.data.cars;
+                totalPage.value = res.data.data.pagination.total_items;
+                pageLimit.value = res.data.data.pagination.per_page;
+            }
+            loading.value = false;
+        })
+    };
+
+    // Paginate Function
+    const onPaginate = (e) => {
+        loading.value = true;
+        currentPage.value = e.page + 1;
+        window.scrollTo(0, 0);
+        getcars();
+    };
+
+    /******************* Computed *******************/
+    let showPaginate = computed(() => {
+        return totalPage.value > pageLimit.value;
+    });
+
+    onMounted( async () => {
+
+        // get car-types
+        await getcars()
+
+        // get car-types
+        await getCarTypes()
+    })
 
 </script>
 

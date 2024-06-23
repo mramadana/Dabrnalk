@@ -109,6 +109,7 @@
             :lat="location.lat"
             :lng="location.lng"
             :current_location="currentLocation"
+            :isDraggable="true"
             :closeModal_btn="closeModal_btn"
             :title= "$t('Global.current_location')"
         />

@@ -248,6 +248,7 @@
                 :show_inputs="show_inputs"
                 :lat="location.lat"
                 :lng="location.lng"
+                :isDraggable="true"
                 :closeModal_btn="closeModal_btn"
                 :title= "$t('Global.current_location')"
             />
@@ -285,7 +286,7 @@ import Paginator from 'primevue/paginator';
             });
             search.value = '';
             searchForm.value.reset();
-
+            addActiveClass();
         } else {
             errorToast(t(`validation.search`))
         }
@@ -356,7 +357,7 @@ import Paginator from 'primevue/paginator';
     const isActive = ref(false)
 
     const addActiveClass = () => {
-    isActive.value = !isActive.value
+        isActive.value = !isActive.value
     }
 
     const logout = async () => {

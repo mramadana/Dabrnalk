@@ -44,6 +44,10 @@
                     </nuxt-link>
                 </div>
             </div>
+
+            <nuxt-link v-if="!loading" to="/Categories" class="custom-btn md m-auto mb-4 gap-2 align-items-center">
+                    {{ $t('Global.show_more') }}
+            </nuxt-link>
         </div>
 
         <!-- start to make dialog time work -->
@@ -56,9 +60,9 @@
                 </div>
 
                 <div class="time-header">
-                    <h6>اليوم</h6>
-                    <h6>من </h6>
-                    <h6>الى</h6>
+                    <h6>{{ $t("Global.today") }}</h6>
+                    <h6>{{ $t("Global.from") }}</h6>
+                    <h6>{{ $t("Global.to") }}</h6>
                 </div>
 
                 <div v-if="!loading">
@@ -66,7 +70,7 @@
                         <h6>{{ time.day }}</h6>
                         <h6> {{ time.from }} </h6>
                         <h6> {{ time.to }}</h6>
-                        <!-- <h6 v-if="time.is_closed == 1"> {{ time.is_closed }}</h6> -->
+                        <h6 class="cl-red" v-if="time.is_closed == 1">{{ $t("Global.closed") }}</h6>
                     </div>
 
                 </div>
@@ -89,6 +93,8 @@
             @handleClose="handleClose"
             :closeModal_btn="closeModal_btn"
             :AutoComplete="AutoComplete"
+            :submit_location="submit_location"
+            :isDraggable="false"
             :title= "$t('Global.current_location')"
             
         />
@@ -104,6 +110,7 @@
 
     const closeModal_btn = ref(true);
     const AutoComplete = ref(true);
+    const submit_location = ref(true);
 
     // response
     const { response } = responseApi();
@@ -112,12 +119,6 @@
     const axios = useApi();
 
     const loading = ref(true);
-
-    import { useAuthStore } from '~/stores/auth';
-
-    const store = useAuthStore();
-
-    // const { lat , lng } = storeToRefs(store);
 
     const { id } = useRoute().params;
 
@@ -129,47 +130,9 @@
 
     const TimeWork = ref(false);
 
-    const branchs = ref([
-        {
-            id: 1,
-            name: "الفرع الاول",
-        },
-        {
-            id: 2,
-            name: "الفرع الاول",
-        },
-        {
-            id: 3,
-            name: "الفرع الاول",
-        },
-        {
-            id: 4,
-            name: "الفرع الاول",
-        },
-        {
-            id: 5,
-            name: "الفرع الاول",
-        }
-    ]);
+    const branchs = ref([]);
 
-    const timings = ref([
-        {
-            "id": 2,
-            "day": "sunday",
-            "from": "10:00:00",
-            "to": "06:00:00",
-            "is_closed": 0
-        },
-
-        {
-            "id": 3,
-            "day": "monday",
-            "from": "10:00:00",
-            "to": "06:00:00",
-            "is_closed": 1
-        },
-
-    ])
+    const timings = ref([]);
 
     // google map customize
 
@@ -195,6 +158,8 @@
                 branch_Details.value = res.data.data;
                 lat.value = Number(res.data.data.lat);
                 lng.value = Number(res.data.data.lng);
+                branchs.value = res.data.data.categories;
+                timings.value = res.data.data.timings;
             } 
             loading.value = false;
         }).catch(err => console.log(err));
@@ -265,8 +230,10 @@
         justify-content: center;
         gap: 50px;
         margin-bottom: 10px;
+        text-align: center;
         h6 {
             font-size: 14px;
+            flex-grow: 1;
         }
     }
 
