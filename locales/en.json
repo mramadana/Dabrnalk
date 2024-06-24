@@ -217,6 +217,19 @@
         "closed" : "Closed",
         "today" : "Today",
         "from" : "From",
-        "to" : "To"
+        "to" : "To",
+        "no_notifications" : "No notifications found"
+    },
+
+    "Cars": {
+        "car_type" : "Car type",
+        "category" : "Category",
+        "owner_car" : "Owner car",
+        "car_color" : "Car color",
+        "Structure_number" : "Structure number",
+        "rental_car" : "Rental car",
+        "not_available" : "Not available",
+        "not_available_date" : "Not available on date",
+        "no_description" : "No description"
     }
 }

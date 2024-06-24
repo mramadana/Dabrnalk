@@ -218,7 +218,19 @@
         "closed" : "مغلق",
         "today" : "اليوم",
         "from" : "من",
-        "to" : "الي"
-    }
+        "to" : "الي",
+        "no_notifications" : "لا يوجد اشعارات"
+    },
 
+    "Cars": {
+        "car_type" : "نوع السيارة",
+        "category" : "فئة",
+        "owner_car" : "صاحب السيارة",
+        "car_color" : "لون السيارة",
+        "Structure_number" : "رقم الهيكل",
+        "rental_car" : "إيجار السيارة",
+        "not_available" : "غير متاحة",
+        "not_available_date" : "غير متاحة بتاريخ",
+        "no_description" : "لا يوجد وصف"
+    }
 }

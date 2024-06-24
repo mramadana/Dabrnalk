@@ -31,7 +31,7 @@
                                 </label>
                                 <div class="flex justify-content-center dropdown_card main_input special-custom">
                                     <i class="far fa-calendar-alt sm-icon"></i>
-                                    <Dropdown v-model="rent_type" :options="rent_types" optionLabel="name" :placeholder="$t('Auth.nationality')" class="w-full md:w-14rem custum-dropdown" />
+                                    <Dropdown v-model="rent_type" @change="loloooooo" :options="rent_types" optionLabel="name" :placeholder="$t('Auth.nationality')" class="w-full md:w-14rem custum-dropdown" />
                                 </div>
                             </div>
                         </div>
@@ -122,10 +122,14 @@
     const rent_type = ref(null);
 
     const rent_types = ref([
-        { name: t(`Global.daily`), id: "daily" },
-        { name: t(`Global.monthly`), id: "monthly" },
-        { name: t(`Global.yearly`), id: "yearly" },
+        { name: t(`Global.daily`), id: 1 },
+        { name: t(`Global.monthly`), id: 2 },
+        { name: t(`Global.yearly`), id: 3 },
     ])
+
+    const loloooooo = () => {
+        console.log(rent_type.value.id, "rent_type")
+    }
 
     const return_date = ref(null);
 
@@ -151,15 +155,15 @@
     console.log(...e);
     console.log(rent_type.value, "rent_type")
     return_date.value = new Date(...e);
-    if (rent_type.value.id == 'daily') {
+    if (rent_type.value.id == 1) {
     return_date.value.setDate(
     return_date.value.getDate() + +rentalPeriod.value
     );
-    } else if (rent_type.value.id == 'monthly') {
+    } else if (rent_type.value.id == 2) {
     return_date.value.setMonth(
     return_date.value.getMonth() + +rentalPeriod.value
     );
-    } else if (rent_type.value.id == 'yearly') {
+    } else if (rent_type.value.id == 3) {
     return_date.value.setFullYear(
     return_date.value.getFullYear() + +rentalPeriod.value
     );

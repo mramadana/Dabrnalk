@@ -38,7 +38,7 @@
                     </div>
                 </div>
     
-                <div v-if="!notifications.length">
+                <div class="layout-form sm justify-content-center" v-if="!notifications.length">
                     {{ $t("Global.no_notifications") }}
                 </div>
                 
@@ -249,45 +249,45 @@ onMounted(async () => {
     }
     }
 
-.layout-form {
-  background-color: var(--wh);
-  box-shadow: 0px 3px 30px #0000001A;
-  border-radius: 20px;
-  margin-bottom: 50px;
-  padding: 45px 15px;
-  &.sm-radius {
-    border-radius: 10px;
-    padding: 0;
-    overflow: hidden;
-    border: 1px solid #eee;
-    text-align: start;
-    margin-bottom: 0;
-  }
+    .layout-form {
+    background-color: var(--wh);
+    box-shadow: 0px 1px 2px #0000001A;
+    border-radius: 20px;
+    margin-bottom: 50px;
+    padding: 45px 15px;
+    &.sm-radius {
+        border-radius: 10px;
+        padding: 0;
+        overflow: hidden;
+        border: 1px solid #eee;
+        text-align: start;
+        margin-bottom: 0;
+    }
 
-  &.sm {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 25px;
-    padding: 15px;
-    font-size: 13px;
-    color: #000;
-    font-weight: bold;
-    border-radius: 15px;
-    border: 1px solid #DBDBDB;
-  }
+    &.sm {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 25px;
+        padding: 15px;
+        font-size: 13px;
+        color: #000;
+        font-weight: bold;
+        border-radius: 15px;
+        border: 1px solid #DBDBDB;
+    }
 
-//   .card-setting {
-//     i {
-//       #{$ltr} & {
-//         transform: scale(-1);
-//       }
-//       #{$rtl} & {
-//         transform: scale(1);
-//       }
-//     }
-//   }
-}
+    //   .card-setting {
+    //     i {
+    //       #{$ltr} & {
+    //         transform: scale(-1);
+    //       }
+    //       #{$rtl} & {
+    //         transform: scale(1);
+    //       }
+    //     }
+    //   }
+    }
 
 .not-icon {
     margin-inline-end: 15px;

@@ -1,6 +1,7 @@
 <template>
     <div>
-
+        <!-- <p>{{ store.lat }} lat</p> 
+        <p>{{ store.lng }} lng</p> -->
         <div class="defaultLayout" :class="headerClass">
             <header class="header">
                 <div class="top-header">

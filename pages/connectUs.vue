@@ -17,7 +17,7 @@
                                     </label>
                                     <div class="main_input">
                                         <i class="fas fa-user sm-icon"></i>
-                                        <input type="text" class="custum-input-icon validInputs" valid="name" name="name" v-model="name" :placeholder="$t('Auth.the_name')">
+                                        <input type="text" class="custum-input-icon validInputs" valid="name" name="user_name" v-model="name" :placeholder="$t('Auth.the_name')">
                                     </div>
                                 </div>
                             </div>
@@ -81,14 +81,11 @@
                                     <label class="label">
                                         {{ $t('Global.message') }}
                                     </label>
-                                    <textarea  class="main_input main_area mb-4 validInputs" valid="message" name="message" v-model="message" :placeholder="$t('Global.please_enter_message')"></textarea>
+                                    <textarea  class="main_input main_area mb-4 validInputs" valid="message" name="complaint" v-model="message" :placeholder="$t('Global.please_enter_message')"></textarea>
                                 </div>
                             </div>
 
                         </div>
-
-
-                        
                         
                         <button class="custom-btn md mr-auto mt-4">
                             {{ $t('Global.send') }}
@@ -116,7 +113,6 @@ const connectForm = ref(null);
 
 const name = ref(null);
 const phone = ref(null);
-const email = ref(null);
 const message = ref(null);
 
 const loading = ref(false);
@@ -151,20 +147,19 @@ const validate = () => {
 const submitData = async () => {
     loading.value = true;
     const fd = new FormData(connectForm.value);
-    fd.append('country_id', selectedCountry.value.key);
+    fd.append('country_code', selectedCountry.value.key);
     validate();
     if (errors.value.length) {
             errorToast(errors.value[0]);
             loading.value = false;
             errors.value = [];
         } else {
-            axios.post("contact-us", fd).then(res => {
+            axios.post("new-complaint", fd).then(res => {
                 if (response(res) == "success") {
                     successToast(res.data.msg);
                     connectForm.value.reset();
                     phone.value = null;
                     name.value = null;
-                    email.value = null;
                     message.value = null;
                 } else {
                     errorToast(res.data.msg);

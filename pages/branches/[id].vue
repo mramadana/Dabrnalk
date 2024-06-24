@@ -65,7 +65,7 @@
                     <h6>{{ $t("Global.to") }}</h6>
                 </div>
 
-                <div v-if="!loading">
+                <div class="parent-box" v-if="!loading">
                     <div class="time-body" v-for="time in timings" :key="time.id">
                         <h6>{{ time.day }}</h6>
                         <h6> {{ time.from }} </h6>
@@ -137,9 +137,6 @@
     // google map customize
 
     const visible = ref(false);
-
-    // const lat = ref(30.0444);
-    // const lng = ref(31.2357);
 
     const lat = ref(null);
     const lng = ref(null);
@@ -235,6 +232,11 @@
             font-size: 14px;
             flex-grow: 1;
         }
+    }
+
+    .parent-box {
+        max-height: 120px;
+        overflow-y: auto;
     }
 
 </style>

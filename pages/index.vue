@@ -1,7 +1,6 @@
 <template>
     <div>
         <main>
-
             <!-- start to main slider  -->
             <HomeMainSlider :slider="sliderHome" :loading="loading" class="mb-5"/>
 
@@ -57,9 +56,8 @@ import { useI18n } from 'vue-i18n';
 const store = useAuthStore();
 
 const { lat, lng } = storeToRefs(store);
+const { sendLatLng } = store;
 
-// Toast
-const { successToast, errorToast } = toastMsg();
 const { t } = useI18n({ useScope: 'global' }); 
 
 const sliderHome = ref([]);
@@ -75,16 +73,62 @@ const branches = ref([]);
 
 // start to get Home Data
 
+// const getHome = async () => {
+//     loading.value = true;
+//   await axios.get(`home?lat=${lat.value}&lng=${lng.value}`).then(res => {
+//     if (response(res) == "success") {
+//        sliderHome.value = res.data.data.sliders;
+//        branches.value = res.data.data.branches;
+//     }
+//     loading.value = false;
+//   }).catch(err => console.log(err));
+// };
+
+
+
+
+
+
+
+
+
 const getHome = async () => {
-    loading.value = true;
-  await axios.get(`home?lat=${lat.value}&lng=${lng.value}`).then(res => {
+  loading.value = true;
+
+  if (lat.value === null || lng.value === null) {
+    // Get current location if lat or lng is null
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        console.log(`Current Location: Latitude: ${latitude}, Longitude: ${longitude}`);
+        sendLatLng(latitude, longitude, store.address, store.selectedAddress)
+          .then(async () => {
+            // Proceed with API call after setting lat and lng
+            await fetchHomeData(latitude, longitude);
+          })
+          .catch(err => console.error("Error in sendLatLng:", err));
+      }, (error) => {
+        console.error("Error getting current location", error);
+      });
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+  } else {
+    // Proceed with API call if lat and lng are already set
+    await fetchHomeData(lat.value, lng.value);
+  }
+};
+
+const fetchHomeData = async (latitude, longitude) => {
+  await axios.get(`home?lat=${latitude}&lng=${longitude}`).then(res => {
     if (response(res) == "success") {
-       sliderHome.value = res.data.data.sliders;
-       branches.value = res.data.data.branches;
+      sliderHome.value = res.data.data.sliders;
+      branches.value = res.data.data.branches;
     }
     loading.value = false;
   }).catch(err => console.log(err));
-};
+}
 
 onMounted( async () => {
     // get Home

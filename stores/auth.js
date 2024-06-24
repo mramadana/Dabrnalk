@@ -211,28 +211,36 @@ export const useAuthStore = defineStore("auth", {
     },
     
     // get lat lng from google map
+    // async sendLatLng(lat, lng , address , selectedAddress) {
+    //   if (this.lat === null || this.lng === null) {
+    //     if (navigator.geolocation) {
+    //       navigator.geolocation.getCurrentPosition((position) => {
+    //         const latitude = Number(position.coords.latitude);
+    //         const longitude = Number(position.coords.longitude);
+    //         console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+    //         this.lat = Number(latitude);
+    //         this.lng = Number(longitude);
+    //         console.log("lat and lng is null");
+    //       });
+    //     } else {
+    //       console.log("Geolocation is not supported by this browser.");
+    //     }
+    //     this.address = address
+    //   } else {
+    //     this.lat = Number(lat);
+    //     this.lng = Number(lng);
+    //     this.address = address;
+    //     this.selectedAddress = selectedAddress
+    //     console.log(this.lat, "lat and lng not null");
+    //   }
+    // }
+
+
     async sendLatLng(lat, lng , address , selectedAddress) {
-      if (this.lat === null || this.lng === null) {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition((position) => {
-            const latitude = Number(position.coords.latitude);
-            const longitude = Number(position.coords.longitude);
-            console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-            this.lat = Number(latitude);
-            this.lng = Number(longitude);
-            console.log("lat and lng is null");
-          });
-        } else {
-          console.log("Geolocation is not supported by this browser.");
-        }
-        this.address = address
-      } else {
-        this.lat = Number(lat);
-        this.lng = Number(lng);
-        this.address = address;
-        this.selectedAddress = selectedAddress
-        console.log(this.lat, "lat and lng not null");
-      }
+      this.lat = Number(lat);
+      this.lng = Number(lng);
+      this.address = address;
+      this.selectedAddress = selectedAddress
     }
   },
   persist: {
