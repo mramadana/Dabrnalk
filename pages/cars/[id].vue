@@ -9,7 +9,8 @@
                     <Skeleton width="100%" height="350px" class="slider-img rounded-1 mb-4" v-if="loading"></Skeleton>
                     <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-4">
                         <h1 class="main-title bold mb-0">فورد موستنج</h1>
-                        <h5 class="normal pointer cl-red mb-0 decoration" v-if="!carDetails.is_available && !loading" @click="dateAvilable = true">{{ $t("Cars.not_available") }}</h5>
+                        
+                        <h5 class="normal pointer cl-red mb-0 decoration" v-if="!carDetails.is_available"  @click="dateAvilable = true">{{ $t("Cars.not_available") }}</h5>
                     </div>
 
                     <Skeleton width="60px" height="15px" class="rounded-2 mb-4" v-if="loading"></Skeleton>
@@ -102,7 +103,7 @@
 
         <!-- not available date dialog -->
 
-        <Dialog v-model:visible="dateAvilable" v-if="!carDetails.is_available" modal class="custum_dialog_width" :draggable="false">
+        <Dialog v-model:visible="dateAvilable" v-if="carDetails.is_available" modal class="custum_dialog_width" :draggable="false">
                 <div class="text-center">
                     <h1 class="main-title bold mb-4">
                         {{ $t("Cars.not_available_date") }}
@@ -115,7 +116,7 @@
                 </div>
 
                 <div class="parent-box" v-if="!loading">
-                    <div class="time-body" v-for="date in dates" :key="date.id">
+                    <div class="time-body" v-for="date in carDetails.off_dates" :key="date.id">
                         <h6> {{ date.from }} </h6>
                         <h6> {{ date.to }}</h6>
                         <h6 class="cl-red" v-if="date.is_closed == 1">{{ $t("Global.closed") }}</h6>
@@ -140,38 +141,37 @@
         name: "Global.car_details",
     });
 
-    const { id } = useRoute().params
+    const store = useAuthStore();
     
-    // response
-    const { response } = responseApi();
+    const { carDetails } = storeToRefs(store);
 
-    // axios
-    const axios = useApi();
+    const { successToast, errorToast } = toastMsg();
+
+    const { car_detailshandler } = store;
+
+    const { id } = useRoute().params
+
 
     // loading
     const loading = ref(true);
 
-    const carDetails = ref({});
-
     const dateAvilable = ref(false);
     const dates = ref([]);
 
-    const car_details = async () => {
+    const Getcar_details = async () => {
         loading.value = true;
-        await axios.get(`car-details?car_id=${id}`).then(res => {
-            if (response(res) == "success") {
-                carDetails.value = res.data.data;
-                dates.value = res.data.data.off_dates;
-                localStorage.setItem('hours_left', res.data.data.time?.hours_left);
-                localStorage.setItem('quantity', res.data.data?.quantity);
-                console.log(carDetails.value);
-            } 
-            loading.value = false;
-        }).catch(err => console.log(err));
+        const res = await car_detailshandler(id);
+        if (res.status == "success") {
+            
+        } else {
+            errorToast(res.msg);
+        }
+        loading.value = false;
     }
 
     onMounted(() => {
-        car_details()
+        // car_details()
+        Getcar_details()
     })
 
 

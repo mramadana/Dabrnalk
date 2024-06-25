@@ -50,7 +50,9 @@
         "commercial_image": "صورة السجل التجاري مطلوبة",
         "car_type" : "قم بتحديد نوع السيارة",
         "rental_type" : "قم بتحديد نوع التاجير",
-        "price" : "السعر مطلوب"
+        "price" : "السعر مطلوب",
+        "receive_date" : "تاريخ الإستلام مطلوب",
+        "rentalPeriod_and_type": "يجب تحديد مدة التاجير ونوع التاجير"
       },
 
     "Auth": {
@@ -188,7 +190,8 @@
         "discount_coupon" : "كوبون الخصم",
         "activation" : "تفعيل",
         "complete_order" : "إكمال الطلب",
-        "hours_left_until_branch_closes" : "متبقى 03:00 ساعات على إغلاق الفرع",
+        "hours_left" : "متبقى",
+        "until_branch_closes" : "ساعات على إغلاق الفرع",
         "car_reservation_not_amount" : "يرجى العلم ان المبلغ المدفوع حاليا لحجز السيارة وليس المبلغ كامل",
         "book_hours_inspection" : "يفضل الحجز قبل موعد انتهاء العمل بـ 3 ساعات للمعاينة",
         "times_work" : "مواعيد العمل",

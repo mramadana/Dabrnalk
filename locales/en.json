@@ -103,7 +103,9 @@
         "An_individual" : "An individual",
         "governmental_organization" : "Governmental organization",
         "private_company" : "Private company",
-        "verification" : "verification"
+        "verification" : "verification",
+        "receive_date" : "Receive date is required",
+        "rentalPeriod_and_type": "The rental period and the type of rental required"
     },
 
     "Home": {
@@ -187,7 +189,8 @@
         "discount_coupon" : "Discount coupon",
         "activation" : "Activation",
         "complete_order" : "Complete order",
-        "hours_left_until_branch_closes" : "03:00 hours left until the branch closes",
+        "hours_left" : "Until",
+        "until_branch_closes" : "Until the branch closes",
         "car_reservation_not_amount" : "Please note that the amount currently paid for the car reservation is not the full amount",
         "book_hours_inspection" : "It is preferable to book 3 hours before the end of work for inspection",
         "times_work" : "times of work",

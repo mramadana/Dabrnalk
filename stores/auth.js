@@ -24,7 +24,8 @@ export const useAuthStore = defineStore("auth", {
     lng: null,
     visible: false,
     address: null,
-    selectedAddress: null
+    selectedAddress: null,
+    carDetails: null
   }),
   actions: {
 
@@ -210,31 +211,17 @@ export const useAuthStore = defineStore("auth", {
       }
     },
     
-    // get lat lng from google map
-    // async sendLatLng(lat, lng , address , selectedAddress) {
-    //   if (this.lat === null || this.lng === null) {
-    //     if (navigator.geolocation) {
-    //       navigator.geolocation.getCurrentPosition((position) => {
-    //         const latitude = Number(position.coords.latitude);
-    //         const longitude = Number(position.coords.longitude);
-    //         console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-    //         this.lat = Number(latitude);
-    //         this.lng = Number(longitude);
-    //         console.log("lat and lng is null");
-    //       });
-    //     } else {
-    //       console.log("Geolocation is not supported by this browser.");
-    //     }
-    //     this.address = address
-    //   } else {
-    //     this.lat = Number(lat);
-    //     this.lng = Number(lng);
-    //     this.address = address;
-    //     this.selectedAddress = selectedAddress
-    //     console.log(this.lat, "lat and lng not null");
-    //   }
-    // }
 
+    // Get Car Details
+    async car_detailshandler (curentID) {
+      const resData = await axios.get(`car-details?car_id=${curentID}`);
+      if (response(resData) === "success") {
+        this.carDetails = resData.data.data;
+        return { status: "success", msg: resData.data.msg };
+      } else {
+        return { status: "error", msg: resData.data.msg };
+      }
+  },
 
     async sendLatLng(lat, lng , address , selectedAddress) {
       this.lat = Number(lat);

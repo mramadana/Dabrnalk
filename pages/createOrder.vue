@@ -1,15 +1,17 @@
 <template>
     <div>
         <div class="container">
-            <h1>Create Order</h1>
-
-            <form>
+            <form @submit.prevent="submitData" ref="createOrder">
                 <div class="custom-width lg text-start">
 
                     <div class="row">
 
-                        <div class="col-12 col-md-8 mb-4 mr-auto">
-                            <div class="custom-btn">{{ $t('Global.hours_left_until_branch_closes') }}</div>
+                        <div class="col-12 col-md-8 mb-4 mr-auto" v-if="!store.carDetails.time.is_available">
+                            <h1 class="custom-btn">
+                                {{ $t('Global.hours_left') }} 
+                                {{ store.carDetails.time.hours_left }} 
+                                {{ $t('Global.until_branch_closes') }}
+                            </h1>
                         </div>
 
                         <div class="col-12 col-md-6">
@@ -19,7 +21,7 @@
                                 </label>
                                 <div class="main_input">
                                     <i class="fa-solid fa-key sm-icon"></i>
-                                    <input @keypress="validDot" type="number" class="validInputs custum-input-icon" valid="rental_period" name="rental_period" v-model="rentalPeriod" :placeholder="$t('Global.rental_period')">
+                                    <input @keypress="validDot" @input="OnRentalPeriod" type="number" class="validInputs custum-input-icon" valid="rental_period" name="duration" v-model="rentalPeriod" :placeholder="$t('Global.rental_period')">
                                 </div>
                             </div>
                         </div>
@@ -31,7 +33,7 @@
                                 </label>
                                 <div class="flex justify-content-center dropdown_card main_input special-custom">
                                     <i class="far fa-calendar-alt sm-icon"></i>
-                                    <Dropdown v-model="rent_type" @change="loloooooo" :options="rent_types" optionLabel="name" :placeholder="$t('Auth.nationality')" class="w-full md:w-14rem custum-dropdown" />
+                                <Dropdown v-model="rental_type" :options="rental_types" @change="handleRentTypeChange" optionLabel="name" :placeholder="$t('Auth.nationality')" class="w-full md:w-14rem custum-dropdown" />
                                 </div>
                             </div>
                         </div>
@@ -45,6 +47,7 @@
                                     :placeholder="$t('Global.select_received_date')"
                                     name="date"
                                     @on-change="change"
+                                    ref="flatpickr"
                                     />
                                     
                                     <i class="fas fa-calendar static-btn"></i>
@@ -92,7 +95,10 @@
                         </div>
 
                         <div class="col-12 col-md-8 mr-auto">
-                            <button class="custom-btn w-100" type="submit">{{ $t('Global.complete_order') }}</button>
+                            <button class="custom-btn w-100" type="submit">
+                                {{ $t('Global.complete_order') }}
+                                <span class="spinner-border spinner-border-sm" v-if="loading" role="status" aria-hidden="true"></span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -107,6 +113,24 @@
         name : "Titles.create_order",
     });
 
+    // pinia store
+    const store = useAuthStore();
+
+    // get carDetails from Store
+    const { carDetails } = storeToRefs(store);
+
+    // Axios
+    const axios = useApi();
+
+    const loading = ref(false);
+
+    const createOrder = ref(null); 
+
+    // flatpicker
+    const flatpickr = ref(null);
+
+    let showErrorToast = false;
+
     import { useI18n } from 'vue-i18n';
     const { successToast, errorToast } = toastMsg();
     const { t } = useI18n({ useScope: 'global' }); 
@@ -116,61 +140,132 @@
     import flatPickr from 'vue-flatpickr-component';
     import 'flatpickr/dist/flatpickr.css';
 
+    const errors = ref([]);
+
 
     const rentalPeriod = ref(null);
+    const rental_type = ref(null);
 
-    const rent_type = ref(null);
-
-    const rent_types = ref([
+    const rental_types = ref([
         { name: t(`Global.daily`), id: 1 },
         { name: t(`Global.monthly`), id: 2 },
         { name: t(`Global.yearly`), id: 3 },
     ])
 
-    const loloooooo = () => {
-        console.log(rent_type.value.id, "rent_type")
-    }
-
     const return_date = ref(null);
-
+    
     // flatpicker date
     const calender_date = ref(null);
+
+    // flatpicker date
     const config_a = ref({
-    wrap: true, // set wrap to true only when using 'input-group'
-    altFormat: "Y-m-d",
-    altInput: true,
-    dateFormat: "Y-m-d",
-    minDate: 'today',
+        wrap: true, // set wrap to true only when using 'input-group'
+        altFormat: "Y-m-d",
+        altInput: true,
+        dateFormat: "Y-m-d",
+        minDate: 'today',
+        onOpen: (selectedDates, dateStr, instance) => {
+            if (!rentalPeriod.value || !rental_type.value) {
+                if (!showErrorToast) {
+                    errorToast(t(`rentalPeriod_and_type`));
+                    showErrorToast = true;
+                    setTimeout(() => {
+                        showErrorToast = false;
+                    }, 500); 
+                }
+                return_date.value = new Date();
+                return_date.value = null; 
+                instance.close();
+            }
+        }
     });
 
     // vaidate rental period
     const validDot = (evt) => {
-        if (evt.key === '.' || evt.key === ',' || evt.key === 'e' || evt.key === 'E' || evt.key === '+' || evt.key === '-') {
-            evt.preventDefault();
-            errorToast(t(`validation.rentalPeriod`));
+    const input = evt.target.value;
+
+    if (
+        evt.key === '.' || evt.key === ',' || evt.key === 'e' || evt.key === 'E' || evt.key === '+' || evt.key === '-' ||
+        (input.length === 0 && evt.key === '0')
+    ) {
+        evt.preventDefault();
+        errorToast(t(`validation.rentalPeriod`));
+    }
+    };
+
+    const validate = () => {
+        let allInputs = document.querySelectorAll('.validInputs');
+        for (let i = 0; i < allInputs.length; i++) {
+            if (allInputs[i].value === '') {
+                errors.value.push(t(`validation.${allInputs[i].getAttribute('valid')}`));
+            };
+            if(!rental_type.value) {
+                errors.value.push(t(`validation.rental_type`));
+            }
+
+            if(!calender_date.value) {
+                errors.value.push(t(`validation.receive_date`));
+            }
         }
     }
 
-    const change = (e) => {
-    console.log(...e);
-    console.log(rent_type.value, "rent_type")
-    return_date.value = new Date(...e);
-    if (rent_type.value.id == 1) {
-    return_date.value.setDate(
-    return_date.value.getDate() + +rentalPeriod.value
-    );
-    } else if (rent_type.value.id == 2) {
-    return_date.value.setMonth(
-    return_date.value.getMonth() + +rentalPeriod.value
-    );
-    } else if (rent_type.value.id == 3) {
-    return_date.value.setFullYear(
-    return_date.value.getFullYear() + +rentalPeriod.value
-    );
+    const change = (selectedDates) => {
+        if (selectedDates.length === 0) return;
+
+        return_date.value = new Date(selectedDates[0]);
+        if (rental_type.value.id == 1) {
+            return_date.value.setDate(return_date.value.getDate() + +rentalPeriod.value);
+        } else if (rental_type.value.id == 2) {
+            return_date.value.setMonth(return_date.value.getMonth() + +rentalPeriod.value);
+        } else if (rental_type.value.id == 3) {
+            return_date.value.setFullYear(return_date.value.getFullYear() + +rentalPeriod.value);
+        }
+        console.log(rental_type.value.id, "rental_type");
     }
 
-    console.log(rent_type.value.id, "rent_type")
-};
+    const handleRentTypeChange = () => {
+        if(calender_date.value) {
+            console.log('Calender date exists:', calender_date.value);
+            change([calender_date.value]); // Call change method with the current calendar date value
+        }
+    }
+
+    const OnRentalPeriod = () => {
+        if(rentalPeriod.value || rental_type.value || calender_date.value) {
+            handleRentTypeChange();
+        }
+    }
+
+    const submitData = async () => {
+        loading.value = true;
+        const fd = new FormData(createOrder.value);
+        fd.append('car_id', localStorage.getItem('car_id'));
+        if(rental_type.value) {
+            fd.append('rental_type', rental_type.value.id);
+        }
+        fd.append('receive_date', calender_date.value);
+        validate();
+        if (errors.value.length) {
+            errorToast(errors.value[0]);
+            loading.value = false;
+            errors.value = [];
+            return;
+        } else {
+            loading.value = true;
+            axios.post("order-enquiry", fd).then(res => {
+                if (response(res) == "success") {
+                    successToast(res.data.msg);
+                    alert("Gooooooooooooof")
+                } else {
+                    errorToast(res.data.msg)
+                }
+                loading.value = false;
+
+            }).catch(err => console.log(err));
+        }
+    }
+
+
 </script>
 
 <style lang="scss" scoped>
