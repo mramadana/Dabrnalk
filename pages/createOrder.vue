@@ -1,4 +1,5 @@
 <template>
+
     <div>
         <div class="container">
             <form @submit.prevent="submitData" ref="createOrder">
@@ -33,7 +34,7 @@
                                 </label>
                                 <div class="flex justify-content-center dropdown_card main_input special-custom">
                                     <i class="far fa-calendar-alt sm-icon"></i>
-                                <Dropdown v-model="rental_type" :options="rental_types" @change="handleRentTypeChange" optionLabel="name" :placeholder="$t('Auth.nationality')" class="w-full md:w-14rem custum-dropdown" />
+                                    <Dropdown v-model="rental_type" :options="rental_types" @change="handleRentTypeChange" optionLabel="name" :placeholder="$t('Global.rental_type')" class="w-full md:w-14rem custum-dropdown" />
                                 </div>
                             </div>
                         </div>
@@ -73,7 +74,19 @@
                             </div>
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-12 col-md-6" v-if="store.user.type == 2 || store.user.type == 1">
+                            <div class="form-group">
+                                <label class="label">
+                                    {{ $t('Global.car_count') }}
+                                </label>
+                                <div class="main_input">
+                                    <i class="fa-solid fa-key sm-icon"></i>
+                                    <input @keypress="validDot" type="number" class="validInputs custum-input-icon" valid_2="car_count" valid="carValid" name="quantity" :placeholder="$t('Global.car_count')">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label class="label">
                                     {{ $t('Global.discount_coupon') }}
@@ -117,10 +130,9 @@
     const store = useAuthStore();
 
     // get carDetails from Store
-    const { carDetails } = storeToRefs(store);
+    const { carDetails, user } = storeToRefs(store);
 
-    // Axios
-    const axios = useApi();
+    const { orderEnquiry } = store;
 
     const loading = ref(false);
 
@@ -142,14 +154,15 @@
 
     const errors = ref([]);
 
-
     const rentalPeriod = ref(null);
     const rental_type = ref(null);
 
+    const copon = ref(null);
+
     const rental_types = ref([
-        { name: t(`Global.daily`), id: 1 },
-        { name: t(`Global.monthly`), id: 2 },
-        { name: t(`Global.yearly`), id: 3 },
+        { name: t(`Global.daily`), id: 0 },
+        { name: t(`Global.monthly`), id: 1 },
+        { name: t(`Global.yearly`), id: 2 },
     ])
 
     const return_date = ref(null);
@@ -167,7 +180,7 @@
         onOpen: (selectedDates, dateStr, instance) => {
             if (!rentalPeriod.value || !rental_type.value) {
                 if (!showErrorToast) {
-                    errorToast(t(`rentalPeriod_and_type`));
+                    errorToast(t(`validation.rentalPeriod_and_type`));
                     showErrorToast = true;
                     setTimeout(() => {
                         showErrorToast = false;
@@ -183,16 +196,21 @@
     // vaidate rental period
     const validDot = (evt) => {
     const input = evt.target.value;
-
-    if (
-        evt.key === '.' || evt.key === ',' || evt.key === 'e' || evt.key === 'E' || evt.key === '+' || evt.key === '-' ||
-        (input.length === 0 && evt.key === '0')
-    ) {
-        evt.preventDefault();
-        errorToast(t(`validation.rentalPeriod`));
-    }
+    const validClss = evt.target
+        if (
+            evt.key === '.' || evt.key === ',' || evt.key === 'e' || evt.key === 'E' || evt.key === '+' || evt.key === '-' ||
+            (input.length === 0 && evt.key === '0')
+        ) {
+            evt.preventDefault();
+            if(validClss.getAttribute('valid') == 'rental_period') {
+                errorToast(t(`validation.rentalPeriod`));
+            } else if (validClss.getAttribute('valid_2') == 'car_count') {
+                errorToast(t(`validation.car_count`));
+            }
+        }
     };
 
+    // validation Function
     const validate = () => {
         let allInputs = document.querySelectorAll('.validInputs');
         for (let i = 0; i < allInputs.length; i++) {
@@ -209,27 +227,29 @@
         }
     }
 
+    // change date function for flatpicker
     const change = (selectedDates) => {
         if (selectedDates.length === 0) return;
 
         return_date.value = new Date(selectedDates[0]);
-        if (rental_type.value.id == 1) {
+        if (rental_type.value.id == 0) {
             return_date.value.setDate(return_date.value.getDate() + +rentalPeriod.value);
-        } else if (rental_type.value.id == 2) {
+        } else if (rental_type.value.id == 1) {
             return_date.value.setMonth(return_date.value.getMonth() + +rentalPeriod.value);
-        } else if (rental_type.value.id == 3) {
+        } else if (rental_type.value.id == 2) {
             return_date.value.setFullYear(return_date.value.getFullYear() + +rentalPeriod.value);
         }
         console.log(rental_type.value.id, "rental_type");
     }
 
+    // change date function calculation on input
     const handleRentTypeChange = () => {
         if(calender_date.value) {
-            console.log('Calender date exists:', calender_date.value);
             change([calender_date.value]); // Call change method with the current calendar date value
         }
     }
 
+    // on rental period change calculation 
     const OnRentalPeriod = () => {
         if(rentalPeriod.value || rental_type.value || calender_date.value) {
             handleRentTypeChange();
@@ -249,22 +269,36 @@
             errorToast(errors.value[0]);
             loading.value = false;
             errors.value = [];
-            return;
         } else {
             loading.value = true;
-            axios.post("order-enquiry", fd).then(res => {
-                if (response(res) == "success") {
-                    successToast(res.data.msg);
-                    alert("Gooooooooooooof")
-                } else {
-                    errorToast(res.data.msg)
-                }
-                loading.value = false;
+            const res = await orderEnquiry(fd);
+            if(res.status == "success") {
 
-            }).catch(err => console.log(err));
+
+            // Create an object to hold all form data
+            const formData = {
+                order_rental_type: rental_type.value.id,
+                order_receive_date: calender_date.value,
+                order_copon: copon.value,
+            };
+            
+            // Convert the object to a JSON string
+            const order_enquiry_storage = JSON.stringify(formData);
+            
+            // Save the JSON string into localStorage
+            localStorage.setItem('formData_enquiry', order_enquiry_storage);
+
+            console.log(order_enquiry_storage, "formDataString");
+
+                successToast(res.msg);
+                navigateTo("/CompleteOrder")
+            } else {
+                errorToast(res.msg);
+            }
+
+            loading.value = false;
         }
     }
-
 
 </script>
 

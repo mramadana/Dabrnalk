@@ -109,14 +109,14 @@
                         <!-- if government and private -->
                         <div class="form-group gap-4 d-flex" v-if="user.type === 1 || user.type === 2">
                             <!-- if government and private -->
-                            <div class="input_auth without-edit" v-if="user.type === 1 || user.type === 2">
+                            <div class="input_auth without-edit parent-remove" v-if="user.type === 1 || user.type === 2">
                                 <img src="@/assets/images/download-img.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage_2.length > 0, 'default-class': true}">
                                 <span>{{ $t('Auth.organization_logo') }}</span>
                                 <GlobalImgUploader acceptedFiles="image/*" :newImages="logo" @uploaded-images-updated="updateUploadedImages_2" />
                             </div>
 
                             <!-- if private -->
-                            <div class="input_auth without-edit" v-if="user.type === 2">
+                            <div class="input_auth without-edit parent-remove" v-if="user.type === 2">
                                 <img src="@/assets/images/download-img.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage_3.length > 0, 'default-class': true}">
                                 <span>{{ $t('Auth.commercial_register') }}</span>
                                 <GlobalImgUploader acceptedFiles="image/*" :newImages="commercial_image" @uploaded-images-updated="updateUploadedImages_3" />
@@ -276,6 +276,12 @@
             background-color: transparent !important;
         }
     }
+
+    .parent-remove {
+        .remove-btn {
+            display: none;
+        }
+    }
 </style>
 
 <style lang="scss" scoped>
@@ -287,6 +293,7 @@
         .edit-label, .remove-btn {
             display: none !important;
         }
+        display: flex;
     }
 
     .black-logo {   

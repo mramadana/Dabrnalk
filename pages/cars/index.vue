@@ -70,7 +70,7 @@
                         <div class="form-group">
                             <div class="flex justify-content-center dropdown_card main_input special-custom">
                                 <i class="fas fa-car-side sm-icon"></i>
-                                <Dropdown v-model="car_type" :options="car_types" optionLabel="name" valid="kokooo" :placeholder="$t('Global.type')" class="w-full md:w-14rem custum-dropdown" />
+                                <Dropdown v-model="car_type" :options="car_types" optionLabel="name" :placeholder="$t('Global.type')" class="w-full md:w-14rem custum-dropdown" />
                             </div>
                         </div>
 
@@ -176,9 +176,7 @@
     const pageLimit = ref();
     const totalPage = ref();
 
-    // validationFun
-
-        // validation Function
+    // validationFunction
     const validate = () => {
         
         if (!car_type.value) {

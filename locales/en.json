@@ -11,8 +11,8 @@
         "create_account" : "Create account",
         "categories_branch" : "Car categories for branch",
         "create_order" : "Create order",
-        "my_addresses" : "My addresses"
-
+        "my_addresses" : "My addresses",
+        "complete_order": "complete order"
     },
 
     "validation": {
@@ -50,7 +50,12 @@
         "commercial_image": "Commercial image is required",
         "car_type" : "Select the car type",
         "rental_type" : "Select rental type",
-        "price" : "Price is required"
+        "price" : "Price is required",
+        "receive_date" : "Receive date is required",
+        "rentalPeriod_and_type": "The rental period and the type of rental required",
+        "car_count" : "The number of cars must be at least 1",
+        "carValid" : "Number of cars required",
+        "pay_type" : "Payment type is required"
       },
 
     "Auth": {
@@ -103,9 +108,7 @@
         "An_individual" : "An individual",
         "governmental_organization" : "Governmental organization",
         "private_company" : "Private company",
-        "verification" : "verification",
-        "receive_date" : "Receive date is required",
-        "rentalPeriod_and_type": "The rental period and the type of rental required"
+        "verification" : "verification"
     },
 
     "Home": {
@@ -221,7 +224,10 @@
         "today" : "Today",
         "from" : "From",
         "to" : "To",
-        "no_notifications" : "No notifications found"
+        "no_notifications" : "No notifications found",
+        "car_count" : "car count",
+        "order_completed_successfully" : "The order and payment were completed successfully",
+        "provider_reservation_details" : "Please go to the service provider to complete the rest of the reservation details"
     },
 
     "Cars": {
@@ -233,6 +239,21 @@
         "rental_car" : "Rental car",
         "not_available" : "Not available",
         "not_available_date" : "Not available on date",
-        "no_description" : "No description"
+        "no_description" : "No description",
+        "reservation_details" : "Reservation details",
+        "cost_day" : "Cost day",
+        "booking_cost" : "Booking cost",
+        "rental_after_discount" : "Rental price after discount",
+        "Value_Added" : "Value Added",
+        "choose_payment" : "Choose payment way",
+        "wallet" : "Wallet",
+        "electronic_payment" : "Electronic payment",
+        "complete_order" : "Complete order"
+    },
+
+    "Order": {
+        "service_provider" : "Service provider",
+        "new" : "New",
+        "in_progress" : "In progress"
     }
 }

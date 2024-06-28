@@ -1298,9 +1298,9 @@ input.p-inputtext.p-component {
       display: none;
     }
   }
-  .p-dialog-header-icons {
-    @include dir-margin-left(auto);
-  }
+  // .p-dialog-header-icons {
+  //   @include dir-margin-left(auto);
+  // }
   @media (max-width: $screen-xs) {
     width: calc(100% - 15px);
   }

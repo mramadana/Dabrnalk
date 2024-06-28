@@ -7,6 +7,7 @@
                     <img :src="carDetails.image" loading="lazy" v-if="!loading" alt="car-img" class="car-details mb-4 w-100">
 
                     <Skeleton width="100%" height="350px" class="slider-img rounded-1 mb-4" v-if="loading"></Skeleton>
+
                     <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-4">
                         <h1 class="main-title bold mb-0">فورد موستنج</h1>
                         
@@ -145,8 +146,6 @@
     
     const { carDetails } = storeToRefs(store);
 
-    const { successToast, errorToast } = toastMsg();
-
     const { car_detailshandler } = store;
 
     const { id } = useRoute().params
@@ -156,28 +155,22 @@
     const loading = ref(true);
 
     const dateAvilable = ref(false);
-    const dates = ref([]);
 
     const Getcar_details = async () => {
         loading.value = true;
         const res = await car_detailshandler(id);
-        if (res.status == "success") {
-            
-        } else {
-            errorToast(res.msg);
-        }
         loading.value = false;
     }
 
     onMounted(() => {
-        // car_details()
         Getcar_details()
     })
 
 
 </script>
 
-<style lang="scss">
+<style lang="scss" >
+
     .car-details {
         object-fit: cover;
         border-radius: 3px;
@@ -190,10 +183,10 @@
         justify-content: space-between;
         padding: 15px 10px;
         &:nth-child(odd) {
-            background-color: rgb(157 157 156 / 40%);
+            background-color: rgb(157 157 156 / 10%);
         }
         &:nth-child(even) {
-            background-color: rgb(157 157 156 / 10%);
+            background-color: rgb(157 157 156 / 40%);
         }
         .text {
             font-size: 13px;

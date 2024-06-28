@@ -129,7 +129,6 @@
         object-fit: cover;
         border-radius: 10px;
         margin-bottom: 30px;
-        border: 1px solid #262626;
     }
 
     .branch-box {

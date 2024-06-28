@@ -3,17 +3,25 @@
         <div class="row">
             <div class="col-12 col-xl-3 col-md-6 mb-5" v-for="order in orders" :key="order.id">
                 <div class="order-box">
-                    <img :src="order.car_image" loading="lazy" alt="order-img" class="order-img">
+                    <img :src="order.provider.image" loading="lazy" alt="order-img" class="order-img">
                     <div class="info">
                         <div class="head-title">
                             <h3 class="main-title normal mb-0"><span>{{ $t('Global.order_number') }}</span> : <span>{{ order.id }}</span></h3>
                             <span class="hint">{{ order.created_at }}</span>
                         </div>
-                        <h4 class="order-info">{{ order.car_name }}</h4>
+
+                        <h4 class="order-info d-flex gap-1 flex-wrap mb-0">
+                            <span>{{ $t('Order.service_provider') }}  :</span> 
+                            <span>{{ order.provider.name }}</span>
+                        </h4>
                         <div class="order-status">
                             <div class="status">
                                 <i class="fas fa-x-ray"></i>
-                                <span>{{ $t('Global.status') }}</span> : <span class="hint-status">{{ order.status_text }}</span>
+                                <span>{{ $t('Global.status') }}</span> : 
+                                <div class="hint-status">
+                                    <span v-if="order.status == 0">{{ $t('Order.new') }}</span>
+                                    <span v-if="order.status == 1">{{ $t('Order.in_progress') }}</span>
+                                </div>
                             </div>
                             <nuxt-link class="order-link custom-btn smm" :to="'/orders/orderDetails/' + order.id">
                                 {{ $t('Global.show_more') }}
@@ -78,7 +86,7 @@ export default {
                 align-items: center;
                 justify-content: space-between;
                 padding-top: 15px;
-                margin-top: 20px;
+                margin-top: 15px;
                 border-top: 1px solid #dddddd;
                 @media (max-width: 350px) {
                     flex-wrap: wrap;

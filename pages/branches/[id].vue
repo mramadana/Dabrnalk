@@ -45,6 +45,16 @@
                 </div>
             </div>
 
+            <!-- if no data -->
+            <div class="nodata d-flex justify-content-center mb-5" v-if="branchs?.length == 0 && !loading">
+                <div class="radio-content">
+                    <img  loading="lazy" src="@/assets/images/no_data.avif" alt="image" class="no-data-img car-img">
+                    <div class="no-data-text">{{ $t('Global.no_branches') }}</div>
+                </div>
+            </div>
+            
+            
+
             <nuxt-link v-if="!loading" to="/Categories" class="custom-btn md m-auto mb-4 gap-2 align-items-center">
                     {{ $t('Global.show_more') }}
             </nuxt-link>
@@ -197,7 +207,6 @@
         object-fit: cover;
         border-radius: 10px;
         margin-bottom: 30px;
-        border: 1px solid #262626;
     }
 
     .branch-box {

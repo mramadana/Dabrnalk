@@ -468,7 +468,7 @@
 
             // Get Returned Data From Store
             const res = await completeAccountHandler(fd);
-            // res.status == "success" ? successToast(res.msg) : errorToast(res.msg);
+
             if (res.status == "success") {
                 successToast(res.msg);
                 openmodal();
@@ -482,7 +482,6 @@
 
     onMounted(async () => {
         await getCountries();
-        // store.sendLatLng(lat, lng, address, selectedAddress);
     });
 
 </script>

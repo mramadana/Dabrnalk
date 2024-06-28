@@ -11,8 +11,8 @@
         "create_account" : "إنشاء حساب جديد",
         "categories_branch" : "فئات السيارات للفرع",
         "create_order" : "إنشاء طلب",
-        "my_addresses" : "عناويني"
-
+        "my_addresses" : "عناويني",
+        "complete_order": "إكمال الطلب"
     },
 
     "validation": {
@@ -52,7 +52,10 @@
         "rental_type" : "قم بتحديد نوع التاجير",
         "price" : "السعر مطلوب",
         "receive_date" : "تاريخ الإستلام مطلوب",
-        "rentalPeriod_and_type": "يجب تحديد مدة التاجير ونوع التاجير"
+        "rentalPeriod_and_type": "يجب تحديد مدة التاجير ونوع التاجير",
+        "car_count" : "يجب ان يكون عدد السيارات على الاقل 1",
+        "carValid" : "عدد السيارات مطلوب",
+        "pay_type" : "يجب تحديد طريقة الدفع"
       },
 
     "Auth": {
@@ -222,7 +225,10 @@
         "today" : "اليوم",
         "from" : "من",
         "to" : "الي",
-        "no_notifications" : "لا يوجد اشعارات"
+        "no_notifications" : "لا يوجد اشعارات",
+        "car_count" : "عدد السيارات",
+        "order_completed_successfully" : "تم إتمام الطلب والدفع بنجاح",
+        "provider_reservation_details" : "الرجاء التوجه إلى مقدم الخدمة لإكمال باقي تفاصيل الحجز"
     },
 
     "Cars": {
@@ -234,6 +240,21 @@
         "rental_car" : "إيجار السيارة",
         "not_available" : "غير متاحة",
         "not_available_date" : "غير متاحة بتاريخ",
-        "no_description" : "لا يوجد وصف"
+        "no_description" : "لا يوجد وصف",
+        "reservation_details" : "تفاصيل الحجز",
+        "cost_day" : "تكلفة اليوم",
+        "booking_cost" : "تكلفة الحجز",
+        "rental_after_discount" : "سعر الإيجار بعد الخصم",
+        "Value_Added" : "القيمة المضافة",
+        "choose_payment" : "اختيار طريقة الدفع",
+        "wallet" : "محفظة",
+        "electronic_payment" : "دفع الكتروني",
+        "complete_order" : "إتمام الطلب"
+    },
+
+    "Order": {
+        "service_provider" : "مقدم الخدمة",
+        "new" : "جديد",
+        "in_progress" : "جارى المعاينة"
     }
 }

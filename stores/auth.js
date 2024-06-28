@@ -25,8 +25,11 @@ export const useAuthStore = defineStore("auth", {
     visible: false,
     address: null,
     selectedAddress: null,
-    carDetails: null
+    carDetails: null,
+    order_enquiry_data: null
   }),
+
+
   actions: {
 
     // Sign In
@@ -190,7 +193,7 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
-    // chnage mail
+    // change mail
     async changeMailHandler(formData, currentemail, currentPasword) {
       const config = {
         headers: { Authorization: `Bearer ${this.token}` },
@@ -212,7 +215,7 @@ export const useAuthStore = defineStore("auth", {
     },
     
 
-    // Get Car Details
+    // get Car Details
     async car_detailshandler (curentID) {
       const resData = await axios.get(`car-details?car_id=${curentID}`);
       if (response(resData) === "success") {
@@ -221,7 +224,22 @@ export const useAuthStore = defineStore("auth", {
       } else {
         return { status: "error", msg: resData.data.msg };
       }
-  },
+    },
+
+
+    // get order-enquiry data
+
+    async orderEnquiry(formData) {
+      const resData = await axios.post("order-enquiry", formData);
+      if (response(resData) == "success") {
+        this.order_enquiry_data = resData.data.data;
+        return { status: "success", msg: resData.data.msg };
+      } else {
+        return { status: "error", msg: resData.data.msg };
+      }
+
+    },
+
 
     async sendLatLng(lat, lng , address , selectedAddress) {
       this.lat = Number(lat);
