@@ -226,6 +226,7 @@
         "from" : "من",
         "to" : "الي",
         "no_notifications" : "لا يوجد اشعارات",
+        "no_address" : "لا يوجد عناوين",
         "car_count" : "عدد السيارات",
         "order_completed_successfully" : "تم إتمام الطلب والدفع بنجاح",
         "provider_reservation_details" : "الرجاء التوجه إلى مقدم الخدمة لإكمال باقي تفاصيل الحجز"
@@ -255,6 +256,18 @@
     "Order": {
         "service_provider" : "مقدم الخدمة",
         "new" : "جديد",
-        "in_progress" : "جارى المعاينة"
+        "in_progress" : "جارى المعاينة",
+        "order_details" : "تفاصيل الطلب",
+        "inspection_underway" : "جاري المعاينة",
+        "rented" : "تم التأجير",
+        "delivery_location" : "موقع الاستلام",
+        "order_date" : "تاريخ الطلب",
+        "name_vehicle" : "اسم السيارة المطلوبة",
+        "cost_day" : "تكلفة اليوم",
+        "booking_cost" : "تكلفة الحجز",
+        "rental_after_discount" : "سعر الإيجار بعد الخصم",
+        "choose_payment" : "طريقة الدفع",
+        "branch" : "فرع",
+        "location" : "الموقع"
     }
 }

@@ -23,7 +23,7 @@
                                 <div class="d-flex align-items-center gap-2">
                                     <i class="far fa-clock main-disc"></i>
                                     <div>
-                                        <span class="main-disc sm">{{ $t("Global.since") }} : {{ result.created_at }}</span>
+                                        <span class="main-disc sm">{{ result.created_at }}</span>
                                         &nbsp;
                                         <span class="main-disc sm">{{ result.time }}</span>
                                     </div>

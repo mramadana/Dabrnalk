@@ -8,7 +8,7 @@
                     <div class="row">
                         <div class="col-12 col-md-8 mr-auto">
                             <div class="text-center mb-5">
-                                <img src="@/assets/images/Reset password-pana.png" loading="lazy" alt="restore-image" class="restore-image">
+                                <img src="@/assets/images/Reset-password-pana.png" loading="lazy" alt="restore-image" class="restore-image">
                             </div>
                             <div class="form-group">
                                 <label class="label">

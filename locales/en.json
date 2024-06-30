@@ -225,6 +225,7 @@
         "from" : "From",
         "to" : "To",
         "no_notifications" : "No notifications found",
+        "no_address" : "No addresses found",
         "car_count" : "car count",
         "order_completed_successfully" : "The order and payment were completed successfully",
         "provider_reservation_details" : "Please go to the service provider to complete the rest of the reservation details"
@@ -254,6 +255,17 @@
     "Order": {
         "service_provider" : "Service provider",
         "new" : "New",
-        "in_progress" : "In progress"
+        "in_progress" : "In progress",
+        "order_details" : "Order details",
+        "inspection_underway" : "Inspection underway",
+        "rented" : "Rented",
+        "order_date" : "Order date",
+        "name_vehicle" : "Name of the desired vehicle",
+        "cost_day" : "Cost day",
+        "booking_cost" : "Booking cost",
+        "rental_after_discount" : "Rental price after discount",
+        "choose_payment" : "Choose payment way",
+        "branch" : "branch",
+        "location" : "Location"
     }
 }

@@ -23,7 +23,7 @@
                                     <span v-if="order.status == 1">{{ $t('Order.in_progress') }}</span>
                                 </div>
                             </div>
-                            <nuxt-link class="order-link custom-btn smm" :to="'/orders/orderDetails/' + order.id">
+                            <nuxt-link class="order-link custom-btn smm" :to="'/orderDetails/' + order.id">
                                 {{ $t('Global.show_more') }}
                                 <i class="fas fa-chevron-left"></i>
                             </nuxt-link>

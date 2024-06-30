@@ -2,24 +2,22 @@
     <div>
         <div class="container">
             <div class="custom-width lg">
-                <h1 class="main-title bold text-center mb-5">{{ $t("Titles.my_addresses") }}</h1>
+                <h1 class="main-title bold text-center mb-5">{{ $t("Global.saved_addresses") }}</h1>
     
                 <transition-group name="fade" v-if="!loading">
                     <form>
-                        <div v-for="(result, index) in notifications" :key="result.index">
-                            <div class="layout-form sm" v-if="notifications.length">
+                        <div v-for="(single, index) in address" :key="single.index">
+                            <div class="layout-form sm" v-if="address.length">
                             <div class="notificatin-card">
                                 <div class="d-flex">
                                     <div class="text text-start">
-                                        <h1 class="main-title normal wrap_text"> {{ result.body }}</h1>
+                                        <h1 class="main-title normal wrap_text"> {{ single.title }}</h1>
                                         <div class="d-flex align-items-center gap-2">
                                             <div class="not-icon">
                                                 <i class="fas fa-map-marker-alt"></i>
                                             </div>
                                             <div>
-                                                <span class="main-disc sm"> {{ result.created_at }}</span>
-                                                &nbsp;
-                                                <span class="main-disc sm">{{ result.time }}</span>
+                                                <span class="main-disc sm"> {{ single.map_desc }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -27,7 +25,7 @@
                                 <div class="btns">
     
                                     <button type="button" class="edit-btn">
-                                        <i class="far fa-edit edit-icon" v-if="!editLoading" @click="openMapModal(index)"></i>
+                                        <i class="far fa-edit edit-icon" v-if="!editLoading" @click="editaddress(single.id)"></i>
                                         <span class="spinner-border spinner-border-sm m-0" v-if="editLoading" role="status" aria-hidden="true"></span>
                                     </button>
     
@@ -40,8 +38,8 @@
                             </div>
                         </div>
             
-                        <div v-if="!notifications.length">
-                            {{ $t("Global.no_notifications") }}
+                        <div v-if="!address.length">
+                            {{ $t("Global.no_address") }}
                         </div>
 
                         <button class="custom-btn md mr-auto mt-5">{{ $t("Auth.confirmation") }}</button>
@@ -79,10 +77,14 @@
 
         <GlobalGoogleMap
             v-model:visible="visible"
-            @closeModal="editNotification"
+            :closeModal_btn="closeModal_btn"
+            @closeModal="koko"
+            @handleClose="handleClose"
             :show_inputs="show_inputs"
             :lat="location.lat"
             :lng="location.lng"
+            :isDraggable="true"
+            :shouldUpdateData="false"
             :title= "$t('Global.current_location')"
             />
     </div>
@@ -95,6 +97,11 @@ definePageMeta({
         name: "Titles.my_addresses",
         middleware: "auth",
     })
+
+    const koko = () => {
+        visible.value = false
+        alert("a7aaaaaaaaaaaa")
+    }
 
 // success response
 const { response } = responseApi();
@@ -112,16 +119,18 @@ import { useAuthStore } from '~/stores/auth';
 
 // Store
 const store = useAuthStore();
-const { token, lat, lng } = storeToRefs(store);
+const { token } = storeToRefs(store);
 
 // loading
 const loading = ref(true);
 
+const closeModal_btn = ref(true);
+
 // delete loading
 const deleteLoading = ref(false);
 
-// notifications
-const notifications = ref([]);
+// address
+const address = ref([]);
 
 // Paginator
 const currentPage = ref(1);
@@ -133,21 +142,28 @@ const config = {
     headers: { Authorization: `Bearer ${token.value}` }
 };
 
+const handleClose = () => {
+        visible.value = false;
+    };
+
 const visible = ref(false);
-const location = ref({ lat: 30.0444, lng: 31.2357 });
-const show_inputs = ref(false);
+const location = ref({
+    lat: null,
+    lng: null
+})
+const show_inputs = ref(true);
 const currentIndex = ref(null);
 
 /**** Methods ****/
 
-// Get notifications
-const getNotifications = async () => {
+// Get address
+const getaddress = async () => {
     loading.value = true;
-    await axios.get(`notifications?page=${currentPage.value}`, config).then(res => {
+    await axios.get(`get-address?page=${currentPage.value}`, config).then(res => {
         if (response(res) == "success") {
-            notifications.value = res.data.data.notifications.data;
-            totalPage.value = res.data.data.notifications.pagination.total_items;
-            pageLimit.value = res.data.data.notifications.pagination.per_page;
+            address.value = res.data.data;
+            // totalPage.value = res.data.pagination.total_items;
+            // pageLimit.value = res.data.pagination.per_page;
         }
         loading.value = false;
     }).catch(err => {
@@ -160,16 +176,24 @@ const onPaginate = (e) => {
     loading.value = true;
     currentPage.value = e.page + 1;
     window.scrollTo(0, 0);
-    getNotifications();
+    getaddress();
 };
 
-// Remove Single Notification
-const removenotifation = async (index) => {
+// const openMapModal = (index) => {
+//     visible.value = true;
+//     currentIndex.value = index;
+//     console.log(index, "indexxxxxx");
+// }
+
+// edit single address
+
+const editaddress = async (id) => {
     loading.value = true;
-    await axios.delete(`delete-notification/${notifications.value[index].id}`, config).then(res => {
+    visible.value = true;
+    await axios.get(`single-address/${id}`, config).then(res => {
         if (response(res) == "success") {
-            notifications.value.splice(index, 1);
-            successToast(res.data.msg);
+            location.value.lat = Number(res.data.data.lat);
+            location.value.lng = Number(res.data.data.lng);
         } else {
             errorToast(res.data.msg);
         }
@@ -179,12 +203,20 @@ const removenotifation = async (index) => {
     });
 }
 
-// Edit Notification
-
-const openMapModal = (index) => {
-    visible.value = true;
-    currentIndex.value = index;
-    console.log(index, "indexxxxxx");
+// Remove Single Notification
+const removenotifation = async (index) => {
+    loading.value = true;
+    await axios.delete(`delete-notification/${address.value[index].id}`, config).then(res => {
+        if (response(res) == "success") {
+            address.value.splice(index, 1);
+            successToast(res.data.msg);
+        } else {
+            errorToast(res.data.msg);
+        }
+        loading.value = false;
+    }).catch(err => {
+        console.error(err);
+    });
 }
 
 const editNotification = () => {
@@ -203,7 +235,7 @@ let showPaginate = computed(() => {
 
 /******************* Mounted *******************/
 onMounted(async () => {
-    await getNotifications();
+    await getaddress();
 });
 
 </script>

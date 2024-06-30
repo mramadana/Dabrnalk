@@ -951,6 +951,9 @@ input.p-inputtext.p-component {
   &.lg {
     width: 800px;
   }
+  &.md {
+    width: 700px;
+  }
   @media (max-width: $screen-xs) {
     padding: 30px 20px;
   }
@@ -1669,4 +1672,25 @@ input.p-inputtext.p-component {
   text-decoration: underline;
 }
 
+.car-details {
+  object-fit: cover;
+  border-radius: 3px;
+  height: 350px;
+}
 
+.item-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 10px;
+  &:nth-child(odd) {
+      background-color: rgb(157 157 156 / 10%);
+  }
+  &:nth-child(even) {
+      background-color: rgb(157 157 156 / 40%);
+  }
+  .text {
+      font-size: 13px;
+      margin-bottom: 0;
+  }
+}

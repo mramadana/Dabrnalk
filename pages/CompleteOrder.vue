@@ -10,7 +10,7 @@
 
                     <div class="info mb-4">
 
-                        <div class="item-details" v-if="store.user.type == 2 || store.user.type == 1">
+                        <div class="item-details" v-if="user.type == 2 || user.type == 1">
                             <h6 class="text">{{ $t("Global.car_count") }}</h6>
                             <h6 class="text">{{ order_enquiry_data.cars_count }}</h6>
                         </div>

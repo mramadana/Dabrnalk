@@ -6,11 +6,10 @@
                 <div class="custom-width lg text-start">
 
                     <div class="row">
-
-                        <div class="col-12 col-md-8 mb-4 mr-auto" v-if="!store.carDetails.time.is_available">
+                        <div class="col-12 col-md-8 mb-4 mr-auto" v-if="carDetails.time.is_available == true">
                             <h1 class="custom-btn">
                                 {{ $t('Global.hours_left') }} 
-                                {{ store.carDetails.time.hours_left }} 
+                                {{ carDetails.time.hours_left }} 
                                 {{ $t('Global.until_branch_closes') }}
                             </h1>
                         </div>
@@ -74,7 +73,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12 col-md-6" v-if="store.user.type == 2 || store.user.type == 1">
+                        <div class="col-12 col-md-6" v-if="user.type == 2 || user.type == 1">
                             <div class="form-group">
                                 <label class="label">
                                     {{ $t('Global.car_count') }}

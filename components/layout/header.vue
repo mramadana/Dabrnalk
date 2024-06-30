@@ -1,7 +1,5 @@
 <template>
     <div>
-        <!-- <p>{{ store.lat }} lat</p> 
-        <p>{{ store.lng }} lng</p> -->
         <div class="defaultLayout" :class="headerClass">
             <header class="header">
                 <div class="top-header">
@@ -96,7 +94,6 @@
                                         <div class="notif-hint address-hint">
                                             {{ selectedAddress }}
                                         </div>
-                                        <div class="nof-cont" v-if="notifCount" :data-number="notifCount"></div>
                                     </div>
                                 </button>
 
@@ -106,7 +103,7 @@
                                         <span class="notif-hint">
                                             {{ $t("Global.notification") }}
                                         </span>
-                                        <div class="nof-cont" v-if="notifCount" :data-number="notifCount"></div>
+                                        <div class="nof-cont" v-if="notifCount && isSelected" :data-number="notifCount"></div>
                                     </div>
                                 </NuxtLink>
 
@@ -259,7 +256,7 @@
 
 
 <script setup>
-import Paginator from 'primevue/paginator';
+
 
     import { useAuthStore } from '~/stores/auth';
 
@@ -273,6 +270,10 @@ import Paginator from 'primevue/paginator';
     const store = useAuthStore();
 
     const { user, isLoggedIn, token, Globaldialog, lat, lng,  address, selectedAddress } = storeToRefs(store);
+
+    watch([lat, lng], ([newLat, newLng]) => {
+        location.value = { lat: newLat, lng: newLng };
+    });
 
     // Search
     const search = ref('');
@@ -306,10 +307,28 @@ import Paginator from 'primevue/paginator';
 
     const { logoutHandler, sendLatLng } = store;
 
+        // map location
+    const location = ref({
+        lat: lat.value,
+        lng: lng.value
+    });
+
+    const show_inputs = ref(false);
+    const visible = ref(false);
+
+    // start to method 
+
+    const isActive = ref(false);
+
+    watch([lat, lng], ([newLat, newLng]) => {
+        location.value = { lat: newLat, lng: newLng };
+    });
+
     // notifications
     const notifCount = ref(null);
     const logoutDialog = ref(false);
-    const isSelected = ref(true);
+    const isSelected = ref(false);
+    const isnotify = ref(false);
 
     // config
     let config = {
@@ -344,19 +363,6 @@ import Paginator from 'primevue/paginator';
         // currentLocation.value = false;
     }
 
-    // map location
-    const location = ref({
-        lat: lat.value,
-        lng: lng.value
-    });
-
-    const show_inputs = ref(false);
-    const visible = ref(false);
-
-    // start to method 
-
-    const isActive = ref(false)
-
     const addActiveClass = () => {
         isActive.value = !isActive.value
     }
@@ -371,7 +377,14 @@ import Paginator from 'primevue/paginator';
         localStorage.clear();
     }
 
-    // notifCount
+    const initializeNotificationSettings = () => {
+        if (typeof window !== 'undefined') {
+            const storedNotify = localStorage.getItem('notify');
+            if (storedNotify !== null) {
+            isSelected.value = storedNotify === 'true';
+            }
+        }
+    };
 
     // get notifications Count
     const getNotificationsCount = async () => {
@@ -388,18 +401,22 @@ import Paginator from 'primevue/paginator';
 
     const toggleNotifications = async (event) => {
         event.stopPropagation();
-
         axios.patch('switch-notify', {}, config).then(res => {
-        if (response(res) == "success") {
-                    successToast(res.data.msg);
-                    isSelected.value = res.data.data.notify
-                    localStorage.setItem('notify', isSelected.value)
-                    
-                } else {
-                    errorToast(res.data.msg)
-                }
-      })
-    }; 
+            if (response(res) == "success") {
+            successToast(res.data.msg);
+            isSelected.value = res.data.data.notify;
+            } else {
+            errorToast(res.data.msg);
+            }
+        });
+    };
+
+    // watch for changes in the route 
+    watch(isSelected, (newValue) => {
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('notify', newValue.toString());
+        }
+    });
 
     // watch token To Get The New User Data
     watch(token, async (newVal) => {
@@ -432,8 +449,8 @@ import Paginator from 'primevue/paginator';
     });
 
     onMounted( async () => {
+        initializeNotificationSettings();
        await getNotificationsCount();
-        isSelected.value = localStorage.getItem('notify');
         // sendLatLng(lat.value, lng.value);
 
     });
@@ -495,7 +512,6 @@ export default {
     
     $route(to, from) {
       // Handle the event here
-      console.log("Route changed:", to, from);
       this.handleOverlayClick();
     },
   },
@@ -517,7 +533,6 @@ export default {
         },
         shouldAddMarginBottom() {
             // Check if the current route is not the home page
-            console.log("updated is Done");
             return this.$route.path.includes("Auth") === true || this.$route.path == "/";
         },
     },

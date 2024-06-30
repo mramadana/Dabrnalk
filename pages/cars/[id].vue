@@ -11,7 +11,7 @@
                     <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-4">
                         <h1 class="main-title bold mb-0">فورد موستنج</h1>
                         
-                        <h5 class="normal pointer cl-red mb-0 decoration" v-if="!carDetails.is_available"  @click="dateAvilable = true">{{ $t("Cars.not_available") }}</h5>
+                        <h5 class="normal pointer cl-red mb-0 decoration" v-if="carDetails.is_available == false"  @click="dateAvilable = true">{{ $t("Cars.not_available") }}</h5>
                     </div>
 
                     <Skeleton width="60px" height="15px" class="rounded-2 mb-4" v-if="loading"></Skeleton>
@@ -104,7 +104,7 @@
 
         <!-- not available date dialog -->
 
-        <Dialog v-model:visible="dateAvilable" v-if="carDetails.is_available" modal class="custum_dialog_width" :draggable="false">
+        <Dialog v-model:visible="dateAvilable" v-if="carDetails.is_available == false" modal class="custum_dialog_width" :draggable="false">
                 <div class="text-center">
                     <h1 class="main-title bold mb-4">
                         {{ $t("Cars.not_available_date") }}
@@ -169,31 +169,6 @@
 
 </script>
 
-<style lang="scss" >
-
-    .car-details {
-        object-fit: cover;
-        border-radius: 3px;
-        height: 350px;
-    }
-
-    .item-details {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 15px 10px;
-        &:nth-child(odd) {
-            background-color: rgb(157 157 156 / 10%);
-        }
-        &:nth-child(even) {
-            background-color: rgb(157 157 156 / 40%);
-        }
-        .text {
-            font-size: 13px;
-            margin-bottom: 0;
-        }
-    }
-</style>
 
 <style lang="scss" scoped>
     .p-skeleton {
