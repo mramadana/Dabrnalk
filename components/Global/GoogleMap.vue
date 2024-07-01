@@ -99,8 +99,6 @@ const closeModal = () => {
     if (props.shouldUpdateData) {
         sendLatLng(center.value.lat, center.value.lng, address.value, selectedAddress.value);
     }
-    // sendLatLng(center.value.lat, center.value.lng, address.value, selectedAddress.value);
-    console.log(lat.value, lng.value);
 };
 
 // const props = defineProps(["show_inputs", "lat", "lng", "title", "current_location", "closeModal_btn", "AutoComplete", "submit_location", "isDraggable", "shouldUpdateData"]);
@@ -115,6 +113,7 @@ const closeModal = () => {
         AutoComplete: Boolean,
         submit_location: Boolean,
         isDraggable: Boolean,
+        resetTitle: Boolean,
         shouldUpdateData: {
             type: Boolean,
             default: true
@@ -125,6 +124,13 @@ const closeModal = () => {
 watch(() => [props.lat, props.lng], ([newLat, newLng]) => {
     if (typeof newLat === 'number' && typeof newLng === 'number' && isFinite(newLat) && isFinite(newLng)) {
         center.value = { lat: newLat, lng: newLng };
+    }
+}, { immediate: true });
+
+// delete title on reset
+watch(() => props.resetTitle, (newVal) => {
+    if (newVal) {
+        titleName.value = '';
     }
 }, { immediate: true });
 
@@ -158,11 +164,15 @@ function setPlace(e) {
     center.value.lng = e.geometry.location.lng();
 
     emit("updateAddress", address.value);
+    handleMapUpdate(center.value.lat, center.value.lng, address.value);
 }
 
 function getPositionmarker(e) {
     center.value.lat = e.latLng.lat();
     center.value.lng = e.latLng.lng();
+    
+    // location.value.lat = e.latLng.lat();
+    // location.value.lng = e.latLng.lng();
     getaddressfromlatlng();
 }
 
@@ -193,6 +203,7 @@ function getaddressfromlatlng() {
 
                 document.querySelector(".pac-target-input").value = results[0].formatted_address;
                 emit("updateAddress", address.value);
+                handleMapUpdate(center.value.lat, center.value.lng, address.value);
             } else {
                 address.value = "No results found";
             }
@@ -232,6 +243,15 @@ watch(() => props.current_location, (newVal) => {
     getCurrentLocatoin();
   }
 });
+
+
+// function to handle map update lat and lng
+function handleMapUpdate(newLat, newLng, newAddress) {
+    center.value = { lat: newLat, lng: newLng };
+    address.value = newAddress;
+    emit('updateAddress', { lat: newLat, lng: newLng, address: newAddress });
+}
+
 </script>
 
 

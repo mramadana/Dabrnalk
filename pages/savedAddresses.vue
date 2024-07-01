@@ -1,5 +1,6 @@
 <template>
     <div>
+        
         <div class="container">
             <div class="custom-width lg">
                 <h1 class="main-title bold text-center mb-5">{{ $t("Global.saved_addresses") }}</h1>
@@ -78,13 +79,15 @@
         <GlobalGoogleMap
             v-model:visible="visible"
             :closeModal_btn="closeModal_btn"
-            @closeModal="koko"
+            @closeModal="updateAddress"
+            @updateAddress="handleUpdateAddress"
             @handleClose="handleClose"
             :show_inputs="show_inputs"
             :lat="location.lat"
             :lng="location.lng"
             :isDraggable="true"
             :shouldUpdateData="false"
+            :reset-title="resetTitle"
             :title= "$t('Global.current_location')"
             />
     </div>
@@ -97,11 +100,6 @@ definePageMeta({
         name: "Titles.my_addresses",
         middleware: "auth",
     })
-
-    const koko = () => {
-        visible.value = false
-        alert("a7aaaaaaaaaaaa")
-    }
 
 // success response
 const { response } = responseApi();
@@ -132,6 +130,7 @@ const deleteLoading = ref(false);
 // address
 const address = ref([]);
 
+const mapAddress = ref('')
 // Paginator
 const currentPage = ref(1);
 const pageLimit = ref();
@@ -144,17 +143,28 @@ const config = {
 
 const handleClose = () => {
         visible.value = false;
-    };
+};
 
 const visible = ref(false);
+const titleName = ref('');
 const location = ref({
     lat: null,
     lng: null
 })
 const show_inputs = ref(true);
-const currentIndex = ref(null);
+const currentID = ref(null);
+const resetTitle = ref(false); 
 
 /**** Methods ****/
+
+// Paginate Function
+const onPaginate = (e) => {
+    loading.value = true;
+    currentPage.value = e.page + 1;
+    window.scrollTo(0, 0);
+    getaddress();
+};
+
 
 // Get address
 const getaddress = async () => {
@@ -171,23 +181,10 @@ const getaddress = async () => {
     });
 }
 
-// Paginate Function
-const onPaginate = (e) => {
-    loading.value = true;
-    currentPage.value = e.page + 1;
-    window.scrollTo(0, 0);
-    getaddress();
-};
-
-// const openMapModal = (index) => {
-//     visible.value = true;
-//     currentIndex.value = index;
-//     console.log(index, "indexxxxxx");
-// }
-
 // edit single address
 
 const editaddress = async (id) => {
+    currentID.value = id;
     loading.value = true;
     visible.value = true;
     await axios.get(`single-address/${id}`, config).then(res => {
@@ -202,6 +199,41 @@ const editaddress = async (id) => {
         console.error(err);
     });
 }
+
+// الفانكشن دى عشان تسمع التحديثات اللى بتتم على الماب وتاخد الاحداثيات الجديده , by (Ramadan)
+
+const handleUpdateAddress = (newData) => {
+    const { lat, lng, address } = newData;
+    location.value.lat = lat;
+    location.value.lng = lng;
+    mapAddress.value = address;
+};
+
+const updateAddress = async (data) => {
+    loading.value = true;
+    titleName.value = data;
+    const fd = new FormData();
+    fd.append('lat', Number(location.value.lat));
+    fd.append('lng', Number(location.value.lng));
+    fd.append('map_desc', mapAddress.value);
+    fd.append('title', titleName.value);
+    console.log('Submitting lat, lng:', +location.value.lat, +location.value.lng); // Debugging
+    await axios.post(`update-address/${currentID.value}?_method=put`, fd, config).then(res => {
+        if (response(res) == "success") {
+            successToast(res.data.msg);
+            visible.value = false;
+            resetTitle.value = true;
+            getaddress();
+        } else {
+            errorToast(res.data.msg);
+        }
+        loading.value = false;
+    }).catch(err => {
+        console.error(err);
+    });
+    resetTitle.value = false;
+}
+       
 
 // Remove Single Notification
 const removenotifation = async (index) => {
@@ -219,10 +251,6 @@ const removenotifation = async (index) => {
     });
 }
 
-const editNotification = () => {
-    visible.value = false;
-    console.log(currentIndex.value, "111111");
-}
 
 
 /******************* Computed *******************/
@@ -254,6 +282,8 @@ onMounted(async () => {
             justify-content: center;
             font-size: 13px;
             color: #fff;
+            width: 25px;
+            height: 25px;
         }
     }
     .wrap_text {
