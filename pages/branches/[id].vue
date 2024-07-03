@@ -39,7 +39,7 @@
             <div class="row">
                 <div class="col-12 col-xl-3 col-md-6 mb-5" v-for="branch in branchs" :key="branch.id">
                     <nuxt-link to="/cars" class="branch-box" @click="saveFormData(branch.id)">
-                        <img src="@/assets/images/branche-img.png" loading="lazy" alt="branch-image" class="branch-image">
+                        <img :src="branch.image" loading="lazy" alt="branch-image" class="branch-image">
                         <h3 class="branch-name">{{ branch.name }}</h3>
                     </nuxt-link>
                 </div>
@@ -55,8 +55,8 @@
             
             
 
-            <nuxt-link v-if="!loading" to="/Categories" class="custom-btn md m-auto mb-4 gap-2 align-items-center">
-                    {{ $t('Global.show_more') }}
+            <nuxt-link v-if="!loading && branchs?.length" to="/Categories" class="custom-btn md m-auto mb-4 gap-2 align-items-center">
+                {{ $t('Global.show_more') }}
             </nuxt-link>
         </div>
 
@@ -69,11 +69,14 @@
                     </h1>
                 </div>
 
-                <div class="time-header">
+                
+                <div class="time-header" v-if="timings?.length">
                     <h6>{{ $t("Global.today") }}</h6>
                     <h6>{{ $t("Global.from") }}</h6>
                     <h6>{{ $t("Global.to") }}</h6>
                 </div>
+
+                <h4 class="main-title text-center mb-4 mt-4" v-else>{{ $t("Order.no_appointments") }}</h4>
 
                 <div class="parent-box" v-if="!loading">
                     <div class="time-body" v-for="time in timings" :key="time.id">
@@ -92,6 +95,15 @@
                 </div>
     
 
+        </Dialog>
+
+        <!-- if no lat and lng -->
+        <Dialog v-model:visible="emptyLocation" modal class="custum_dialog_width" :draggable="false">
+            <div class="text-center">
+                <h1 class="main-title bold">
+                    {{ $t("Order.location_determined") }}
+                </h1>
+            </div>
         </Dialog>
 
         <!-- google map component -->
@@ -121,7 +133,7 @@
     const closeModal_btn = ref(true);
     const AutoComplete = ref(true);
     const submit_location = ref(true);
-
+    const emptyLocation = ref(false);
     // response
     const { response } = responseApi();
 
@@ -152,7 +164,12 @@
     const lng = ref(null);
     
     const openMapModal = () => {
-        visible.value = true;
+        if(lat.value == 0 || lng.value == 0) {
+            emptyLocation.value = true;
+        } else {
+
+            visible.value = true;
+        }
     };
     const handleClose = () => {
         visible.value = false;

@@ -35,6 +35,7 @@
                         :placeholder="$t('Global.search_here')"
                         @place_changed="setPlace"
                         class="search_here main_input"
+                        :value="address"
                     >
                     </GMapAutocomplete>
                 </div>
@@ -78,12 +79,38 @@ const store = useAuthStore();
 const { sendLatLng } = store;
 import markerImage from "@/assets/images/marker.png";
 
+
+// props
+
+const props = defineProps({
+        show_inputs: Boolean,
+        lat: Number,
+        lng: Number,
+        title: String,
+        current_location: Boolean,
+        closeModal_btn: Boolean,
+        AutoComplete: Boolean,
+        submit_location: Boolean,
+        isDraggable: Boolean,
+        resetTitle: Boolean,
+        CurrentTitle: String,
+        mapAddress: String,
+        shouldUpdateData: {
+            type: Boolean,
+            default: true
+        }
+    });
+
+
+
 // refs
-const titleName = ref('');
+
+const address = ref(props.mapAddress);
+const titleName = ref(props.CurrentTitle);
 const selectedAddress = ref(null);
 const lat = ref(null);
 const lng = ref(null);
-const address = ref('');
+// const address = ref('');
 const center = ref({ lat: 24.7135517, lng: 46.6752957 });
 
 const emit = defineEmits(["updateAddress"]);
@@ -103,23 +130,6 @@ const closeModal = () => {
 
 // const props = defineProps(["show_inputs", "lat", "lng", "title", "current_location", "closeModal_btn", "AutoComplete", "submit_location", "isDraggable", "shouldUpdateData"]);
 
-    const props = defineProps({
-        show_inputs: Boolean,
-        lat: Number,
-        lng: Number,
-        title: String,
-        current_location: Boolean,
-        closeModal_btn: Boolean,
-        AutoComplete: Boolean,
-        submit_location: Boolean,
-        isDraggable: Boolean,
-        resetTitle: Boolean,
-        shouldUpdateData: {
-            type: Boolean,
-            default: true
-        }
-    });
-
 // watch props changes to update center
 watch(() => [props.lat, props.lng], ([newLat, newLng]) => {
     if (typeof newLat === 'number' && typeof newLng === 'number' && isFinite(newLat) && isFinite(newLng)) {
@@ -127,10 +137,22 @@ watch(() => [props.lat, props.lng], ([newLat, newLng]) => {
     }
 }, { immediate: true });
 
+watch(
+    () => props.CurrentTitle,
+    (newVal) => {
+        titleName.value = newVal;
+    },
+    { immediate: true }
+);
+
+watch(() => props.mapAddress, (newVal) => {
+    address.value = newVal;
+}, { immediate: true });
+
 // delete title on reset
 watch(() => props.resetTitle, (newVal) => {
     if (newVal) {
-        titleName.value = '';
+        titleName.value = newVal;
     }
 }, { immediate: true });
 

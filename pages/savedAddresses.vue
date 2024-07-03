@@ -1,6 +1,6 @@
 <template>
     <div>
-        
+
         <div class="container">
             <div class="custom-width lg">
                 <h1 class="main-title bold text-center mb-5">{{ $t("Global.saved_addresses") }}</h1>
@@ -25,13 +25,13 @@
                                 </div>
                                 <div class="btns">
     
-                                    <button type="button" class="edit-btn">
-                                        <i class="far fa-edit edit-icon" v-if="!editLoading" @click="editaddress(single.id)"></i>
+                                    <button type="button" class="edit-btn" @click="editaddress(single.id)">
+                                        <i class="far fa-edit edit-icon" v-if="!editLoading"></i>
                                         <span class="spinner-border spinner-border-sm m-0" v-if="editLoading" role="status" aria-hidden="true"></span>
                                     </button>
     
-                                    <button class="delete-btn">
-                                        <i class="far fa-trash-alt trash-icon" v-if="!deleteLoading" @click="removenotifation(index)"></i>
+                                    <button class="delete-btn" @click="removeAdress(single.id, index)">
+                                        <i class="far fa-trash-alt trash-icon" v-if="!deleteLoading"></i>
                                         <span class="spinner-border spinner-border-sm m-0" v-if="deleteLoading" role="status" aria-hidden="true"></span>
                                     </button>
                                 </div>
@@ -39,11 +39,14 @@
                             </div>
                         </div>
             
-                        <div v-if="!address.length">
+                        <div class="layout-form sm justify-content-center" v-if="!address.length">
                             {{ $t("Global.no_address") }}
                         </div>
 
-                        <button class="custom-btn md mr-auto mt-5">{{ $t("Auth.confirmation") }}</button>
+                        <button type="button" class="custom-btn md mr-auto mt-5" @click="addAddress">
+                            {{ $t("Order.add_address") }}
+                            <span class="spinner-border spinner-border-sm" v-if="loading" role="status" aria-hidden="true"></span>
+                        </button>
 
                     </form>
                     
@@ -88,8 +91,15 @@
             :isDraggable="true"
             :shouldUpdateData="false"
             :reset-title="resetTitle"
+            :current_location="currentLocation"
             :title= "$t('Global.current_location')"
+            :CurrentTitle="titleName"
+            :mapAddress="mapAddress"
             />
+
+            <!-- :title= "$t('Global.current_location')"
+
+            :title="titleName" -->
     </div>
 </template>
 
@@ -135,7 +145,7 @@ const mapAddress = ref('')
 const currentPage = ref(1);
 const pageLimit = ref();
 const totalPage = ref();
-
+const currentLocation = ref(false);
 // config
 const config = {
     headers: { Authorization: `Bearer ${token.value}` }
@@ -165,6 +175,32 @@ const onPaginate = (e) => {
     getaddress();
 };
 
+// الفانكشن دى عشان تسمع التحديثات اللى بتتم على الماب وتاخد الاحداثيات الجديده , by (Ramadan)
+
+const handleUpdateAddress = (newData) => {
+    const { lat, lng, address } = newData;
+    location.value.lat = lat;
+    location.value.lng = lng;
+    mapAddress.value = address;
+};
+
+const addAddressStatus = ref(false)
+
+// Add address
+
+const addAddress = () => {
+    visible.value = true;
+    addAddressStatus.value = true;
+
+    // delete title name when i add new title name
+    titleName.value = '';
+    
+    // Set current location
+    setTimeout(() => {
+        currentLocation.value = true;
+    }, 200);
+}
+        
 
 // Get address
 const getaddress = async () => {
@@ -184,13 +220,19 @@ const getaddress = async () => {
 // edit single address
 
 const editaddress = async (id) => {
+    addAddressStatus.value = false
     currentID.value = id;
     loading.value = true;
     visible.value = true;
+    titleName.value = '';
     await axios.get(`single-address/${id}`, config).then(res => {
         if (response(res) == "success") {
             location.value.lat = Number(res.data.data.lat);
             location.value.lng = Number(res.data.data.lng);
+            if(!addAddressStatus.value){
+                titleName.value = res.data.data.title;
+                mapAddress.value = res.data.data.map_desc;
+            }
         } else {
             errorToast(res.data.msg);
         }
@@ -200,16 +242,11 @@ const editaddress = async (id) => {
     });
 }
 
-// الفانكشن دى عشان تسمع التحديثات اللى بتتم على الماب وتاخد الاحداثيات الجديده , by (Ramadan)
-
-const handleUpdateAddress = (newData) => {
-    const { lat, lng, address } = newData;
-    location.value.lat = lat;
-    location.value.lng = lng;
-    mapAddress.value = address;
-};
+// Update Address
 
 const updateAddress = async (data) => {
+    const url = addAddressStatus.value ? 'create-address' : `update-address/${currentID.value}?_method=put`;
+    
     loading.value = true;
     titleName.value = data;
     const fd = new FormData();
@@ -218,7 +255,7 @@ const updateAddress = async (data) => {
     fd.append('map_desc', mapAddress.value);
     fd.append('title', titleName.value);
     console.log('Submitting lat, lng:', +location.value.lat, +location.value.lng); // Debugging
-    await axios.post(`update-address/${currentID.value}?_method=put`, fd, config).then(res => {
+    await axios.post(url, fd, config).then(res => {
         if (response(res) == "success") {
             successToast(res.data.msg);
             visible.value = false;
@@ -234,14 +271,14 @@ const updateAddress = async (data) => {
     resetTitle.value = false;
 }
        
-
-// Remove Single Notification
-const removenotifation = async (index) => {
+// Remove Single Address
+const removeAdress = async (id, index) => {
     loading.value = true;
-    await axios.delete(`delete-notification/${address.value[index].id}`, config).then(res => {
+    await axios.delete(`delete-address/${id}`, config).then(res => {
         if (response(res) == "success") {
-            address.value.splice(index, 1);
             successToast(res.data.msg);
+            // address.value.splice(index, 1);
+            getaddress();
         } else {
             errorToast(res.data.msg);
         }
@@ -259,7 +296,6 @@ let showPaginate = computed(() => {
 });
 
 
-/******************* Watch *******************/
 
 /******************* Mounted *******************/
 onMounted(async () => {
@@ -282,8 +318,8 @@ onMounted(async () => {
             justify-content: center;
             font-size: 13px;
             color: #fff;
-            width: 25px;
-            height: 25px;
+            width: 27px;
+            height: 27px;
         }
     }
     .wrap_text {

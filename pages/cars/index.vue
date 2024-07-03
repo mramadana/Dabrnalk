@@ -20,7 +20,6 @@
                         <img :src="car.image" loading="lazy" alt="branch-image" class="branch-image">
                         <div>
                             <h4 class="main-title normal bold">{{ car.name }}</h4>
-                            <h6 class="cl-red main-disc">متوفر</h6>
                             <h6 class="cl-red main-disc">{{ car.disc }}</h6>
                             
                             <div class="normal bold d-flex">

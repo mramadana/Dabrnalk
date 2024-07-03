@@ -268,6 +268,11 @@
         "rental_after_discount" : "سعر الإيجار بعد الخصم",
         "choose_payment" : "طريقة الدفع",
         "branch" : "فرع",
-        "location" : "الموقع"
+        "location" : "الموقع",
+        "add_address" : "إضافة عنوان",
+        "order_cancelled" : "تم الغاء الطلب من مقدم الخدمة اثناء معاينة السيارة ..",
+        "time_limit" : "تم تخطي الوقت المسموح لإتمام الطلب.",
+        "no_appointments" : "لا يوجد مواعيد",
+        "location_determined" : "لم يتم تحديد الموقع بعد"
     }
 }

@@ -1,19 +1,19 @@
 <template>
 
     <div>
-
         <div class="container">
             <div class="layout-form custom-width md text-start">
-                <ul class="steps">
+                <!-- steps for order -->
+                <ul class="steps" v-if="orderStatus !== 2 && orderStatus !== 3">
                     
-                    <li :class="{ 'step-item': true }" v-if="!rentalOptionCheck == 1 || ordertype == 0">
+                    <li :class="{ 'step-item': true, 'active': orderStatus == 1 || orderStatus == 4 }">
                         <div class="icon-done">
                         <i class="fas fa-check icon"></i>
                         </div>
                         <span class="progress-label"> {{ $t("Order.inspection_underway") }} </span>
                     </li>
                     
-                    <li :class="{ 'step-item': true, 'active': orderStatus == 2}">
+                    <li :class="{ 'step-item': true, 'active': orderStatus == 4 }">
                         <div class="icon-done">
                         <i class="fas fa-check icon"></i>
                         </div>
@@ -22,6 +22,12 @@
 
                 </ul>
 
+                <!-- show this element , if order is canceled -->
+
+                <h4 class="main-title normal mb-5 bg-red cancled" v-if="orderStatus == 3 || orderStatus == 2">
+                    <span v-if="orderStatus == 3">{{ $t("Order.order_cancelled") }}</span>
+                    <span v-if="orderStatus == 2">{{ $t("Order.time_limit") }}</span>
+                </h4>
 
                 <h1 class="main-title normal mb-4">{{ $t("Order.order_details") }}</h1>
 
@@ -202,7 +208,7 @@ definePageMeta({
     const loading = ref(true);
     const orderData = ref({});
     
-    const orderStatus = ref(0);
+    const orderStatus = ref(1);
     
     const closeModal_btn = ref(true);
     const AutoComplete = ref(true);
@@ -267,6 +273,13 @@ definePageMeta({
             object-fit: cover;
             border-radius: 5px;
         }
+    }
+
+    .cancled {
+        text-align: center;
+        padding: 15px;
+        color: #fff;
+        border-radius: 2px;
     }
 </style>
 

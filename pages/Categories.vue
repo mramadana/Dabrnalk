@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-12 col-xl-3 col-md-6 mb-5" v-for="category in categories" :key="category.id">
                     <nuxt-link to="/cars" class="branch-box" @click="saveFormData(category.id)">
-                        <img src="@/assets/images/branche-img.png" loading="lazy" alt="branch-image" class="branch-image">
+                        <img :src="category.image" loading="lazy" alt="branch-image" class="branch-image">
                         <h3 class="branch-name">{{ category.name }}</h3>
                     </nuxt-link>
                 </div>

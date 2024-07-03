@@ -11,7 +11,7 @@
                     <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-4">
                         <h1 class="main-title bold mb-0">فورد موستنج</h1>
                         
-                        <h5 class="normal pointer cl-red mb-0 decoration" v-if="carDetails.is_available == false"  @click="dateAvilable = true">{{ $t("Cars.not_available") }}</h5>
+                        <h5 class="normal pointer cl-red mb-0 decoration" v-if="carDetails?.is_available == false"  @click="dateAvilable = true">{{ $t("Cars.not_available") }}</h5>
                     </div>
 
                     <Skeleton width="60px" height="15px" class="rounded-2 mb-4" v-if="loading"></Skeleton>
@@ -19,7 +19,7 @@
                     <h4 class="main-title normal mb-3">{{ $t('Global.desc_car') }}</h4>
 
                     <div class="main-disc custom-desc">
-                        <p v-if="carDetails.description && !loading">{{ carDetails.description }}</p>
+                        <p v-if="carDetails?.description && !loading">{{ carDetails.description }}</p>
                         <p v-else>{{ $t('Cars.no_description') }}</p>
                     </div>
 
@@ -104,7 +104,7 @@
 
         <!-- not available date dialog -->
 
-        <Dialog v-model:visible="dateAvilable" v-if="carDetails.is_available == false" modal class="custum_dialog_width" :draggable="false">
+        <Dialog v-model:visible="dateAvilable" v-if="carDetails?.is_available == false" modal class="custum_dialog_width" :draggable="false">
                 <div class="text-center">
                     <h1 class="main-title bold mb-4">
                         {{ $t("Cars.not_available_date") }}

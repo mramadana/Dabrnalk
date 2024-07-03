@@ -266,6 +266,11 @@
         "rental_after_discount" : "Rental price after discount",
         "choose_payment" : "Choose payment way",
         "branch" : "branch",
-        "location" : "Location"
+        "location" : "Location",
+        "add_address" : "Add address",
+        "order_cancelled" : "..The order was cancelled by the service provider while inspecting the car",
+        "time_limit" : ".The time allowed to complete the request has been exceeded",
+        "no_appointments" : "There are no appointments",
+        "location_determined" : "The location has not been determined yet"
     }
 }
