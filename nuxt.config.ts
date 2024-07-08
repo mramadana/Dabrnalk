@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   app: {
     pageTransition: { name: 'layout', mode: 'out-in' },
     head: {
-      title: "Amyal",
+      title: "Dbrnak",
       charset: "utf-8",
       viewport: "width=device-width, initial-scale=1",
       htmlAttrs: { lang: "ar", class: "html_direction" },
