@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12 col-xl-3 col-md-6 mb-5" v-for="order in orders" :key="order.id">
                 <div class="order-box">
-                    <img :src="order.provider.image" loading="lazy" alt="order-img" class="order-img">
+                    <img src="@/assets/images/order-img.jpg" loading="lazy" alt="order-img" class="order-img">
                     <div class="info">
                         <div class="head-title">
                             <h3 class="main-title normal mb-0"><span>{{ $t('Global.order_number') }}</span> : <span>{{ order.id }}</span></h3>
@@ -21,6 +21,8 @@
                                 <div class="hint-status">
                                     <span v-if="order.status == 0">{{ $t('Order.new') }}</span>
                                     <span v-if="order.status == 1">{{ $t('Order.in_progress') }}</span>
+                                    <span class="cl-red" v-if="order.status == 3 || order.status == 5">{{ $t('Order.canceled') }}</span>
+                                    <span v-if="order.status == 4">{{ $t('Titles.finished') }}</span>
                                 </div>
                             </div>
                             <nuxt-link class="order-link custom-btn smm" :to="'/orderDetails/' + order.id">
@@ -61,7 +63,7 @@ export default {
             width: 100%;
             height: 128px;
             object-fit: cover;
-            border-radius: 10px;
+            border-radius: 4px;
             margin-bottom: 12px;
             @media (max-width: 768px) {
                 margin-inline-end: 0;

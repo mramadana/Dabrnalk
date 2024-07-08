@@ -4,7 +4,7 @@
             <div class="layout-form custom-width md text-start">
                 <!-- steps for order -->
 
-                <ul class="steps" v-if="orderStatus !== 2 && orderStatus !== 3 && !loading">
+                <ul class="steps" v-if="orderStatus !== 5 && orderStatus !== 3 && !loading">
                     
                     <li :class="{ 'step-item': true, 'active': orderStatus == 1 || orderStatus == 4 }">
                         <div class="icon-done">
@@ -28,19 +28,14 @@
                     <skeleton shape="circle" size="2rem" class="customer-img" />
                 </div>
 
-
                 <!-- show this element , if order is canceled -->
 
-                <h4 class="main-title normal mb-5 bg-red cancled" v-if="orderStatus == 3 || orderStatus == 2">
+                <h4 class="main-title normal mb-5 bg-red cancled" v-if="orderStatus == 3 || orderStatus == 5">
                     <span v-if="orderStatus == 3">{{ $t("Order.order_cancelled") }}</span>
-                    <span v-if="orderStatus == 2">{{ $t("Order.time_limit") }}</span>
+                    <span v-if="orderStatus == 5">{{ $t("Order.time_limit") }}</span>
                 </h4>
 
-
-
                 <h1 class="main-title normal mb-4">{{ $t("Order.order_details") }}</h1>
-
-
 
                 <div class="info mb-5">
 

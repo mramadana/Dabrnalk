@@ -306,7 +306,6 @@
 
     const visibleDialog = () => {
         visible.value = true;
-        console.log(address.value, "a7ooooooooooooooooooooo");
     }
 
     const closeModal_btn = ref(true);

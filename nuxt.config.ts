@@ -13,7 +13,7 @@ export default defineNuxtConfig({
       viewport: "width=device-width, initial-scale=1",
       htmlAttrs: { lang: "ar", class: "html_direction" },
       meta: [
-        { name: "description", content: "موقع اميال لتاجير السيارات" },
+        { name: "description", content: "موقع دبرناك لحجز وايجار السيارات" },
       ],
       link: [
         { rel: "icon", type: "image/x-icon", href: "/black-logo.png" },

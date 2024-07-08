@@ -143,7 +143,11 @@
         "genders" : "الجنس",
         "no_available_options" : "لا توجد خيارات متاحة",
         "emptyFilterMessage" : "لا توجد نتائج متاحة",
-        "read_more" : "اقرأ المزيد"
+        "read_more" : "اقرأ المزيد",
+        "available_cars" : "أحدث السيارات متوفرة على مدار الساعة",
+        "experience_car" : "خبرة في المجال لأكثر من 20 عام",
+        "available_models" : "متوفر لدينا جميع أنواع الموديلات",
+        "download_application" : "حمل تطبيق دبرناك الأن"
     },
 
     "Global": {
@@ -274,10 +278,11 @@
         "branch" : "فرع",
         "location" : "الموقع",
         "add_address" : "إضافة عنوان",
-        "order_cancelled" : "تم الغاء الطلب من مقدم الخدمة اثناء معاينة السيارة ..",
+        "order_cancelled" : "تم الغاء الطلب من مقدم الخدمة اثناء معاينة السيارة .",
         "time_limit" : "تم تخطي الوقت المسموح لإتمام الطلب.",
         "no_appointments" : "لا يوجد مواعيد",
         "location_determined" : "لم يتم تحديد الموقع بعد",
-        "car_owner" : "دبرناك"
+        "car_owner" : "دبرناك",
+        "canceled" : "ملغي"
     }
 }

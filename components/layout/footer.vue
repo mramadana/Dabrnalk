@@ -8,7 +8,7 @@
                 <NuxtLink to="/" class="footer-logo">
                   <img src="@/assets/images/logo.png" alt="logo" loading="lazy" />
                 </NuxtLink>
-                <p class="color-wh normal mb-0">هنا نص يمكن ان يستبدل هنا نص يمكن ان يستبدل هنا نص يمكن ان يستبدل هنا نص يمكن ان يستبدل هنا نص يمكن ان يستبدل</p>
+                <p class="color-wh normal mb-0">{{ foot_desc }}</p>
               </div>
             </div>
   
@@ -54,10 +54,10 @@
                 <div class="with-shape"></div>
                 <div class="links">
                   
-                  <NuxtLink to="" class="link btn-app">
+                  <NuxtLink :to="android_link" class="link btn-app">
                     <img src="@/assets/images/google-paly.png" loading="lazy" alt="google-img" />
                   </NuxtLink>
-                  <NuxtLink to="" class="link btn-app">
+                  <NuxtLink :to="apple_link" class="link btn-app">
                     <img src="@/assets/images/app-store.png" loading="lazy" alt="app-store"/>
                   </NuxtLink>
                 </div>
@@ -86,8 +86,19 @@
   
   <script setup>
   import { ref } from 'vue';
+
+  const foot_desc = ref("");
+
+  const android_link = ref("");
+  const apple_link = ref("");
   
   const activeIndex = ref(null);
+
+  // response
+  const { response } = responseApi();
+
+  // axios
+  const axios = useApi();
   
   const handleFootTitleClick = (index) => {
     const windowWidth = window.innerWidth;
@@ -99,6 +110,15 @@
       }
     }
   };
+
+
+
+
+  onMounted(() => {
+    foot_desc.value = localStorage.getItem('footer_desc');
+    android_link.value = localStorage.getItem('android_link');
+    apple_link.value = localStorage.getItem('apple_link');
+  })
 
   
   </script>

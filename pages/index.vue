@@ -7,7 +7,7 @@
             <div class="container">
 
                 <!-- start to who are we -->
-                <HomeWhoAreWe :WeAreWe="WeAreWe" />
+                <HomeWhoAreWe :WeAreWe="WeAreWe" :loading="loading"/>
 
                 <!-- start to Branches shape  -->
                 <div class="footer-shape position-relative mb-5">
@@ -29,7 +29,7 @@
             </div>
 
             <!-- start to appStore -->
-            <HomeAppStore />
+            <HomeAppStore :banner_home="banner_home" :loading="loading" />
     
         </main>
     </div>
@@ -62,35 +62,15 @@ const { t } = useI18n({ useScope: 'global' });
 
 const sliderHome = ref([]);
 
-const WeAreWe = ref({
-    description: 'ssssssiubddnfmv djbhds',
-    desc1: '.أحدث السيارات متوفرة على مدار الساعة',
-    desc2: '.أحدث السيارات متوفرة على مدار الساعة',
-    desc3: '.أحدث السيارات متوفرة على مدار الساعة',
-});
+const WeAreWe = ref({});
 
 const branches = ref([]);
 
+const banner_home = ref({});
+
+const footer_desc = ref('');
+
 // start to get Home Data
-
-// const getHome = async () => {
-//     loading.value = true;
-//   await axios.get(`home?lat=${lat.value}&lng=${lng.value}`).then(res => {
-//     if (response(res) == "success") {
-//        sliderHome.value = res.data.data.sliders;
-//        branches.value = res.data.data.branches;
-//     }
-//     loading.value = false;
-//   }).catch(err => console.log(err));
-// };
-
-
-
-
-
-
-
-
 
 const getHome = async () => {
   loading.value = true;
@@ -125,6 +105,11 @@ const fetchHomeData = async (latitude, longitude) => {
     if (response(res) == "success") {
       sliderHome.value = res.data.data.sliders;
       branches.value = res.data.data.branches;
+      WeAreWe.value = res.data.data.about;
+      banner_home.value = res.data.data.banner;
+      localStorage.setItem("footer_desc", res.data.data.footer_desc);
+      localStorage.setItem("apple_link", res.data.data.banner.apple_link);
+      localStorage.setItem("android_link", res.data.data.banner.android_link);
     }
     loading.value = false;
   }).catch(err => console.log(err));

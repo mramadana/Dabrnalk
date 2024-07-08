@@ -143,7 +143,11 @@
         "genders" : "Genders",
         "no_available_options" : "No available options",
         "emptyFilterMessage" : "No results found",
-        "read_more" : "Read more"
+        "read_more" : "Read more",
+        "available_cars" : "The latest cars are available around the clock",
+        "experience_car" : "Experience in the field for more than 20 years",
+        "experience_driver" : "We have all types of models available",
+        "download_application" : "Download Dbrnak app now"
     },
 
     "Global": {
@@ -272,10 +276,11 @@
         "branch" : "branch",
         "location" : "Location",
         "add_address" : "Add address",
-        "order_cancelled" : "..The order was cancelled by the service provider while inspecting the car",
+        "order_cancelled" : ".The order was cancelled by the service provider while inspecting the car",
         "time_limit" : ".The time allowed to complete the request has been exceeded",
         "no_appointments" : "There are no appointments",
         "location_determined" : "The location has not been determined yet",
-        "car_owner" : "Dbrnak"
+        "car_owner" : "Dbrnak",
+        "canceled" : "Canceled"
     }
 }

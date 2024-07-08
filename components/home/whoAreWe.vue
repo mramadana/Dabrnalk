@@ -12,25 +12,25 @@
                     {{ $t("Home.whoarewe") }}
                 </h1>
 
-                <p class="main-text mb-4">{{ WeAreWe.description }}</p>
+                <p class="main-text mb-4" v-if="WeAreWe?.length">{{ WeAreWe }}</p>
+
+                <div v-if="loading">
+                    <Skeleton class="rounded-2 mb-4" width="80%" height="15px"></Skeleton>
+                </div>
 
                 <div class="weare-info mb-5">
                     <div class="itme-we-are">
                         <div class="hint"><i class="fas fa-check"></i></div>
-                        <p class="main-disc" v-html="WeAreWe.desc1"></p>
+                        <p class="main-disc" v-html="WeAreDesc.desc1"></p>
                     </div>
                     <div class="itme-we-are">
                         <div class="hint"><i class="fas fa-check"></i></div>
-                        <p class="main-disc" v-html="WeAreWe.desc2"></p>
+                        <p class="main-disc" v-html="WeAreDesc.desc2"></p>
                     </div>
                     <div class="itme-we-are">
                         <div class="hint"><i class="fas fa-check"></i></div>
-                        <p class="main-disc" v-html="WeAreWe.desc3"></p>
+                        <p class="main-disc" v-html="WeAreDesc.desc3"></p>
                     </div>
-                </div>
-
-                <div class="d-flex">
-                    <NuxtLink to="/about" class="custom-btn sm">{{ $t("Home.read_more") }}</NuxtLink>
                 </div>
             </div>
         </div>
@@ -38,10 +38,28 @@
 </template>
 
 <script setup>
-    const defineProps = defineProps({
-        WeAreWe: Object,
-        required: true
-    })
+
+    const props = defineProps({
+        WeAreWe: {
+            type: Object,
+            required: true
+        },
+        loading: {
+            type: Boolean,
+            default: false,
+        },
+    });
+
+    import { useI18n } from 'vue-i18n';
+
+    const { t } = useI18n({ useScope: 'global' });
+
+
+    const WeAreDesc = {
+        desc1: t("Home.available_cars"),
+        desc2: t("Home.experience_car"),
+        desc3: t("Home.available_models")
+    }
 </script>
 
 <style lang="scss" scoped>
