@@ -10,8 +10,7 @@
 
                             <div class="form-group">
                                 <label class="label">
-                                    {{ $t('Auth.mobile_number') }}
-                                    <span class="hint-red">*</span>
+                                    {{ $t('Global.new_phone') }}
                                 </label>
                                 <div class="with_cun_select">
                                     <div class="main_input">
@@ -61,7 +60,6 @@
                             <div class="form-group">
                                 <label class="label">
                                     {{ $t('Auth.password') }}
-                                    <span class="hint-red">*</span>
                                 </label>
                                 <div class="main_input with_icon">
                                     <input :type="inputType" name="password" class="custum-input-icon validInputs" valid="password" :placeholder=" $t('Auth.please_enter_password') ">
@@ -197,49 +195,3 @@
     });
 </script>
 
-<!-- <script>
-import dropdown_img from '@/assets/images/Flag.webp';
-import dropdown_img_1 from '@/assets/images/messi.gif';
-
-export default {
-    
-    data() {
-        return {
-            selectedCountry: {
-                    key: "+966",
-                    code: "SA",
-                    image: dropdown_img,
-            },
-            countries: [
-                {
-                key: "+966",
-                code: "SA",
-                image: dropdown_img_1,
-                },
-                {
-                key: "+20",
-                code: "Eg",
-                image: dropdown_img_1,
-                },
-            ],
-            passwordVisible: {
-                definitelyNewPassword: false,
-            }
-        }
-    },
-
-    methods: {
-        togglePasswordVisibility(input) {
-            this.passwordVisible[input] = !this.passwordVisible[input];
-        },
-
-        inputType(input) {
-            return this.passwordVisible[input] ? 'text' : 'password';
-        },
-
-        submitData() {
-            this.$router.push('/mobileActivateCode');
-        }
-    }
-}
-</script> -->

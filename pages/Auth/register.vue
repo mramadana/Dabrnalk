@@ -39,7 +39,7 @@
                                         </label>
                                         <div class="main_input">
                                             <i class="fas fa-user sm-icon"></i>
-                                            <input type="text" class="custum-input-icon validInputs" valid="organization_name" name="organization_name" v-model="name" :placeholder="$t('Auth.special_sector')">
+                                            <input type="text" class="custum-input-icon validInputs" valid="organization_name" name="organization_name" v-model="organization_name" :placeholder="$t('Auth.special_sector')">
                                         </div>
                                     </div>
                                 </div>
@@ -234,7 +234,7 @@
    const address = ref("");
 
    const handleUpdateAddress = (newAddress) => {
-        address.value = newAddress;
+        location.value = newAddress;
         console.log('Updated address:', newAddress);
     };
 
@@ -244,7 +244,7 @@
         visible.value = true;
         setTimeout(() => {
             currentLocation.value = true;
-        }, 100);
+        }, 400);
     }
 
     // import flatpicker
@@ -282,9 +282,9 @@
     const closeModal = () => {
         loading.value = false;
         const fd = new FormData();
-        fd.append('lat', lat.value);
-        fd.append('lng', lng.value);
-        fd.append('map_desc', address.value);
+        fd.append('lat', location.value.lat);
+        fd.append('lng', location.value.lng);
+        fd.append('map_desc', location.value.address);
         axios.post('update-location', fd, config).then((res) => {
             if (response(res) == "success") {
                 visible.value = false

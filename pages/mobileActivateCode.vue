@@ -19,7 +19,7 @@
                                 v-model:value="bindModal"
                                 input-classes="otp-input"
                                 separator=" "
-                                :num-inputs="6"
+                                :num-inputs="4"
                                 :should-auto-focus="true"
                                 :is-input-num="true"
                                 />
@@ -133,7 +133,7 @@ const verificationCode = async () => {
             newPhone.value = null
             setTimeout(() => {
                 successfullySent.value = false;
-                navigateTo('/settings');
+                navigateTo('/profile');
             }, 1000);
         } else {
             errorToast(res.data.msg)
@@ -142,9 +142,27 @@ const verificationCode = async () => {
     }).catch(err => console.log(err));
 }
 
+
 // resendCode Function
+
+// const resendCode = async () => {
+//     await axios.get(`resend-code?country_code=${user.value.country_code}&phone=${user.value.phone}`).then(res => {
+//         if (response(res) == "success") {
+//             successToast(res.data.msg);
+//             countStatus.value = true;
+//             countDownTimer();
+//         } else {
+//             errorToast(res.data.msg);
+//         }
+//     }).catch(err => console.log(err));
+// }
+
+
 const resendCode = async () => {
-    await axios.get(`resend-code?country_code=${user.value.country_code}&phone=${user.value.phone}`).then(res => {
+    const fd = new FormData();
+    fd.append('phone', user.value.phone);
+    fd.append('country_code', user.value.country_code);
+    await axios.post(`change-phone-resend-code`, fd, config).then(res => {
         if (response(res) == "success") {
             successToast(res.data.msg);
             countStatus.value = true;

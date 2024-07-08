@@ -228,7 +228,11 @@
         "no_address" : "No addresses found",
         "car_count" : "car count",
         "order_completed_successfully" : "The order and payment were completed successfully",
-        "provider_reservation_details" : "Please go to the service provider to complete the rest of the reservation details"
+        "provider_reservation_details" : "Please go to the service provider to complete the rest of the reservation details",
+        "mobile_changed_successfully" : "Mobile number changed successfully",
+        "email_changed_successfully" : "Email changed successfully",
+        "activation_code" : "Activation code",
+        "Please_activation_email" : "Please activate your email"
     },
 
     "Cars": {
@@ -271,6 +275,7 @@
         "order_cancelled" : "..The order was cancelled by the service provider while inspecting the car",
         "time_limit" : ".The time allowed to complete the request has been exceeded",
         "no_appointments" : "There are no appointments",
-        "location_determined" : "The location has not been determined yet"
+        "location_determined" : "The location has not been determined yet",
+        "car_owner" : "Dbrnak"
     }
 }

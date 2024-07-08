@@ -1,10 +1,10 @@
 <template>
-
     <div>
         <div class="container">
             <div class="layout-form custom-width md text-start">
                 <!-- steps for order -->
-                <ul class="steps" v-if="orderStatus !== 2 && orderStatus !== 3">
+
+                <ul class="steps" v-if="orderStatus !== 2 && orderStatus !== 3 && !loading">
                     
                     <li :class="{ 'step-item': true, 'active': orderStatus == 1 || orderStatus == 4 }">
                         <div class="icon-done">
@@ -22,6 +22,13 @@
 
                 </ul>
 
+                <div class="d-flex align-items-center justify-content-center mb-5" v-if="loading">
+                    <skeleton shape="circle" size="2rem" class="customer-img" />
+                    <skeleton width="300px" height="10px"/>
+                    <skeleton shape="circle" size="2rem" class="customer-img" />
+                </div>
+
+
                 <!-- show this element , if order is canceled -->
 
                 <h4 class="main-title normal mb-5 bg-red cancled" v-if="orderStatus == 3 || orderStatus == 2">
@@ -29,13 +36,10 @@
                     <span v-if="orderStatus == 2">{{ $t("Order.time_limit") }}</span>
                 </h4>
 
+
+
                 <h1 class="main-title normal mb-4">{{ $t("Order.order_details") }}</h1>
 
-                <!-- <div class="d-flex align-items-center justify-content-center mb-5" v-if="loading">
-                    <skeleton shape="circle" size="2rem" class="customer-img" />
-                    <skeleton width="300px" height="10px"/>
-                    <skeleton shape="circle" size="2rem" class="customer-img" />
-                </div> -->
 
 
                 <div class="info mb-5">
@@ -75,7 +79,7 @@
 
                     <div class="item-details">
                         <h6 class="text">{{ $t("Order.order_date") }}</h6>
-                        <h6 class="text" v-if="!loading">not received from backend</h6>
+                        <h6 class="text" v-if="!loading">{{ orderData.created_at }}</h6>
                         <skeleton v-if="loading" width="100px" height="10px"/>
                     </div>
 
@@ -208,7 +212,7 @@ definePageMeta({
     const loading = ref(true);
     const orderData = ref({});
     
-    const orderStatus = ref(1);
+    const orderStatus = ref(0);
     
     const closeModal_btn = ref(true);
     const AutoComplete = ref(true);
@@ -246,6 +250,7 @@ definePageMeta({
                 orderData.value = res.data.data;
                 lat.value = Number(res.data.data.map_desc.lat);
                 lng.value = Number(res.data.data.map_desc.lng);
+                orderStatus.value = res.data.data.status;
             }
             loading.value = false;
         }).catch(err => console.log(err));

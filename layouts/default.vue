@@ -38,6 +38,32 @@ const route = useRoute();
   nuxtApp.hook("page:finish", () => {
     loading.value = false;
   });
+
+//   const loadGoogleMaps = () => {
+//     return new Promise((resolve) => {
+//         if (window.google && window.google.maps) {
+//             resolve(window.google);
+//         } else {
+//             const script = document.createElement('script');
+//             script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDY4h8L8OYA4vrhpzUaLHzGzJWI8noOTZg&libraries=places&callback=initMap`;
+//             script.async = true;
+//             script.defer = true;
+//             window.initMap = () => {
+//                 resolve(window.google);
+//             };
+//             document.head.appendChild(script);
+//         }
+//     });
+// };
+
+onMounted(() => {
+    // loadGoogleMaps().then((google) => {
+    //     console.log('Google Maps API loaded:', google);
+    //     // يمكنك هنا تنفيذ أي عملية تتعلق بـ Google Maps API
+    // }).catch((error) => {
+    //     console.error('Error loading Google Maps API:', error);
+    // });
+});
 </script>
 
 

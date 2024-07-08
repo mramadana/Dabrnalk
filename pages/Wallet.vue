@@ -42,6 +42,29 @@
                 </div>
             </div>
 
+            <div class="payment-items input-g">
+    
+                <div class="payment-item mb-3" v-for="(pay, i) in paymentItems" :key="pay.id">
+
+                    <input type="radio" name="pay_type" :value="pay.id" v-model="payment"
+                        :id="`payment${i}`" class="payment-input">
+                    <label :for="`payment${i}`" class="payment-label">
+
+                        <div class="right">
+                            <img :src="pay.image" alt="img-payment" class="payment-img" loading="lazy">
+                            <div class="content">
+                                <div class="name">{{ pay.name }}</div>
+                            </div>
+                        </div>
+
+                        <div class="circle"></div>
+
+                    </label>
+
+                </div>
+
+            </div>
+
             <button type="button" @click="chargeWallet" class="custom-btn w-100 mr-auto">
                 {{ $t('Global.send') }} 
                 <span class="spinner-border spinner-border-sm" v-if="loading" role="status" aria-hidden="true"></span>
@@ -89,6 +112,10 @@
         headers: { Authorization: `Bearer ${token.value}` }
     };
 
+    const paymentItems = ref([]);
+
+    const payment = ref('');
+
     // get wallet
     const getWallet = async () => {
         await axios.get(`show-wallet`, config).then(res => {
@@ -102,10 +129,23 @@
         });
     };
 
+        // get wallet
+    // const getBrand = async () => {
+    //     await axios.get(`payment-brands`, config).then(res => {
+    //     if (response(res) == "success") {
+    //         paymentItems.value = res.data.data;
+    //     }
+    //     loading.value = false;
+    //     }).catch(err => {
+    //         console.error(err);
+    //     });
+    // };
+
     const chargeWallet = async () => {
         loading.value = true;
         const fd = new FormData();
         fd.append('amount', amount.value);
+        // fd.append('brand_id', payment.value);
         if (amount.value == '') {
             errorToast(t(`Global.enter_shipping_value`));
             loading.value = false;
@@ -137,6 +177,7 @@
 
     onMounted(() => {
         getWallet();
+        // getBrand();
     })
 </script>
 
@@ -150,5 +191,105 @@
             width: 115px;
             margin-bottom: 20px;
         }
+    }
+</style>
+
+
+<style lang="scss">
+
+    .payment-items {
+     margin-bottom: 20px;
+    .payment-item {
+        .payment-input {
+        display: none;
+        }
+
+        .payment-label {
+        padding: 10px 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #F8F8F8;
+        cursor: pointer;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        transition: all 0.4s ease;
+        font-size: 13px;
+        .right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+
+            .payment-img {
+            max-width: 30px;
+            max-height: 30px;
+            }
+
+            .name {
+            color: #000;
+            display: block;
+            }
+
+            .text {
+            color: #000;
+            font-size: 12px;
+            text-align: start;
+            }
+        }
+
+        .circle {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 1px solid var(--main);
+            opacity: 0;
+            position: relative;
+            transition: all 0.4s ease;
+
+            &::after {
+            content: "";
+            height: 6px;
+            width: 10px;
+            border-left: 3px solid var(--main);
+            border-bottom: 3px solid var(--main);
+            border-radius: 1px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -60%) rotate(-45deg);
+            transform-origin: center center;
+            }
+        }
+        }
+    }
+    }
+
+    .payment-item .payment-input:checked + .payment-label {
+    background-color: #fff;
+    border-color: var(--main);
+    }
+
+    .payment-item .payment-input:checked + .payment-label .circle {
+    opacity: 1;
+    }
+
+    .payment-item .payment-input:checked + .payment-label {
+        background-color: rgba(224, 148, 65, .2);
+    border-color: transparent;
+    }
+
+    @media screen and (max-width: 425px) {
+    .payment-item {
+        width: 100%;
+    }
+
+    .payment-item .payment-label {
+        padding: 18px 14px;
+        width: 100%;
+    }
+
+    .payment-item .payment-label .right .name {
+        font-size: 15px;
+    }
     }
 </style>

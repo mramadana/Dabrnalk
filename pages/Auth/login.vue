@@ -1,4 +1,5 @@
 <template>
+
     <div>
         <!-- Banner component  -->
         <GlobalAuthBanner>
@@ -105,6 +106,7 @@
             v-model:visible="visible"
             @closeModal="closeModal"
             @updateAddress="handleUpdateAddress"
+            @handleClose="handleClose"
             :show_inputs="show_inputs"
             :lat="location.lat"
             :lng="location.lng"
@@ -140,7 +142,7 @@
     const store = useAuthStore();
     const { signInHandler } = store;
 
-    const { lat, lng, token } = storeToRefs(store);
+    const { lat, lng, address, token } = storeToRefs(store);
 
     // config
     const config = {
@@ -153,11 +155,15 @@
     // google map
     const closeModal_btn = ref(false);
 
-    const address = ref("");
+    const handleClose = () => {
+        visible.value = false
+    }
 
+    // const address = ref("");
+
+    // this function is used to get your current location and address
     const handleUpdateAddress = (newAddress) => {
-        address.value = newAddress;
-        console.log('Updated address:', newAddress);
+        location.value = newAddress;
     };
 
     const currentLocation = ref(false);
@@ -166,13 +172,14 @@
         visible.value = true;
         setTimeout(() => {
             currentLocation.value = true;
-        }, 200);
+        }, 300);
     };
 
     const location = ref({
         lat: lat.value,
         lng: lng.value
     });
+    
     const show_inputs = ref(false);
     const visible = ref(false);
     
@@ -229,7 +236,6 @@
 
             // Get Returned Data From Store
             const res = await signInHandler(fd);
-            // res.status == "success" ? successToast(res.msg) : errorToast(res.msg);
 
             if (res.status == "success") {
                 successToast(res.msg);
@@ -249,9 +255,13 @@
         }
         loading.value = false;
         const fd = new FormData();
-        fd.append('lat', lat.value);
-        fd.append('lng', lng.value);
-        fd.append('map_desc', address.value);
+        // console.log(location.value.lat, "yaaaarb");
+        // console.log(location.value.lng, "yaaaarb");
+        // console.log(location.value.address, "yaaaarb");
+
+        fd.append('lat', location.value.lat);
+        fd.append('lng', location.value.lng);
+        fd.append('map_desc', location.value.address);
         axios.post('update-location', fd, config).then((res) => {
             if (response(res) == "success") {
                 visible.value = false
@@ -266,6 +276,7 @@
         .catch((error) => {
             console.error('Error updating location:', error);
         });
+    
     }
 
     // toggle password
@@ -274,7 +285,6 @@
     }
 
     // input type
-
     
     const inputType = computed(() => {
       return passwordVisible.value ? 'text' : 'password';

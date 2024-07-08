@@ -42,7 +42,7 @@
                 <button
                     class="custom-btn smm bold getCurent"
                     @click="getCurrentLocatoin"
-                    v-if="props.show_inputs"
+                    v-if="props.show_inputs || props.current_location_button"
                 >
                     {{ $t("Global.current_location") }}
                 </button>
@@ -95,6 +95,10 @@ const props = defineProps({
         resetTitle: Boolean,
         CurrentTitle: String,
         mapAddress: String,
+        current_location_button: {
+            type: Boolean,
+            default: false
+        },
         shouldUpdateData: {
             type: Boolean,
             default: true
@@ -111,7 +115,8 @@ const selectedAddress = ref(null);
 const lat = ref(null);
 const lng = ref(null);
 // const address = ref('');
-const center = ref({ lat: 24.7135517, lng: 46.6752957 });
+// const center = ref({ lat: 24.7135517, lng: 46.6752957 });
+const center = ref({ lat: null, lng: null });
 
 const emit = defineEmits(["updateAddress"]);
 
@@ -165,6 +170,8 @@ function setPlace(e) {
     address.value = e.formatted_address;
     lat.value = e.geometry.location.lat();
     lng.value = e.geometry.location.lng();
+
+    console.log('setPlace', e)
 
     let city = '';
     let country = '';
@@ -248,7 +255,7 @@ function getCurrentLocatoin() {
             }
         );
     } else {
-        console.error("Geolocation is not supported by this browser.");
+        alert("Geolocation is not supported by this browser.");
     }
 }
 
@@ -256,8 +263,7 @@ onMounted(() => {
   if (props.current_location) {
     getCurrentLocatoin();
 
-  }
-  
+  } 
 });
 
 watch(() => props.current_location, (newVal) => {
@@ -273,6 +279,8 @@ function handleMapUpdate(newLat, newLng, newAddress) {
     address.value = newAddress;
     emit('updateAddress', { lat: newLat, lng: newLng, address: newAddress });
 }
+
+
 
 </script>
 

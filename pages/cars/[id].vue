@@ -9,9 +9,9 @@
                     <Skeleton width="100%" height="350px" class="slider-img rounded-1 mb-4" v-if="loading"></Skeleton>
 
                     <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-4">
-                        <h1 class="main-title bold mb-0">فورد موستنج</h1>
+                        <h1 class="main-title bold mb-0">{{ carDetails?.name }}</h1>
                         
-                        <h5 class="normal pointer cl-red mb-0 decoration" v-if="carDetails?.is_available == false"  @click="dateAvilable = true">{{ $t("Cars.not_available") }}</h5>
+                        <h5 class="normal pointer cl-red mb-0 decoration" v-if="carDetails?.off_dates.length"  @click="dateAvilable = true">{{ $t("Cars.not_available") }}</h5>
                     </div>
 
                     <Skeleton width="60px" height="15px" class="rounded-2 mb-4" v-if="loading"></Skeleton>
@@ -53,7 +53,7 @@
     
                         <div class="item-details">
                             <h6 class="text">{{ $t('Cars.owner_car') }}</h6>
-                            <h6 class="text" v-if="!loading">{{ carDetails.name }}</h6>
+                            <h6 class="text" v-if="!loading">{{ $t('Order.car_owner') }}</h6>
                             <skeleton v-if="loading" width="100px" height="10px"/>
                         </div>
 
@@ -61,11 +61,6 @@
                             <h6 class="text">{{ $t('Cars.car_color') }}</h6>
                             <h6 class="text" v-if="!loading">{{ carDetails.color }}</h6>
                             <skeleton v-if="loading" width="100px" height="10px"/>
-                        </div>
-
-                        <div class="item-details">
-                            <h6 class="text">{{ $t('Cars.Structure_number') }}</h6>
-                            <h6 class="text">not received from backend</h6>
                         </div>
 
                     </div>
@@ -96,7 +91,7 @@
                         </div>
                     </div>
 
-                    <router-link class="custom-btn md mr-auto" to="/createOrder">{{ $t('Global.reservation_car') }}</router-link>
+                    <router-link class="custom-btn md mr-auto" :class="{'disabled_btn' : carDetails?.off_dates.length}" :to="!carDetails?.off_dates.length ? '/createOrder' : ''">{{ $t('Global.reservation_car') }}</router-link>
                 </div>
 
             </div>
@@ -104,7 +99,7 @@
 
         <!-- not available date dialog -->
 
-        <Dialog v-model:visible="dateAvilable" v-if="carDetails?.is_available == false" modal class="custum_dialog_width" :draggable="false">
+        <Dialog v-model:visible="dateAvilable" v-if="carDetails?.off_dates.length" modal class="custum_dialog_width" :draggable="false">
                 <div class="text-center">
                     <h1 class="main-title bold mb-4">
                         {{ $t("Cars.not_available_date") }}

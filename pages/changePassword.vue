@@ -120,6 +120,10 @@
             await axios.post("update-passward?_method=patch", fd, config).then(res => {
                 if (response(res) == "success") {
                     successToast(res.data.msg);
+                    oldpassword.value = '';
+                    password.value = '';
+                    confirmPassword.value = '';
+                    navigateTo('/profile');
                 } else {
                     errorToast(res.data.msg)
                 }

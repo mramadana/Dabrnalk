@@ -9,19 +9,19 @@
 
                         <!-- if member -->
 
-                        <div class="form-group text-center" v-if="user.type === 0">
-                                <div class="input_auth without_label">
-                                    <div class="edit-label">
-                                        <i class="fas fa-edit"></i>
-                                    </div>
-                                    <img src="@/assets/images/upload_layout.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage_1.length > 0, 'default-class': true}">
-                                    <GlobalImgUploader acceptedFiles="image/*" :newImages="image" name="image" @uploaded-images-updated="updateUploadedImages_1" />
+                        <!-- <div class="form-group text-center" v-if="user.type === 0">
+                            <div class="input_auth without_label">
+                                <div class="edit-label">
+                                    <i class="fas fa-edit"></i>
                                 </div>
-                        </div>
+                                <img src="@/assets/images/upload_layout.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage_1.length > 0, 'default-class': true}">
+                                <GlobalImgUploader acceptedFiles="image/*" :newImages="image" name="image" @uploaded-images-updated="updateUploadedImages_1" />
+                            </div>
+                        </div> -->
 
                         <!-- if government and private -->
 
-                        <img src="@/assets/images/black-logo.png" v-if="user.type === 1 || user.type === 2" alt="black-logo" class="black-logo" loading="lazy">
+                        <img src="@/assets/images/black-logo.png" alt="black-logo" class="black-logo" loading="lazy">
 
                         <!-- if private -->
                         <div class="form-group" v-if="user.type === 2">
@@ -106,6 +106,56 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                                <label class="label">
+                                    {{ $t('Global.new_phone') }}
+                                </label>
+                                <div class="with_cun_select">
+                                    <div class="main_input">
+                                        <i class="fas fa-mobile-alt sm-icon"></i>
+                                        <input type="number" class="custum-input-icon validInputs" valid="phone" readonly name="phone" v-model="phone" :placeholder="$t('Auth.please_mobile_number')">
+                                    </div>
+                                    <div class="card d-flex justify-content-center dropdown_card">
+                                    <Dropdown
+                                    v-model="selectedCountry"
+                                    filter
+                                    :options="countries"
+                                    optionLabel="name"
+                                    :emptyMessage="$t('Home.no_available_options')"
+                                    :emptyFilterMessage="$t('Home.emptyFilterMessage')"
+                                    disabled="disabled"
+                                    >
+                                    <template #value="slotProps">
+                                        <div v-if="slotProps.value" class="flex-group-me">
+                                        <img
+                                            :alt="slotProps.value.label"
+                                            :src="slotProps.value.image"
+                                            :class="`mr-2 flag flag-${slotProps.value.key}`"
+                                            style="width: 24px"
+                                        />
+                                        <div>{{ slotProps.value.key }}</div>
+                                        </div>
+                                        <span v-else>
+                                        {{ slotProps.placeholder }}
+                                        </span>
+                                    </template>
+                                    <template #option="slotProps">
+                                        <div class="flex-group-me">
+                                        <img
+                                            :alt="slotProps.option.label"
+                                            :src="slotProps.option.image"
+                                            :class="`mr-2 flag flag-${slotProps.option.key}`"
+                                            style="width: 24px"
+                                        />
+                                        <div>{{ slotProps.option.name }}</div>
+                                        <div>{{ slotProps.option.key }}</div>
+                                        </div>
+                                    </template>
+                                    </Dropdown>
+                                    </div>
+                                </div>
+                            </div>
+
                         <!-- if government and private -->
                         <div class="form-group gap-4 d-flex" v-if="user.type === 1 || user.type === 2">
                             <!-- if government and private -->
@@ -181,6 +231,10 @@
     dateFormat: "Y-m-d",
     });
 
+    // countries
+    const selectedCountry = ref({})
+    const countries = ref([]);
+
     const nationality = ref(null);
 
     const nationalities = ref([
@@ -252,6 +306,7 @@
         await axios.get('profile', config).then(res => {
             name.value = res.data.data.name;
             phone.value = res.data.data.phone;
+            selectedCountry.value = res.data.data.country_code;
             email.value = res.data.data.email;
             image.value = res.data.data.image;
             organization_name.value = res.data.data.organization_name;
@@ -265,8 +320,24 @@
         }).catch(err => console.log(err));
     }
 
+    // get countries
+
+    const getCountries = async () => {
+        await axios.get('countries').then(res => {
+            if (response(res) == "success") {
+                countries.value = res.data.data;
+                for (let i = 0; i < countries.value.length; i++) {
+                    if (countries.value[i].id == 1) {
+                        selectedCountry.value = countries.value[i];
+                    }
+                }
+            }
+        }).catch(err => console.log(err));
+    };
+
     onMounted(async () => {
         await profile();
+        await getCountries();
     });
 </script>
 

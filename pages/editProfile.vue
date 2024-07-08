@@ -8,7 +8,7 @@
 
                         <!-- if member -->
 
-                        <div class="form-group text-center" v-if="user.type === 0">
+                        <!-- <div class="form-group text-center" v-if="user.type === 0">
                             <div class="input_auth">
                                 <div class="edit-label">
                                     <i class="fas fa-edit"></i>
@@ -16,11 +16,11 @@
                                 <img src="@/assets/images/upload_layout.png" loading="lazy" alt="default-img" :class="{'hidden-default' : uploadedImage.length > 0, 'default-class': true}">
                                 <GlobalImgUploader acceptedFiles="image/*" :newImages="image" name="image" @uploaded-images-updated="updateUploadedImages_1" />
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- if government and private -->
 
-                        <img src="@/assets/images/black-logo.png" v-if="user.type === 1 || user.type === 2" alt="black-logo" class="black-logo" loading="lazy">
+                        <img src="@/assets/images/black-logo.png" alt="black-logo" class="black-logo" loading="lazy">
 
                         <!-- if private -->
                         <div class="form-group" v-if="user.type === 2">
@@ -332,9 +332,9 @@ const config = {
         // localStorage.clear();
 
         // Get Returned method From Store
-        // const res = await deleteAccountHandler();
-        // res.status == "success" ? successToast(res.msg) : errorToast(res.msg);
-        // navigateTo("/Auth/register");
+        const res = await deleteAccountHandler();
+        res.status == "success" ? successToast(res.msg) : errorToast(res.msg);
+        navigateTo("/Auth/login");
     }
 
     onMounted(() => {

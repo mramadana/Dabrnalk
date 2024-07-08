@@ -1,43 +1,43 @@
 <template>
     <div>
-
         <div class="container">
             <div class="custom-width lg">
                 <h1 class="main-title bold text-center mb-5">{{ $t("Global.saved_addresses") }}</h1>
     
                 <transition-group name="fade" v-if="!loading">
                     <form>
-                        <div v-for="(single, index) in address" :key="single.index">
+                        <label v-for="(single, index) in address" :key="single.index" class="label-address">
+                            <input type="radio" class="form-check-input" :value="single.id" name="address" @change="handleRadioChange(single.id)" :checked="single.id === selectedAddress">
                             <div class="layout-form sm" v-if="address.length">
-                            <div class="notificatin-card">
-                                <div class="d-flex">
-                                    <div class="text text-start">
-                                        <h1 class="main-title normal wrap_text"> {{ single.title }}</h1>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="not-icon">
-                                                <i class="fas fa-map-marker-alt"></i>
-                                            </div>
-                                            <div>
-                                                <span class="main-disc sm"> {{ single.map_desc }}</span>
+                                <div class="notificatin-card">
+                                    <div class="d-flex">
+                                        <div class="text text-start">
+                                            <h1 class="main-title normal wrap_text"> {{ single.title }}</h1>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="not-icon">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                </div>
+                                                <div>
+                                                    <span class="main-disc sm"> {{ single.map_desc }}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="btns">
-    
-                                    <button type="button" class="edit-btn" @click="editaddress(single.id)">
-                                        <i class="far fa-edit edit-icon" v-if="!editLoading"></i>
-                                        <span class="spinner-border spinner-border-sm m-0" v-if="editLoading" role="status" aria-hidden="true"></span>
-                                    </button>
-    
-                                    <button class="delete-btn" @click="removeAdress(single.id, index)">
-                                        <i class="far fa-trash-alt trash-icon" v-if="!deleteLoading"></i>
-                                        <span class="spinner-border spinner-border-sm m-0" v-if="deleteLoading" role="status" aria-hidden="true"></span>
-                                    </button>
+                                    <div class="btns">
+        
+                                        <button type="button" class="edit-btn" @click="editaddress(single.id)">
+                                            <i class="far fa-edit edit-icon" v-if="!editLoading"></i>
+                                            <span class="spinner-border spinner-border-sm m-0" v-if="editLoading" role="status" aria-hidden="true"></span>
+                                        </button>
+        
+                                        <button class="delete-btn" @click="removeAdress(single.id, index)">
+                                            <i class="far fa-trash-alt trash-icon" v-if="!deleteLoading"></i>
+                                            <span class="spinner-border spinner-border-sm m-0" v-if="deleteLoading" role="status" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            </div>
-                        </div>
+                        </label>
             
                         <div class="layout-form sm justify-content-center" v-if="!address.length">
                             {{ $t("Global.no_address") }}
@@ -132,6 +132,8 @@ const { token } = storeToRefs(store);
 // loading
 const loading = ref(true);
 
+const selectedAddress = ref(null);
+
 const closeModal_btn = ref(true);
 
 // delete loading
@@ -141,11 +143,13 @@ const deleteLoading = ref(false);
 const address = ref([]);
 
 const mapAddress = ref('')
+
 // Paginator
 const currentPage = ref(1);
 const pageLimit = ref();
 const totalPage = ref();
 const currentLocation = ref(false);
+
 // config
 const config = {
     headers: { Authorization: `Bearer ${token.value}` }
@@ -193,6 +197,7 @@ const addAddress = () => {
     addAddressStatus.value = true;
 
     // delete title name when i add new title name
+    
     titleName.value = '';
     
     // Set current location
@@ -288,6 +293,104 @@ const removeAdress = async (id, index) => {
     });
 }
 
+// get it active
+
+const handleRadioChange = async (id) => {
+    selectedAddress.value = id;
+    localStorage.setItem('selectedAddress', id);
+    await axios.post(`active-address/${id}`, {}, config).then(res => {
+        if (response(res) == "success") {
+            successToast(res.data.msg);
+             getAddressDetails(id);
+        } else {
+            errorToast(res.data.msg);
+        }
+        loading.value = false;
+    }).catch(err => {
+        console.error(err);
+    });
+}
+
+const loadGoogleMaps = () => {
+  return new Promise((resolve) => {
+    if (window.google && window.google.maps) {
+      resolve(window.google);
+    } else {
+      const language = localStorage.getItem('locale') || 'ar';
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDY4h8L8OYA4vrhpzUaLHzGzJWI8noOTZg&libraries=places&language=${language}&callback=initMap`;
+      script.async = true;
+      script.defer = true;
+      window.initMap = () => {
+        resolve(window.google);
+      };
+      document.head.appendChild(script);
+    }
+  });
+};
+
+// loooool
+const getAddressDetails = async (id) => {
+    await axios.get(`single-address/${id}`, config).then(async res => {
+        if (response(res) == "success") {
+            const { lat, lng, map_desc, title } = res.data.data;
+            // استخدام geocoder للحصول على المدينة والمنطقة
+            loadGoogleMaps().then((google) => {
+                getCityAndCountryFromLatLng(lat, lng, (error, { city, country }) => {
+                    if (error) {
+                        console.error('Error fetching address components:', error);
+                    } else {
+                        // إرسال البيانات إلى `store` مع المدينة والمنطقة
+                        // store.sendLatLng(lat, lng, title, `${country}, ${city}`);
+                        store.sendLatLng(lat, lng, map_desc, `${country}, ${city}`, title,);
+                    }
+                });
+            });
+        } else {
+            errorToast(res.data.msg);
+        }
+    }).catch(err => {
+        console.error(err);
+    });
+};
+
+
+function getCityAndCountryFromLatLng(lat, lng, callback) {
+    const geocoder = new google.maps.Geocoder();
+    const language = localStorage.getItem('locale') || 'ar';
+    const latlng = new google.maps.LatLng(lat, lng);
+
+    geocoder.geocode({ location: latlng, language: language }, (results, status) => {
+        if (status === 'OK' && results[0]) {
+            let city = '';
+            let country = '';
+
+            if (results[0].address_components) {
+                results[0].address_components.forEach(component => {
+                    if (component.types.includes('locality') || component.types.includes('administrative_area_level_2')) {
+                        city = component.long_name;
+                    }
+                    if (component.types.includes('country')) {
+                        country = component.long_name;
+                    }
+                });
+            }
+
+            callback(null, { city, country });
+        } else {
+            callback('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+}
+
+
+const loadSelectedAddress = () => {
+      const savedAddress = localStorage.getItem('selectedAddress');
+      if (savedAddress) {
+        selectedAddress.value = parseInt(savedAddress, 10);
+      }
+    };
+
 
 
 /******************* Computed *******************/
@@ -300,6 +403,15 @@ let showPaginate = computed(() => {
 /******************* Mounted *******************/
 onMounted(async () => {
     await getaddress();
+    loadSelectedAddress();
+
+
+    loadGoogleMaps().then((google) => {
+        console.log('Google Maps API loaded:', google);
+        // يمكنك هنا تنفيذ أي عملية تتعلق بـ Google Maps API
+    }).catch((error) => {
+        console.error('Error loading Google Maps API:', error);
+    });
 });
 
 </script>
@@ -324,6 +436,7 @@ onMounted(async () => {
     }
     .wrap_text {
         word-break: break-word;
+        text-align: start;
     }
     .delete-btn {
         background-color: red;
@@ -396,41 +509,54 @@ onMounted(async () => {
     }
     }
 
-.layout-form {
-  background-color: var(--wh);
-  box-shadow: 0px 3px 30px #0000001A;
-  border-radius: 20px;
-  margin-bottom: 50px;
-  padding: 45px 15px;
-  &.sm-radius {
-    border-radius: 10px;
-    padding: 0;
-    overflow: hidden;
-    border: 1px solid #eee;
-    text-align: start;
-    margin-bottom: 0;
-  }
-
-  &.sm {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 25px;
-    padding: 15px;
-    font-size: 13px;
-    color: #000;
-    font-weight: bold;
-    border-radius: 15px;
-    border: 1px solid #DBDBDB;
-  }
-}
-
-.not-icon {
-    margin-inline-end: 5px;
-    i {
-        font-size: 18px;
-
+    .layout-form {
+    background-color: var(--wh);
+    box-shadow: 0px 3px 30px #0000001A;
+    border-radius: 20px;
+    margin-bottom: 50px;
+    padding: 45px 15px;
+    transition: all 0.3s ease-in-out;
+    &.sm-radius {
+        border-radius: 10px;
+        padding: 0;
+        overflow: hidden;
+        border: 1px solid #eee;
+        text-align: start;
+        margin-bottom: 0;
     }
-}
+
+    &.sm {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 25px;
+        padding: 15px;
+        font-size: 13px;
+        color: #000;
+        font-weight: bold;
+        border-radius: 15px;
+        border: 1px solid #DBDBDB;
+    }
+    }
+
+    .not-icon {
+        margin-inline-end: 5px;
+        i {
+            font-size: 18px;
+
+        }
+    }
+
+    .label-address {
+        width: 100%;
+        cursor: pointer;
+        .form-check-input {
+            display: none;
+        }
+
+        input:checked + .layout-form {
+            background-color: #DCDCDC;
+        }
+    }
 </style>
   

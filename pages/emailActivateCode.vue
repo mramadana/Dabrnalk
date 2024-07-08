@@ -1,7 +1,6 @@
 <template>
 
     <div>
-
         <div class="container">
             <div class="layout-form custom-width">
                 <h1 class="main-title bold lg mb-5">{{ $t("Auth.activation_code") }}</h1>
@@ -19,7 +18,7 @@
                                 v-model:value="bindModal"
                                 input-classes="otp-input"
                                 separator=" "
-                                :num-inputs="6"
+                                :num-inputs="4"
                                 :should-auto-focus="true"
                                 :is-input-num="true"
                                 />
@@ -128,7 +127,7 @@ const verificationCode = async () => {
             successToast(res.data.msg);
             setTimeout(() => {
                 successfullySent.value = false;
-                navigateTo('/settings');
+                navigateTo('/profile');
             }, 1000);
         } else {
             errorToast(res.data.msg)

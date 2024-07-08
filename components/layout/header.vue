@@ -88,7 +88,7 @@
                                     </ul>
                                 </button>
 
-                                <button class="notification transparent" v-if="isLoggedIn" @click="visible = true">
+                                <button class="notification transparent" v-if="isLoggedIn" @click="visibleDialog">
                                     <div class="notif-icon">
                                         <i class="fa-solid fa-location-dot resp-icon"></i>
                                         <div class="notif-hint address-hint">
@@ -248,10 +248,11 @@
                 :lng="location.lng"
                 :isDraggable="true"
                 :closeModal_btn="closeModal_btn"
+                :current_location_button="current_location_button"
                 :title= "$t('Global.current_location')"
+                :mapAddress="address"
             />
     </div>
-
 </template>
 
 
@@ -275,6 +276,7 @@
         location.value = { lat: newLat, lng: newLng };
     });
 
+
     // Search
     const search = ref('');
     const searchForm = ref(null);
@@ -295,11 +297,17 @@
     }
 
     // const address = ref("");
+    
+    // const handleUpdateAddress = (newAddress) => {
+    //     address.value = newAddress;
+    //     console.log('Updated address:', newAddress);
+        
+    // };
 
-    const handleUpdateAddress = (newAddress) => {
-        address.value = newAddress;
-        console.log('Updated address:', newAddress);
-    };
+    const visibleDialog = () => {
+        visible.value = true;
+        console.log(address.value, "a7ooooooooooooooooooooo");
+    }
 
     const closeModal_btn = ref(true);
 
@@ -315,7 +323,7 @@
 
     const show_inputs = ref(false);
     const visible = ref(false);
-
+    const current_location_button = ref(true);
     // start to method 
 
     const isActive = ref(false);
@@ -346,7 +354,7 @@
         const fd = new FormData();
         fd.append('lat', lat.value);
         fd.append('lng', lng.value);
-        fd.append('map_desc', address.value);
+        fd.append('map_desc', address.value.address);
         axios.post('update-location', fd, config).then((res) => {
             if (response(res) == "success") {
                 visible.value = false;
@@ -381,7 +389,7 @@
         if (typeof window !== 'undefined') {
             const storedNotify = localStorage.getItem('notify');
             if (storedNotify !== null) {
-            isSelected.value = storedNotify === 'true';
+                isSelected.value = storedNotify === 'true';
             }
         }
     };
@@ -452,7 +460,7 @@
         initializeNotificationSettings();
        await getNotificationsCount();
         // sendLatLng(lat.value, lng.value);
-
+console.log(store);
     });
     
 </script>

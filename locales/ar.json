@@ -229,7 +229,11 @@
         "no_address" : "لا يوجد عناوين",
         "car_count" : "عدد السيارات",
         "order_completed_successfully" : "تم إتمام الطلب والدفع بنجاح",
-        "provider_reservation_details" : "الرجاء التوجه إلى مقدم الخدمة لإكمال باقي تفاصيل الحجز"
+        "provider_reservation_details" : "الرجاء التوجه إلى مقدم الخدمة لإكمال باقي تفاصيل الحجز",
+        "mobile_changed_successfully" : "تم تغيير رقم الجوال بنجاح",
+        "email_changed_successfully" : "تم تغيير البريد الإلكتروني بنجاح",
+        "activation_code" : "كود التفعيل",
+        "Please_activation_email" : "يرجى تفعيل البريد الإلكتروني"
     },
 
     "Cars": {
@@ -273,6 +277,7 @@
         "order_cancelled" : "تم الغاء الطلب من مقدم الخدمة اثناء معاينة السيارة ..",
         "time_limit" : "تم تخطي الوقت المسموح لإتمام الطلب.",
         "no_appointments" : "لا يوجد مواعيد",
-        "location_determined" : "لم يتم تحديد الموقع بعد"
+        "location_determined" : "لم يتم تحديد الموقع بعد",
+        "car_owner" : "دبرناك"
     }
 }
