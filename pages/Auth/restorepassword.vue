@@ -14,7 +14,6 @@
                                 <div class="form-group mb-5">
                                     <label class="label">
                                         {{ $t('Auth.mobile_number') }}
-                                        <span class="hint-red">*</span>
                                     </label>
                                     <div class="with_cun_select">
                                         <div class="main_input">

@@ -13,7 +13,6 @@
                             <div class="form-group">
                                 <label class="label">
                                     {{ $t('Auth.new_password') }}
-                                    <span class="hint-red">*</span>
                                 </label>
                                 <div class="main_input with_icon">
                                     <input :type="inputType('definitelyNewPassword')" name="password" v-model="password" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_enter_password') ">
@@ -26,7 +25,6 @@
                             <div class="form-group">
                                 <label class="label">
                                     {{ $t('Auth.definitely_new_password') }}
-                                    <span class="hint-red">*</span>
                                 </label>
                                 <div class="main_input with_icon">
                                     <input :type="inputType('definitelyNewPassword_2')" name="password_confirmation" v-model="confirmPassword" class="custum-input-icon validInputs" :placeholder=" $t('Auth.please_confirm_password') ">
