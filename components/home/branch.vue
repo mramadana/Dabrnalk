@@ -8,9 +8,9 @@
                     <img :src="branche.image" alt="branch-image" class="branch-image" loading="lazy">
                     <h4 class="main-title normal mb-2">{{ branche.name }}</h4>
                     <div class="info">
-                        <h3 class="main-title normal gap-2 d-flex flex-wrap mb-0">
+                        <h3 class="main-title normal gap-2 d-flex mb-0">
                             <i class="fa-solid fa-location-dot"></i>
-                            <span>{{ branche.address }}</span>
+                            <span class="wrap_hint">{{ branche.address }}</span>
                         </h3>
                         <nuxt-link :to="'/branches/' + branche.id"  @click="saveFormData(branche.id)" class="custom-btn smm">{{ $t('Global.show_more') }}</nuxt-link>
                     </div>
@@ -70,5 +70,12 @@
             justify-content: space-between;
             gap: 15px;
         }
+    }
+
+    .wrap_hint {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 150px;
     }
 </style>

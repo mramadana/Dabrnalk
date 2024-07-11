@@ -92,9 +92,11 @@
                                 </label>
                                 <div class="main_input with_icon">
                                     <i class="fa-solid fa-percent"></i>
-                                    <input type="text" class="validInputs custum-input-icon" valid="copon" name="copon" v-model="copon" :placeholder="$t('Global.discount_coupon')">
-                                    <button type="button" class="static-btn custom">{{ $t('Global.activation') }}</button>
+                                    <input type="text" class="validInputs custum-input-icon" valid="copon" name="copon" :disabled="copon_text" v-model="copon" :placeholder="$t('Global.discount_coupon')">
+                                    <button v-if="!copon_text" type="button" class="static-btn custom" @click="checkCopon" >{{ $t('Global.activation') }}</button>
+                                    <button v-else type="button" class="static-btn custom bg-red" @click="removeCopon" >حذف</button>
                                 </div>
+                                <p v-if="copon_text" class="copon-text"> {{ $t('Order.copon_applied') }} {{ disc_amount }} {{ $t('Global.rs') }}</p>
                             </div>
                         </div>
 
@@ -128,6 +130,12 @@
     // pinia store
     const store = useAuthStore();
 
+    // success response
+    const { response } = responseApi();
+
+    // Axios
+    const axios = useApi();
+
     // get carDetails from Store
     const { carDetails, user } = storeToRefs(store);
 
@@ -152,17 +160,19 @@
     import 'flatpickr/dist/flatpickr.css';
 
     const errors = ref([]);
-
+    const disc_amount = ref(null);
     const rentalPeriod = ref(null);
     const rental_type = ref(null);
 
-    const copon = ref(null);
+    const copon = ref('');
 
     const rental_types = ref([
         { name: t(`Global.daily`), id: 0 },
         { name: t(`Global.monthly`), id: 1 },
         { name: t(`Global.yearly`), id: 2 },
     ])
+
+    const copon_text = ref(false);
 
     const return_date = ref(null);
     
@@ -191,6 +201,40 @@
             }
         }
     });
+
+
+    // check copon
+    const checkCopon = () => {
+        if(!copon.value) {
+            errorToast(t(`validation.copon`));
+        } else {
+            const fd = new FormData();
+            console.log(copon.value);
+            fd.append('coupon_num', copon.value);
+            axios.post('check-coupon', fd).then((res) => {
+            if (response(res) == "success") {
+                disc_amount.value = res.data.data.disc_amount;
+                copon_text.value = true;
+                successToast(res.data.msg);
+                console.log(disc_amount.value, "yaaaarb");
+            } else {
+                errorToast(res.data.msg)
+                copon_text.value = false;
+            }
+        })
+
+            .catch((error) => {
+                console.error('Error updating location:', error);
+            });
+        }
+    }
+
+    // remove copon
+    const removeCopon = () => {
+        copon.value = '';
+        disc_amount.value = null;
+        copon_text.value = false;
+    }
 
     // vaidate rental period
     const validDot = (evt) => {

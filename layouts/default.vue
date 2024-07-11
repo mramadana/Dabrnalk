@@ -56,13 +56,42 @@ const route = useRoute();
 //     });
 // };
 
+
+
+const loadGoogleMaps = () => {
+    return new Promise((resolve, reject) => {
+        if (window.google && window.google.maps) {
+            resolve(window.google);
+        } else {
+            const existingScript = document.querySelector('script[src*="maps.googleapis.com"]');
+            if (existingScript) {
+                existingScript.addEventListener('load', () => resolve(window.google));
+                existingScript.addEventListener('error', () => reject(new Error('Error loading Google Maps API')));
+                if (window.google && window.google.maps) {
+                    resolve(window.google);
+                }
+            } else {
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDY4h8L8OYA4vrhpzUaLHzGzJWI8noOTZg&libraries=places&callback=initMap&loading=async`;
+                script.async = true;
+                script.defer = true;
+                window.initMap = () => resolve(window.google);
+                script.onerror = () => reject(new Error('Error loading Google Maps API'));
+                document.head.appendChild(script);
+            }
+        }
+    });
+};
+
+
+
 onMounted(() => {
-    // loadGoogleMaps().then((google) => {
-    //     console.log('Google Maps API loaded:', google);
-    //     // يمكنك هنا تنفيذ أي عملية تتعلق بـ Google Maps API
-    // }).catch((error) => {
-    //     console.error('Error loading Google Maps API:', error);
-    // });
+    loadGoogleMaps().then((google) => {
+        console.log('Google Maps API loaded:', google);
+        // يمكنك هنا تنفيذ أي عملية تتعلق بـ Google Maps API
+    }).catch((error) => {
+        console.error('Error loading Google Maps API:', error);
+    });
 });
 </script>
 

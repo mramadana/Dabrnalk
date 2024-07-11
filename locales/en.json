@@ -108,7 +108,8 @@
         "An_individual" : "An individual",
         "governmental_organization" : "Governmental organization",
         "private_company" : "Private company",
-        "verification" : "verification"
+        "verification" : "verification",
+        "copon" : "Coupon is required"
     },
 
     "Home": {
@@ -281,6 +282,8 @@
         "no_appointments" : "There are no appointments",
         "location_determined" : "The location has not been determined yet",
         "car_owner" : "Dbrnak",
-        "canceled" : "Canceled"
+        "canceled" : "Canceled",
+        "copon_applied" : "The coupon was applied successfully and was discounted",
+        "car_not_available" : "This car is not available"
     }
 }

@@ -255,9 +255,6 @@
         }
         loading.value = false;
         const fd = new FormData();
-        // console.log(location.value.lat, "yaaaarb");
-        // console.log(location.value.lng, "yaaaarb");
-        // console.log(location.value.address, "yaaaarb");
 
         fd.append('lat', location.value.lat);
         fd.append('lng', location.value.lng);

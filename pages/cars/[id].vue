@@ -91,7 +91,15 @@
                         </div>
                     </div>
 
-                    <router-link class="custom-btn md mr-auto" :class="{'disabled_btn' : carDetails?.off_dates.length}" :to="!carDetails?.off_dates.length ? '/createOrder' : ''">{{ $t('Global.reservation_car') }}</router-link>
+                    <router-link class="custom-btn md mr-auto" :class="{'disabled_btn' : carDetails?.off_dates.length}" :to="!carDetails?.off_dates.length ? '/createOrder' : ''">
+                        <span v-if="!carDetails?.off_dates.length">
+                            {{ $t('Global.reservation_car') }}
+                        </span>
+                        <span v-else>
+                            {{ $t('Order.car_not_available') }}
+                        </span>
+                    </router-link>
+                    <!-- <router-link class="custom-btn md mr-auto" to="/createOrder">{{ $t('Global.reservation_car') }}</router-link> -->
                 </div>
 
             </div>
@@ -166,6 +174,10 @@
 
 
 <style lang="scss" scoped>
+    .disabled_btn {
+        cursor: not-allowed;
+        opacity: .5;
+    }
     .p-skeleton {
         background-color: #9c9393;
     }
